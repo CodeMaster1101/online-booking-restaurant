@@ -1,0 +1,19 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+<title>Edit User</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+</head>
+<body>
+
+	<div class="container">
+		<hr></hr>
+		<a th:href="@{/admin/add-RTU-form(id = ${user.id})}" class="btn btn-success mb-2">add role to user</a> 
+		<hr></hr>
+		<a th:href="@{/admin/remove-RFU-form(id = ${user.id})}" class="btn btn-danger mb-2"> remove role from user</a> 
+	</div>
+</body>
+</html>

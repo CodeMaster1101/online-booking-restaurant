@@ -1,0 +1,50 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+<title>List of all users</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.css" />
+</head>
+<body>
+	<div class="container">
+		<h3>All Registered users</h3>
+		<hr></hr>
+		<a th:href="@{/admin/addUser-form}" class="btn btn-primary mb-2">Add
+			User</a>
+		<table class="table table-bordered table" id = "user-table">
+			<thead>
+				<tr>
+					<th>Username</th>
+					<th>Password</th>
+					<th>Balance</th>
+					<th>Roles</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user: ${users}">
+					<td th:text="${user.username}"></td>
+					<td th:text="${user.password}"></td>
+					<td th:text="${user.balance}"></td>
+					<td th:text="${user.roles}"></td>
+					<td><a th:href="@{/admin/updateUser(id = ${user.id})}"
+						class="btn btn-warning">Update</a> <a
+						th:href="@{/admin/deleteUser(id = ${user.id})}"
+						class="btn btn-danger">Delete</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.js"></script>
+<script>
+	$(document).ready(function(){
+		$("#user-table").DataTable();
+	})
+</script>
+</body>
+</html>

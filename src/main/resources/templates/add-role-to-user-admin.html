@@ -1,0 +1,36 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+<title>remove role from user</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+</head>
+<style>
+	.container-1{
+		display: flex;
+   		justify-content: left;
+    	flex-direction: row;
+	}
+</style>
+<body>
+	<div class="container">
+		<form th:action="@{/admin/add-RTU}" th:object="${rtu}" 
+			th:method="POST">
+			 <label>Input the role type:</label>
+			 <hr/>
+			 <div class = "container-1">
+			 	<input type="radio" th:field="*{type}" value="USER" />User
+        	 	<input type="radio" th:field="*{type}" value="WAITER" />Waiter
+        	 	<input type="radio" th:field="*{type}" value="ADMIN" />Admin<br/>
+			 	<input type="hidden"th:field ="*{username}" > 
+			 </div >
+			<hr/>
+			<button class="btn btn-warning" type="submit">add Role</button>
+		</form>
+		<hr />
+		<a th:href="@{/admin/users}">Back to users</a>
+	</div>
+</body>
+</html>

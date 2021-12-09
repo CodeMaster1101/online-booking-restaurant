@@ -1,0 +1,42 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+<title>Admin home page</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.css" />
+</head>
+<style>
+ body{
+	background-color: black;
+}
+	.container-0 {
+    color: #ffffff;
+    height: 70%;
+    text-align: center;
+    margin: 0 auto;
+	}
+	.container-1 {
+		border: 5px solid rgb(128, 0, 64);
+		height: 50%;
+	}
+</style>
+<body>
+	<div class="container-0">
+		<h3>Welcome admin!</h3>
+		<div class = "container-1">
+			<div class = "container-2">
+			<hr></hr>
+			<a th:href="@{/admin/users}" class="btn btn-info mb-2">Users</a> 
+			<hr></hr>
+			<a th:href="@{/admin/users/waiters}" class="btn btn-primary mb-2">Waiters</a> 
+			<hr></hr>
+		<a th:href="@{/admin/roles}" class="btn btn-success mb-2"> Roles</a>
+			</div> 
+		</div > 
+	</div>
+</body>
+</html>

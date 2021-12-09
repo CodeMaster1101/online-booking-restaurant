@@ -1,0 +1,24 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+<title>Add User</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+</head>
+<body>
+	<div class="container">
+		<h3>Add new user</h3>
+		<hr/>
+		<form th:action="@{/admin/saveUser}" th:object = "${user}" method="POST">
+				<input type="text" th:field = "*{username}" placeholder="Insert username: "class="form-control col-4 mb-2"/>
+				<input type="text" th:field = "*{password}" placeholder="Insert password: "class="form-control col-4 mb-2"/>
+				<input type="text" th:field = "*{balance}" placeholder="Insert balance: "class="form-control col-4 mb-2"/>
+				<button class="btn btn-success" type="submit">Save</button>
+		</form>
+		<hr/>
+		<a th:href = "@{/admin/users}">Back to list</a>
+	</div>
+</body>
+</html>

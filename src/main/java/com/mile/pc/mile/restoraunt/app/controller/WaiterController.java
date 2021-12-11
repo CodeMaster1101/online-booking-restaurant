@@ -23,23 +23,18 @@ public class WaiterController {
 	 * SEMI ADMIN CONTROLLER
 	 */
 
-	@PostMapping(path = "/setAvailable")
-	public String setTableToAvailable(@RequestParam long id ) {
-		wS.setAvailable(id);
+	@PostMapping(path = "/setBusy")
+	public String setTableToUnavailable(@RequestParam long id) {
+		wS.setBusy(id);
 		return "redirect:/tables";
 	}
-	@PostMapping(path = "/setUnavailable")
-	public String setTableToUnavailable(@RequestParam long id ) {
-		wS.setBusy(id);
+	@PostMapping(path ="/setCalm")
+	public String setTableEmptyu(@RequestParam long id) {
+		wS.setCalm(id);
 		return "redirect:/tables";
 	}
 	@GetMapping(path = "/reservations")
 	List<Reservation> getReservations(){
 		return reservations.findAll();
-	}
-	@PostMapping(path = "/setUnavailableNoReser")
-	public String setAvailableNoReser(@RequestParam long id) {
-	   wS.setAvailableNoReser(id);
-	   return "redirect:/tables";
 	}
 }

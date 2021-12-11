@@ -8,4 +8,5 @@ public class LoginRegisterController {
 	/*
 	 * BASIC AUTH CONTROLLER
 	 */
+	
 }

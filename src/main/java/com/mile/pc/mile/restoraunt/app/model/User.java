@@ -33,4 +33,5 @@ public class User {
     private Reservation reservation;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
+    
 }

@@ -29,22 +29,22 @@ public class MileRestorauntAppApplication {
 	@Bean
 	CommandLineRunner commandLineRunner() {
 		return args -> {
-			tr.save(new CustomTable(null, true, false, false, null));
-			tr.save(new CustomTable(null, true, false, false, null));
-			tr.save(new CustomTable(null, true, false, false, null));
-			tr.save(new CustomTable(null, true, false, false, null));
-			tr.save(new CustomTable(null, true, false, false, null));
+			tr.save(new CustomTable(null, false, false, null));
+			tr.save(new CustomTable(null, false, false, null));
+			tr.save(new CustomTable(null, false, false, null));
+			tr.save(new CustomTable(null, false, false, null));
+			tr.save(new CustomTable(null, false, false, null));
 
 			rr.save(new Role(null, "WAITER"));
 			rr.save(new Role(null, "ADMIN"));
 			rr.save(new Role(null, "USER"));
 
 			ur.save(new User(null, "cpthermes", "madafaka", 123987456l, null, new HashSet<>()));
-			ur.save(new User(null, "moni1008", "wow", 123987456l, null, new HashSet<>()));
-			ur.save(new User(null, "mario", "zoro123", 1231231l, null, new HashSet<>()));
+			ur.save(new User(null, "user2", "wow", 123987456l, null, new HashSet<>()));
+			ur.save(new User(null, "user3", "zoro123", 1231231l, null, new HashSet<>()));
 
 			//cs.AddRoleToUser("cpthermes", "WAITER");
 		};
 	}
-
+	
 }

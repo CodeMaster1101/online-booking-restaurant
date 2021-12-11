@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CONSTANTS {
-	public final static int  fee = 100;
+	public final static int  fee = 150;
 	public static LocalTime parseLocalTime(String value) {
 		 return LocalTime.parse(value);
 		}

@@ -1,11 +1,13 @@
 package com.mile.pc.mile.restoraunt.app.service;
 
 import java.time.LocalTime;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mile.pc.mile.restoraunt.app.comparator.TimeComparator;
 import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
 import com.mile.pc.mile.restoraunt.app.dao.UserPasswordForm;
 import com.mile.pc.mile.restoraunt.app.model.CustomTable;
@@ -26,60 +28,64 @@ public class MainService {
 
 	@SneakyThrows
 	public void reserveTable(Reservation reservation) {
-		CustomTable table = tRepo.findById(reservation.getTable().getId()).get();
+		if(!checkTime(reservation))
+			throw new Exception("can't reserve a table after the current time of the day");
 		User user = uRepo.findByUsername(reservation.getUser().getUsername());
-		Reservation myReservation = new Reservation(null, reservation.getAccepted(), user, table, reservation.getTime());
-		rRepo.saveAndFlush(myReservation);
-		if(!(reservationRequirements(rRepo.findByUser(user))))
-			throw new Exception("something went wrong with the reservation, regarding the requierements");
-		else {
-			user.setBalance(user.getBalance() - CONSTANTS.fee );
-			user.setReservation(myReservation);
-			table.setReservation(myReservation);
-			table.setAvailable(false);
-			uRepo.saveAndFlush(user);
-			tRepo.saveAndFlush(table);
-			rRepo.save(myReservation);
-		}
+		reservation.setUser(user);
+		reservation.setTable(tRepo.findById(reservation.getTable().getId()).get());
+		if(!reservationRequirements(reservation))
+			throw new Exception("didnt meet the reservation requierements");
+		checkOtherReservations(reservation.getTable(), reservation);
+		user.setReservation(reservation);
 	}
-
+	
 	@SneakyThrows
 	public void cancelReservation(UserPasswordForm user) {
-		User myUser = uRepo.findByUsername(user.getUsername());
-		Reservation reservation = rRepo.findByUser(myUser);
-		if(!(cancelReservationRequirements(myUser, reservation)))
-			throw new Exception("the time has passed for for canceling or its not the owner of the reservation");
-		else {
-			CustomTable table = tRepo.findById(reservation.getTable().getId()).get();
-			table.setArrived(false);
-			table.setAvailable(true);
-			table.setReservation(null);
-			myUser.setBalance(myUser.getBalance() + CONSTANTS.fee);
-			myUser.setReservation(null);
-			uRepo.saveAndFlush(myUser);
-			tRepo.saveAndFlush(table);
-		}
+		User localUser = uRepo.findByUsername(user.getUsername());
+		if(!cancelReservationRequirements(localUser, localUser.getReservation()))
+			throw new Exception("didnt meet the canceling requierements");
+		Reservation reservation = localUser.getReservation();
+		reservation.getTable().removeReservation(reservation);
+		localUser.setReservation(null);
+		reservation.setUser(null);
 	}
+
 	/*
 	 * PRIVATE HELPING METHODS
 	 */
-	private Boolean reservationRequirements(Reservation reservation) {
+
+	@SneakyThrows
+	private void checkOtherReservations(CustomTable table, Reservation reservation) {	
+		if(table.getReservations().isEmpty()) {
+			table.addReservation(reservation);
+			return;
+		}
+		table.getReservations().add(reservation);
+		TimeComparator tComp = new TimeComparator();
+		Collections.sort(table.getReservations(), tComp);
+		if(tComp.isGoodDistance() == false) {
+			table.getReservations().remove(reservation);
+			throw new Exception("distance between reservations is bad");
+		}
+	}
+
+	
+	private boolean checkTime(Reservation res) {
+//		if(CONSTANTS.parseLocalTime(res.getTime()).isBefore(LocalTime.now()))
+//			return false;
+		return true;
+	}
+	private boolean reservationRequirements(Reservation reservation) {
 
 		if(reservation.getUser().getBalance() < CONSTANTS.fee)
 			return false;
-
+		
 		if(reservation.getAccepted() == false)
 			return false;
-		//if the table is occupied
-		if(reservation.getTable().getAvailable() == null) {
 
-		}else {
-			if(reservation.getTable().getAvailable() == false)
-				return false;
-		}
-		LocalTime time = CONSTANTS.parseLocalTime(reservation.getTime());
-		if(!(time.isAfter(LocalTime.parse("07:30")) && time.isBefore(LocalTime.parse("22:00") )&& time.isAfter(LocalTime.now().plusMinutes(15))))
-			return false;
+//		LocalTime time = CONSTANTS.parseLocalTime(reservation.getTime());
+//		if(!(time.isAfter(LocalTime.parse("07:30")) && time.isBefore(LocalTime.parse("22:00") )&& time.isAfter(LocalTime.now().plusMinutes(15))))
+//			return false;
 		return true;
 	}
 
@@ -93,6 +99,5 @@ public class MainService {
 		return true;
 	}
 
-
-
 }
+

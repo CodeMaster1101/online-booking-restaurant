@@ -31,19 +31,25 @@ public class MainService {
 		if(!checkTime(reservation))
 			throw new Exception("can't reserve a table after the current time of the day");
 		User user = uRepo.findByUsername(reservation.getUser().getUsername());
+		if(user.getReservation() != null)
+			throw new Exception("already a reservation on this user");
 		reservation.setUser(user);
 		reservation.setTable(tRepo.findById(reservation.getTable().getId()).get());
 		if(!reservationRequirements(reservation))
 			throw new Exception("didnt meet the reservation requierements");
 		checkOtherReservations(reservation.getTable(), reservation);
 		user.setReservation(reservation);
+		if(tableFull(reservation.getTable()))
+			reservation.getTable().setFull(true);			
 	}
-	
+
 	@SneakyThrows
 	public void cancelReservation(UserPasswordForm user) {
 		User localUser = uRepo.findByUsername(user.getUsername());
 		if(!cancelReservationRequirements(localUser, localUser.getReservation()))
 			throw new Exception("didnt meet the canceling requierements");
+
+		localUser.setBalance(localUser.getBalance() + CONSTANTS.fee);
 		Reservation reservation = localUser.getReservation();
 		reservation.getTable().removeReservation(reservation);
 		localUser.setReservation(null);
@@ -69,23 +75,23 @@ public class MainService {
 		}
 	}
 
-	
+	private boolean tableFull(CustomTable table) {
+		LocalTime lastReservation = CONSTANTS.parseLocalTime(CONSTANTS.END);
+		return table.getReservations().stream()
+				   .anyMatch(r -> CONSTANTS.parseLocalTime(r.getTime()).isAfter(lastReservation.minusHours(3).minusMinutes(1))
+						   || CONSTANTS.parseLocalTime(r.getTime()).equals(lastReservation));		   
+	}
+
 	private boolean checkTime(Reservation res) {
 //		if(CONSTANTS.parseLocalTime(res.getTime()).isBefore(LocalTime.now()))
 //			return false;
 		return true;
 	}
 	private boolean reservationRequirements(Reservation reservation) {
-
 		if(reservation.getUser().getBalance() < CONSTANTS.fee)
 			return false;
-		
 		if(reservation.getAccepted() == false)
 			return false;
-
-//		LocalTime time = CONSTANTS.parseLocalTime(reservation.getTime());
-//		if(!(time.isAfter(LocalTime.parse("07:30")) && time.isBefore(LocalTime.parse("22:00") )&& time.isAfter(LocalTime.now().plusMinutes(15))))
-//			return false;
 		return true;
 	}
 

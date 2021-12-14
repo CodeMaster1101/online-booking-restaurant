@@ -38,6 +38,7 @@ public class CrudService {
 		}
 		User user = userRepo.findByUsername(username);
 		Role role = roleRepo.findByType(roleType);
+		System.out.println();
 		user.getRoles().add(role);
 	}
 	public void removeRolefromUser(String username, String roleType){

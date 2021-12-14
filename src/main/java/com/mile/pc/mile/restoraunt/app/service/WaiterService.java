@@ -26,16 +26,18 @@ public class WaiterService {
 	public void setBusy(long tableid) {
 		CustomTable table = tRepo.findById(tableid).get();
 		if(table.getBusy()!=true) {
-			userArrived(tableid);
+			userArrived(findCurrentReservation(table).getId());
 			table.setBusy(true);
 		}
 	}
+	private Reservation findCurrentReservation(CustomTable table) {
+		//find current time -> predicate(res.isAfter())
+		return null;
+	}
 	public void setCalm(long tableid) {
 		CustomTable table = tRepo.findById(tableid).get();
-		if(table.getBusy()!=false) {
 			table.setBusy(false);
 		}
-	}
 	//PRIVATE HELPING METHODS
 	private boolean checkUserOnTime(long reservationId) {
 		Reservation reservation = reservations.findById(reservationId).get();

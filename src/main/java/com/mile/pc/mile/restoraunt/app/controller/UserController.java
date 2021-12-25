@@ -2,6 +2,7 @@ package com.mile.pc.mile.restoraunt.app.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +17,7 @@ import com.mile.pc.mile.restoraunt.app.dao.UserPasswordForm;
 import com.mile.pc.mile.restoraunt.app.model.CustomTable;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
+import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.service.MainService;
 
 @RestController
@@ -27,7 +29,8 @@ public class UserController {
 	 */
 	@Autowired CustomTableRepository tableRepo;
 	@Autowired MainService main;
-
+	@Autowired ReservationRepository rRepo;
+	
 	@GetMapping(path = "/tables")
 	public List<CustomTable> getTables(){
 		return tableRepo.findAll();
@@ -36,7 +39,6 @@ public class UserController {
 	public Optional<CustomTable> getTableModel(@RequestParam Long id) {
 		return tableRepo.findById(id);
 	}
-
 	@PostMapping(path = "/reserveTable")
 	public String reserveTable(@RequestBody Reservation reservation) {
 		main.reserveTable(reservation);
@@ -48,4 +50,10 @@ public class UserController {
 		return "redirect:/tables";
 
 	}
+	@GetMapping(path = "/tableReservations")
+	public List<Reservation> reservationsOnTable(@RequestParam long id){
+		return rRepo.findAll().stream()
+				.filter(r -> r.getTable().getId() == id).collect(Collectors.toList());
+	}
+	
 }

@@ -1,9 +1,13 @@
 package com.mile.pc.mile.restoraunt.app.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,11 +17,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Guest {
-	
+public class TimeContainer {
 	@Id
 	@GeneratedValue
 	private Long id;
+	private LocalDateTime time;
 	@OneToOne
-	private Reservation reservation; 
+	@JsonManagedReference
+	private User user;
 }

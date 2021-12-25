@@ -1,8 +1,10 @@
 package com.mile.pc.mile.restoraunt.app.comparator;
 
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
-import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 
 import lombok.Getter;
@@ -11,19 +13,27 @@ import lombok.Getter;
 public class TimeComparator implements Comparator<Reservation>{
 
 	private boolean goodDistance = true;
-
-	public boolean compareTwoReservationsTimes(Reservation left, Reservation right) {
-		if(CONSTANTS.parseLocalTime(left.getTime()).isAfter(CONSTANTS.parseLocalTime(right.getTime()).plusHours(4).minusMinutes(10))
-				|| CONSTANTS.parseLocalTime(left.getTime()).isBefore(CONSTANTS.parseLocalTime(right.getTime()).minusHours(4).plusMinutes(10)))
+	private boolean compareTwoReservationsTimes(Reservation left, Reservation right) {
+		if(left.getTime().getDayOfMonth() != right.getTime().getDayOfMonth()) {
 			return true;
-		return false;
+		}Set<Integer> leftHourContainer = new HashSet<>();
+		Integer leftHourMin = left.getTime().getHour(), leftHourMax = left.getMaxTime().getHour();
+		for(int i = leftHourMin; i <= leftHourMax; i++) {
+			leftHourContainer.add(i);
+		}Set<Integer> rightHourContainer = new HashSet<>();
+		Integer rightHourMin = left.getTime().getHour(), rightHourMax = left.getMaxTime().getHour();
+		for(int i = rightHourMin; i <= rightHourMax; i++) {
+			rightHourContainer.add(i);
+		}
+		return  Collections.disjoint(leftHourContainer, rightHourContainer);
 	}
 	@Override
 	public int compare(Reservation o1, Reservation o2) {
+		
 		if(!(compareTwoReservationsTimes(o1, o2))) {
 			this.goodDistance = false;
 		}
-		return Integer.compare(CONSTANTS.parseLocalTime(o1.getTime()).getHour(), CONSTANTS.parseLocalTime(o2.getTime()).getHour());
+		return o1.getTime().compareTo(o2.getTime());
 	}
 }
 

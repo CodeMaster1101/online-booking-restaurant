@@ -7,11 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class CONSTANTS {
 	public final static int  fee = 150;
+	public final static int afterReservationTime = 40;
+	public static final LocalTime START = LocalTime.of(7, 0);
+	public static final LocalTime END = LocalTime.of(22, 0);
 
-	public static final String START = "7:30";
-	public static final String END = "22:00";
 
-	public static LocalTime parseLocalTime(String value) {
-		 return LocalTime.parse(value);
-		}
 }

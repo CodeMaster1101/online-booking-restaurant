@@ -2,9 +2,9 @@ package com.mile.pc.mile.restoraunt.app.service;
 
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class CrudService {
 	@Autowired UserRepository userRepo;
 	@Autowired RoleRepository roleRepo;
 	@Autowired CustomTableRepository tableRepo;
-	
+
 	/*
 	 * Basic ADMIN Functions
 	 */
@@ -59,16 +59,8 @@ public class CrudService {
 		return tableRepo.save(table);
 	}
 	public List<User> getWaiters(){
-		List<User> users = new ArrayList<>();
-		userRepo.findAll().forEach(user -> {
-			user.getRoles().forEach(role -> {
-				if(role.getType().contains("WAITER")) {
-					users.add(user);
-				}
-			});
-			
-		});
-		return users;
+		return userRepo.findAll().stream()
+				.filter(u -> u.getRoles().contains(roleRepo.findByType("WAITER"))).collect(Collectors.toList());
 	}
 	public List<Role> allRoles(){
 		return roleRepo.findAll();
@@ -77,5 +69,5 @@ public class CrudService {
 		User user = userRepo.findById(id).get();
 		return user.getRoles();
 	}
-	
+
 }

@@ -34,7 +34,13 @@ public class WaiterController {
 		return "redirect:/tables";
 	}
 	@GetMapping(path = "/reservations")
-	List<Reservation> getReservations(){
+	public List<Reservation> getReservations(){
 		return reservations.findAll();
 	}
+	@GetMapping(path = "/setGuest")
+	public String setTableAsGuest(@RequestParam long tableid) {
+		wS.setGuestOnTable(tableid);
+		return "redirect:/tables";
+	}
+
 }

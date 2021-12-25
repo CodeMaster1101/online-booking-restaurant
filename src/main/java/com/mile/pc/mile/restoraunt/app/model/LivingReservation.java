@@ -4,20 +4,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-
+import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Guest {
-	
-	@Id
-	@GeneratedValue
+@Table(name = "current_reservation")
+public class LivingReservation {
+	@Id @GeneratedValue
 	private Long id;
 	@OneToOne
-	private Reservation reservation; 
+	@JsonManagedReference
+	private Reservation reservation;
 }

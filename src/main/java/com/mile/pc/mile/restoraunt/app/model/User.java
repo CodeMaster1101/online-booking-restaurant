@@ -10,8 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.transaction.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -33,6 +36,12 @@ public class User {
     private Reservation reservation;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
-    
-
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private TimeContainer timeContainer;
+    @Transactional
+    public void setUReservation(Reservation reservation) {
+    	this.reservation = reservation;
+    	reservation.setUser(this);
+    }
 }

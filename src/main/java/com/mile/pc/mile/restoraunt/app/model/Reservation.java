@@ -10,13 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.transaction.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Transactional
+@Builder
 public class Reservation
 {
 	
@@ -48,7 +48,7 @@ public class Reservation
     private int numberOfPeople;
     @JsonIgnore
     @OneToOne(mappedBy = "reservation")
-    private LivingReservation livingReservation;
+    private BusyReservation livingReservation;
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     private Guest guest;
     

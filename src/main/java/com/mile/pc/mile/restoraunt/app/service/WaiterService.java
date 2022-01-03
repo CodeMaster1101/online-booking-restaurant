@@ -1,5 +1,6 @@
 package com.mile.pc.mile.restoraunt.app.service;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 
@@ -8,14 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
+import com.mile.pc.mile.restoraunt.app.model.BusyReservation;
 import com.mile.pc.mile.restoraunt.app.model.CustomTable;
-import com.mile.pc.mile.restoraunt.app.model.LivingReservation;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.model.User;
 import com.mile.pc.mile.restoraunt.app.repo.CurrentDeployedReservations;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
-import com.mile.pc.mile.restoraunt.app.repo.TimeContainerRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 
 import lombok.NoArgsConstructor;
@@ -28,14 +28,13 @@ public class WaiterService {
 	@Autowired ReservationRepository reservations;
 	@Autowired UserRepository urepo;
 	@Autowired CurrentDeployedReservations currentReservations;
-	@Autowired TimeContainerRepository reservationTimeContainer;
 
 	@SneakyThrows
 	public void setBusy(long tableid) {
 		CustomTable table = tRepo.findById(tableid).get();
 		if(table.getBusy()!=true) {
 			Reservation currentRes = findCurrentReservation(table);
-			currentReservations.save(new LivingReservation(null, currentRes));
+			currentReservations.save(new BusyReservation(null, currentRes));
 			userArrived(currentRes.getId());
 			table.setBusy(true);
 			return;
@@ -43,7 +42,7 @@ public class WaiterService {
 	}
 	public void setCalm(long tableid) {
 		CustomTable table = tRepo.findById(tableid).get();
-		LivingReservation currentReservation = currentReservations.findAll().stream()
+		BusyReservation currentReservation = currentReservations.findAll().stream()
 				.filter(res -> res.getReservation().getTable().equals(table)).findFirst().get();
 		emptyTableAndReservations(table, currentReservation);
 
@@ -59,7 +58,7 @@ public class WaiterService {
 		Reservation proxyReservation = reservations.save(new Reservation());
 		proxyReservation.getGuest().setReservation(proxyReservation);
 		Reservation currentRes = findCurrentReservation(table);
-		currentReservations.save(new LivingReservation(null, currentRes));
+		currentReservations.save(new BusyReservation(null, currentRes));
 		table.setBusy(true);
 	}
 	//PRIVATE HELPING METHODS
@@ -82,22 +81,22 @@ public class WaiterService {
 	private Reservation findCurrentReservation(CustomTable table) {
 		LocalTime now = LocalTime.now();
 		return table.getReservations().stream()
-				.filter(r -> OffsetDateTime.parse(r.getTime().toString()).toLocalTime().isAfter(now.minusMinutes(20)) 
-						&&  OffsetDateTime.parse(r.getTime().toString()).toLocalTime().isBefore(now.plusMinutes(CONSTANTS.afterReservationTime).minusMinutes(10))).findFirst().get();
+				.filter(r -> r.getTime().getDayOfMonth() == LocalDateTime.now().getDayOfMonth() 
+				&& OffsetDateTime.parse(r.getTime().toString()).toLocalTime().isAfter(now.minusMinutes(20)) 
+				&&  OffsetDateTime.parse(r.getTime().toString()).toLocalTime().isBefore(now.plusMinutes(CONSTANTS.afterReservationTime).minusMinutes(10))).findFirst().get();
 	}
-	private void emptyTableAndReservations(CustomTable table, LivingReservation currentReservation) {
+	private void emptyTableAndReservations(CustomTable table, BusyReservation currentReservation) {
 		table.getReservations().remove(currentReservation.getReservation());
 		reservations.delete(currentReservation.getReservation());
 		currentReservations.deleteById(currentReservation.getReservation().getId());
-		if(currentReservation.getReservation().getGuest() == null)
-			reservationTimeContainer.deleteById(currentReservation.getReservation().getUser().getTimeContainer().getId());
-		table.setBusy(false);
+		//if(currentReservation.getReservation().getGuest() == null)
+		//table.setBusy(false);
 	}
 	private Reservation check2hAhead(CustomTable table) {
 		LocalTime now = LocalTime.now();
 		return
-		table.getReservations().stream().filter(r -> now.plusHours(3).isAfter(OffsetDateTime.parse(r.getTime().toString()).toLocalTime()) 
-				&& OffsetDateTime.parse(r.getTime().toString()).toLocalTime().isAfter(now.minusMinutes(CONSTANTS.afterReservationTime).minusMinutes(10))).findFirst().get();
+				table.getReservations().stream().filter(r -> now.plusHours(3).isAfter(OffsetDateTime.parse(r.getTime().toString()).toLocalTime()) 
+						&& OffsetDateTime.parse(r.getTime().toString()).toLocalTime().isAfter(now.minusMinutes(CONSTANTS.afterReservationTime).minusMinutes(10))).findFirst().get();
 	}
-	
+
 }

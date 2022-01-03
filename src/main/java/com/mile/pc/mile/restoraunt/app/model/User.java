@@ -1,5 +1,6 @@
 package com.mile.pc.mile.restoraunt.app.model;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,9 +14,9 @@ import javax.persistence.OneToOne;
 import javax.transaction.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -36,9 +37,7 @@ public class User {
     private Reservation reservation;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
-    @OneToOne(mappedBy = "user")
-    @JsonIgnore
-    private TimeContainer timeContainer;
+    private LocalDateTime reservationMoment;
     @Transactional
     public void setUReservation(Reservation reservation) {
     	this.reservation = reservation;

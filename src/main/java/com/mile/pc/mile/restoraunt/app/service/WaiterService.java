@@ -23,7 +23,7 @@ import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 import lombok.SneakyThrows;
 
 /**
- * The semi-Administrator service which is responsible for the waiter in the locale.
+ * The semi-administrator service which is responsible for the waiter in the locale.
  * It's job is monitoring the changes to the reservations and the tables in the locale.
  * It can perform the following actions: telling the DB that a user/guest has just arrived on the their reservation according
  * to the time of the reservation; Telling the DB that a guest/client has just called for check and is ready to leave based on the table respectively
@@ -103,17 +103,34 @@ public class WaiterService {
 				.collect(Collectors.toList());
 	}
 	/**
-	 * removes the reservation via the User referenced by the reservation with orphan removal
+	 * Removes the reservation via the User referenced by the reservation with orphan removal
 	 * @param id
 	 */
 	public void removeReservation(long id) {
-		reservations.findById(id).get().getUser().setReservation(null);
+		Reservation reservation = reservations.findById(id).get();
+		if(reservation.getUser() != null && reservation.getGuest() == null)
+			reservation.getUser().setReservation(null);
+		else if(reservation.getUser() == null && reservation.getGuest() != null)
+			reservation.getGuest().setReservation(null);
+		reservation.getTable().removeReservation(reservation);
+		reservations.deleteById(id);
+	}
+	/**
+	 * Removes every reservation that has expired, in other words, 
+	 * every reservation that has been canceled but nobody has arrived
+	 */
+	public void removeExpiredReservations() {
+		reservations.findAll().stream()
+		.filter(r -> r.isExpired() == true &&
+		r.getTime().isBefore(LocalDateTime.now().minusMinutes(CONSTANTS.AFTER_RESERVATION_TIME)))
+		.collect(Collectors.toList()).stream()
+		.forEach(r -> reservations.deleteById(r.getId()));
 	}
 
 	//PRIVATE HELPING METHODS
 
 	/**
-	 * checks whether a user is on time or not.
+	 * Checks whether a user is on time or not.
 	 * Conditions -> 
 	 * - the current time must be after the reservation time minus some minutes referenced by CONSTANTS.BEFORE_RESERVATION_TIME
 	 *      this means that the user can come earlier to their reservation by a certain amount of time. If he comes to early, well... no refund.
@@ -132,7 +149,7 @@ public class WaiterService {
 		}return true;
 	}
 	/**
-	 * identifies that the user has arrived at the restoraunt, checks if the user is on time for their reservation.
+	 * Identifies that the user has arrived at the restoraunt, checks if the user is on time for their reservation.
 	 * if true, then the fee that the user gave to reserve a table is returned to him. 
 	 * @param reservationId
 	 */

@@ -51,5 +51,9 @@ public class WaiterController {
 	public void deleteReservation(@RequestParam long id) {
 		wS.removeReservation(id);
 	}
+	@DeleteMapping(path = "deleteExpiredReservations")
+	public void deleteExpiredReservations() {
+		wS.removeExpiredReservations();
+	}
 
 }

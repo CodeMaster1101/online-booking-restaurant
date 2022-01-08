@@ -32,10 +32,11 @@ import lombok.SneakyThrows;
 @Service @Transactional @NoArgsConstructor
 public class MainService {
 
+	@Autowired ReservationRepository reservations;
 	@Autowired CustomTableRepository tRepo;
 	@Autowired UserRepository uRepo;
 	@Autowired ReservationRepository rRepo;
-
+	@Autowired WaiterService w_service;
 	/**
 	 * Makes a reservation on a client's name on a certain table at a specific date and time.
 	 * checks if all the reservations are distanced correctly, if the time of the reservation is
@@ -59,8 +60,8 @@ public class MainService {
 			throw new Exception("didnt meet the reservation requierements");
 		checkOtherReservations(reservation.getTable(), reservation);
 		user.setReservationMoment(LocalDateTime.now());
-		reservation.setFee(reservation.getUser().getBalance() - CONSTANTS.FEE * incrementFee(reservation.getUser()));
-		user.setBalance(reservation.getFee());
+		reservation.setFee(CONSTANTS.FEE * incrementFee(reservation.getUser()));
+		user.setBalance(user.getBalance() - reservation.getFee());
 		if(tableFull(reservation.getTable()))
 			reservation.getTable().setFull(true);			
 	}
@@ -73,11 +74,15 @@ public class MainService {
 	@SneakyThrows
 	public void cancelReservation(UserPasswordForm user) {
 		User localUser = uRepo.findByUsername(user.getUsername());
-		if(!cancelReservationRequirements(localUser, localUser.getReservation()))
+		if(!cancelReservationRequirements(localUser, user.getPassword()))
 			throw new Exception("didnt meet the canceling requierements");
-		if(refund(localUser, localUser.getReservation()))
+		if(refund(localUser, localUser.getReservation())) {
 			localUser.setBalance(localUser.getBalance() + localUser.getReservation().getFee());
-		basicUserReservationCancelLogic(localUser);
+			basicUserReservationCancelLogic(localUser);
+			return;
+		}else {
+			localUser.getReservation().setExpired(true);
+		}
 	}
 	/*
 	 * PRIVATE HELPING METHODS
@@ -92,10 +97,6 @@ public class MainService {
 	 */
 	@SneakyThrows
 	protected void checkOtherReservations(CustomTable table, Reservation reservation) {	
-		if(table.getReservations().isEmpty()) {
-			table.addReservation(reservation);
-			return;
-		}
 		TimeComparator tComp = new TimeComparator();
 		Collections.sort(table.getReservations(), tComp);
 		if(tComp.isGoodDistance() == false) {
@@ -147,8 +148,6 @@ public class MainService {
 		if(reservation.getAccepted() == false)
 			return false;
 		//	if(LocalDateTime.now().isBefore(reservation.getTime())) {
-		if(!reservation.getMaxTime().toLocalTime().isBefore(CONSTANTS.MAX_TIME))
-			return false;
 		if(!(reservation.getTime().isAfter(LocalDateTime.of(reservation.getTime().toLocalDate(), CONSTANTS.START.minusMinutes(1)))&&
 				reservation.getMaxTime().isBefore(LocalDateTime.of(reservation.getMaxTime().toLocalDate(), CONSTANTS.MAX_TIME))))
 			return false;
@@ -176,8 +175,9 @@ public class MainService {
 	 * @param reservation
 	 * @return true if the username matches the password
 	 */
-	private Boolean cancelReservationRequirements(User user, Reservation reservation) {
-		if(user.getUsername() != reservation.getUser().getUsername() || user.getPassword() != reservation.getUser().getPassword())
+	private Boolean cancelReservationRequirements(User user, String password) {
+		 
+		if(user.getPassword() == (password))
 			return false;
 		return true;
 	}
@@ -187,7 +187,10 @@ public class MainService {
 	 * @param localUser
 	 */
 	private void basicUserReservationCancelLogic(User localUser) {
+		Reservation res = localUser.getReservation();
 		localUser.setReservation(null);
+		res.getTable().removeReservation(res);
+		reservations.deleteById(res.getId());
 		localUser.setReservationMoment(null);
 	}
 	/**

@@ -41,34 +41,20 @@ public class Reservation
     @JoinColumn(name = "table_id")
     @JsonBackReference
     private CustomTable table;
-    
     private LocalDateTime time;
     private LocalDateTime maxTime;
-    
     private int numberOfPeople;
     @JsonIgnore
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     private BusyReservation livingReservation;
     @OneToOne(orphanRemoval = true)
     private Guest guest;
-    
     private Long fee;
-    public void setUUser(User user) {
-    	this.user = user;
-    	user.setReservation(this);
-    }
+    private boolean expired;
     public void setUTable(CustomTable table) {
     	this.table = table;
     	table.addReservation(this);
     }
-    public void deleteUUser(User user) {
-    	this.user = null;
-    	user.setReservation(null);
-    }
-    
-    public void deleteUTable(CustomTable table) {
-    	this.table = null;
-    	table.getReservations().remove(this);
-    }
+  
 }
 

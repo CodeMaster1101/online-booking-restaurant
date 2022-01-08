@@ -31,7 +31,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
-    private Long balance;
+    private long balance;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private Reservation reservation;

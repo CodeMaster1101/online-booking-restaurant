@@ -2,6 +2,7 @@ package com.mile.pc.mile.restoraunt.app.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class CustomTable {
     private Boolean busy;
     private Boolean full;
     @JsonIgnore
-    @OneToMany(mappedBy = "table", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "table", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Reservation> reservations;
     
@@ -41,7 +42,7 @@ public class CustomTable {
     }
     public void removeReservation(Reservation r) {
     	r.setTable(null);
-    	this.reservations.remove(r);
+    	reservations.remove(r);
     }
 }
 

@@ -3,6 +3,7 @@ package com.mile.pc.mile.restoraunt.app.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +29,8 @@ public class WaiterController {
 		wS.setBusy(id);
 		return "redirect:/tables";
 	}
-	@PostMapping(path ="/setCalm")
-	public String setTableEmptyu(@RequestParam long id) {
+	@DeleteMapping(path ="/setCalm")
+	public String setTableEmpty(@RequestParam long id) {
 		wS.setCalm(id);
 		return "redirect:/tables";
 	}
@@ -39,8 +40,16 @@ public class WaiterController {
 	}
 	@GetMapping(path = "/setGuest")
 	public String setTableAsGuest(@RequestParam long tableid) {
-		wS.setGuestOnTable(tableid);
+		wS.setGuestBusy(tableid);
 		return "redirect:/tables";
+	}
+	@GetMapping(path ="/todayReservations")
+	public List<Reservation> tReservations(){
+		return wS.todayReservations();
+	}
+	@DeleteMapping(path = "/deleteReservation")
+	public void deleteReservation(@RequestParam long id) {
+		wS.removeReservation(id);
 	}
 
 }

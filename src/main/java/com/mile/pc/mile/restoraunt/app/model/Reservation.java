@@ -47,11 +47,12 @@ public class Reservation
     
     private int numberOfPeople;
     @JsonIgnore
-    @OneToOne(mappedBy = "reservation")
-    private BusyReservation livingReservation;
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
+    private BusyReservation livingReservation;
+    @OneToOne(orphanRemoval = true)
     private Guest guest;
     
+    private Long fee;
     public void setUUser(User user) {
     	this.user = user;
     	user.setReservation(this);

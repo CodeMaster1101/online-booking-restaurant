@@ -19,17 +19,25 @@ import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 
 import lombok.SneakyThrows;
 
+/**
+ * This Service class is targeting the restoraunt's admin's functionalities
+ * It gives the administrator functionalities such as: adding a new user, deleting the user,
+ * adding a promotion to the user, removing the promotion from that user, viewing certain collections, etc...
+ * In general, the administrator can access almost every, if not, every endpoint in the application.
+ * 
+ * @author Mile Stanislavov 
+ *
+ */
 @Service @Transactional
 public class CrudService {
 	@Autowired UserRepository userRepo;
 	@Autowired RoleRepository roleRepo;
 	@Autowired CustomTableRepository tableRepo;
-
-	/*
-	 * Basic ADMIN Functions
-	 */
-	/*
-	 * Role based
+	
+	/**
+	 * adds a given role to a certain user, throws an exception if the role or user is non existent
+	 * @param username
+	 * @param roleType
 	 */
 	@SneakyThrows
 	public void AddRoleToUser(String username, String roleType){
@@ -41,30 +49,65 @@ public class CrudService {
 		System.out.println();
 		user.getRoles().add(role);
 	}
+	/**
+	 * removes a role from the user
+	 * @param username
+	 * @param roleType
+	 */
 	public void removeRolefromUser(String username, String roleType){
 		User user = userRepo.findByUsername(username);
 		Role role = roleRepo.findByType(roleType);
 		user.getRoles().remove(role);
 	}
+	/**
+	 * removes the user found by the given id
+	 * @param id
+	 */
 	public void removeUser(long id) {
 		userRepo.deleteById(id);;
 	}
+	/**
+	 * removes a certain table based on the table object
+	 * @param table
+	 */
 	public void removeTable(CustomTable table) {
 		tableRepo.delete(table);
 	}
+	/**
+	 * saves a new user to the DB
+	 * @param user
+	 * @return the new User
+	 */
 	public User addUser(User user) {
 		return userRepo.save(user);
 	}
+	/**
+	 * saves a new table to the DB
+	 * @param table
+	 * @return the new Table
+	 */
 	public CustomTable addTable(CustomTable table) {
 		return tableRepo.save(table);
 	}
+	/**
+	 * filters through all the users to fetch every waiter
+	 * @return every user that has a role "WAITER"
+	 */
 	public List<User> getWaiters(){
 		return userRepo.findAll().stream()
 				.filter(u -> u.getRoles().contains(roleRepo.findByType("WAITER"))).collect(Collectors.toList());
 	}
+	/**
+	 * @return every role
+	 */
 	public List<Role> allRoles(){
 		return roleRepo.findAll();
 	}
+	/**
+	 * fetches every role from a certain user
+	 * @param id
+	 * @return the collection of the roles from that user based on his id
+	 */
 	public Collection<Role> userRoles(long id){
 		User user = userRepo.findById(id).get();
 		return user.getRoles();

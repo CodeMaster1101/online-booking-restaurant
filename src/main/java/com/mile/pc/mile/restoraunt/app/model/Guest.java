@@ -1,5 +1,6 @@
 package com.mile.pc.mile.restoraunt.app.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,6 +19,6 @@ public class Guest {
 	@Id
 	@GeneratedValue
 	private Long id;
-	@OneToOne
+	@OneToOne(mappedBy = "guest", orphanRemoval = true, cascade = CascadeType.ALL)
 	private Reservation reservation; 
 }

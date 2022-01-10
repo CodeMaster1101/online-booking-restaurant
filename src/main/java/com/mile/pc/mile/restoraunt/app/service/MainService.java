@@ -30,6 +30,7 @@ import lombok.SneakyThrows;
  * 
  */
 @Service @Transactional @NoArgsConstructor
+
 public class MainService {
 
 	@Autowired ReservationRepository reservations;
@@ -37,12 +38,14 @@ public class MainService {
 	@Autowired UserRepository uRepo;
 	@Autowired ReservationRepository rRepo;
 	@Autowired WaiterService w_service;
+	
 	/**
 	 * Makes a reservation on a client's name on a certain table at a specific date and time.
-	 * checks if all the reservations are distanced correctly, if the time of the reservation is
-	 * in a compatible time. Does a few more tests, such as checking if the user has enough money, etc...
-	 * removes money from the user based on how much hours the reservation contains.
-	 * finally if there weren't any exceptions during the process, all changes are flushed into the DB. 
+	 * Checks if all the reservations are distanced correctly, if the time of the reservation is
+	 * in a compatible time. Does a few more tests, such as checking if the user has enough money, if the table is full, etc...
+	 * Removes money from the user based on how much hours the reservation contains.
+	 * The removed money from the user is being kept on the reservation under the field "fee".
+	 * Finally if there weren't any exceptions during the process, all changes are flushed into the DB. 
 	 * @param reservation -> the object that contains all the startup information
 	 */
 	@SneakyThrows
@@ -65,32 +68,34 @@ public class MainService {
 		if(tableFull(reservation.getTable()))
 			reservation.getTable().setFull(true);			
 	}
+	
 	/**
-	 * Cancels the reservation if and only if the user has done it in the given time. 
+	 * Cancels the reservation if and only if the user has canceled it in the given time. 
 	 * Otherwise, the money will not be returned to the user, but the reservation will stay in case
 	 * the user decides to come and not let the money be in vein.
 	 * @param user
+	 * @return true if all the conditions are met
 	 */
 	@SneakyThrows
-	public void cancelReservation(UserPasswordForm user) {
+	public boolean cancelReservation(UserPasswordForm user) {
 		User localUser = uRepo.findByUsername(user.getUsername());
 		if(!cancelReservationRequirements(localUser, user.getPassword()))
 			throw new Exception("didnt meet the canceling requierements");
 		if(refund(localUser, localUser.getReservation())) {
 			localUser.setBalance(localUser.getBalance() + localUser.getReservation().getFee());
 			basicUserReservationCancelLogic(localUser);
-			return;
-		}else {
-			localUser.getReservation().setExpired(true);
-		}
+			return true;
+		}return false;
 	}
+	
 	/*
-	 * PRIVATE HELPING METHODS
+	 * PROTECTED METHODS
 	 */
-
+	
 	/**
 	 * Checks if the time intervals for each reservation is not overlapping another.
-	 * if and only if there aren't any reservation on the table, the reservation will be added to the table.
+	 * if and only if there aren't any reservation on the table, the reservation will be added
+	 * without doing any comparing between two reservations.
 	 * @throws custom exception("distance is bad"), if one reservation overlaps another
 	 * @param table the object to which the reservation will be added
 	 * @param reservation the object to be added in a collection on the table.
@@ -104,7 +109,7 @@ public class MainService {
 			throw new Exception("distance between reservations is bad");
 		}
 	}
-
+	
 	/**
 	 * Filters through every reservation which date is the current date on the table object.	 
 	 * if there's a reservation after the "final reservation" -> CONSTANTS.END or 
@@ -113,29 +118,36 @@ public class MainService {
 	 * @param table
 	 * @return true if the table is full for today
 	 */
-	private boolean tableFull(CustomTable table) {
+	protected boolean tableFull(CustomTable table) {
 		return table.getReservations().stream()
 				.anyMatch(r ->  (r.getTime().getDayOfMonth() == LocalDateTime.now().getDayOfMonth()) && 
 						(r.getMaxTime().toLocalTime().isAfter(CONSTANTS.END.minusMinutes(1)))
-								|| r.getTime().toLocalTime().equals(CONSTANTS.END)
-								|| r.getMaxTime().toLocalTime().equals(CONSTANTS.END));		   
+						|| r.getTime().toLocalTime().equals(CONSTANTS.END)
+						|| r.getMaxTime().toLocalTime().equals(CONSTANTS.END));		   
 	}
+	
+	/*
+	 * PRIVATE HELPING METHODS
+	 */
+	
 	/**
 	 * Checks if the user wants to make a reservation before the current time,
 	 * which would be impossible
+	 * @param res
 	 * @return true if the current time is after the reservation time
 	 */
 	private boolean checkTime(Reservation res) {
-		//				if(res.getTime().isBefore(LocalDateTime.now()))
-		//					return false;
+		if(res.getTime().isBefore(LocalDateTime.now()))
+			return false;
 		return true;
 	}
+	
 	/**
 	 * This method checks the following conditions: 
 	 * - the user must have more money than their fee.
 	 * - reservation must be accepted
 	 * - the maximum stay must be before 23:59 -> MAX_TIME
-	 * - reservation time must be after LocalDateTime(reservation date, 6:59)
+	 * - reservation time must be after LocalDateTime(reservation date, 06:59)
 	 * - the end of the reservation must be before LocalDateTime(end of reservation date, MAX_TIME -> 23:59)
 	 * @param reservation
 	 * @return true if every condition is met
@@ -147,15 +159,13 @@ public class MainService {
 		}	
 		if(reservation.getAccepted() == false)
 			return false;
-		//	if(LocalDateTime.now().isBefore(reservation.getTime())) {
 		if(!(reservation.getTime().isAfter(LocalDateTime.of(reservation.getTime().toLocalDate(), CONSTANTS.START.minusMinutes(1)))&&
 				reservation.getMaxTime().isBefore(LocalDateTime.of(reservation.getMaxTime().toLocalDate(), CONSTANTS.MAX_TIME))))
 			return false;
 		else 
 			return true;
-		//}
-		//return false;
 	}
+	
 	/**
 	 * Since the reservation moment of the user, if 16 minutes have passed, 
 	 * then they wont be having a refund. 
@@ -163,11 +173,12 @@ public class MainService {
 	 * @param reservation
 	 * @return true if 16 minutes haven't passed
 	 */
-	private Boolean refund(User user, Reservation reservation) {
+	private boolean refund(User user, Reservation reservation) {
 		if(!(LocalDateTime.now().isBefore(user.getReservationMoment().plusMinutes(16))))
 			return false;
 		return true;
 	}
+	
 	/**
 	 * If the username does not match the password of the user, then he wont be able to cancel it,
 	 * as either he has forgotten it, or its not the same user that has reserved the table in the first place.
@@ -175,15 +186,17 @@ public class MainService {
 	 * @param reservation
 	 * @return true if the username matches the password
 	 */
-	private Boolean cancelReservationRequirements(User user, String password) {
-		 
+	private boolean cancelReservationRequirements(User user, String password) {
+
 		if(user.getPassword() == (password))
 			return false;
 		return true;
 	}
+	
 	/**
-	 * Removes the reservation from the DB via ("orphan removal"), referenced by the localUser. Sets the reservationMoment to null, 
-	 * as the reservation has been canceled.
+	 * Removes the reservation from the DB via ("orphan removal"), referenced by the localUser and the table reference. 
+	 * In other words, the reservation is being cut off from every dependent reference. Sets the reservationMoment to null, 
+	 * as the reservation has been canceled. 
 	 * @param localUser
 	 */
 	private void basicUserReservationCancelLogic(User localUser) {
@@ -193,21 +206,25 @@ public class MainService {
 		reservations.deleteById(res.getId());
 		localUser.setReservationMoment(null);
 	}
+	
 	/**
 	 * Checks if the end of the reservation is not before the start of the reservation.
-	 * Also if they differ by 8 or more, then the reservation time would be too long and it will break
+	 * Also if they differ by 8 or more, then the reservation time would be too long and it will break.
+	 * On the other hand it would brake as well if there isn't at least one hour difference between the end
+	 * and the start of the reservation.
 	 * the transaction.
 	 * @param reservation
 	 * @return true if every condition is met
 	 */
 	private boolean checkReservationRadius(Reservation reservation) {
 		if(reservation.getMaxTime().isBefore(reservation.getTime()))
-			return false;
-		Duration duration = Duration.between(reservation.getTime(), reservation.getMaxTime());
-		if(duration.toHours() > 8l)
+			return false;	
+		if(Duration.between(reservation.getTime(), reservation.getMaxTime()).toHours() > 8l 
+				&& !(reservation.getTime().isBefore(reservation.getMaxTime().minusHours(1).plusMinutes(1))))
 			return false;
 		return true;
 	}
+	
 	/** 
 	 * Counts the duration between the end of the reservation and the beginning, 
 	 * then that duration is used to find how much times the CONSTANS.FEE value will be multiplied by.

@@ -14,16 +14,17 @@ import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.service.WaiterService;
 
+/*
+ * SEMI ADMIN CONTROLLER
+ */
+
 @RestController
 @RequestMapping("/waiter")
 public class WaiterController {
 
 	@Autowired WaiterService wS;
 	@Autowired ReservationRepository reservations;
-	/*
-	 * SEMI ADMIN CONTROLLER
-	 */
-
+	
 	@PostMapping(path = "/setBusy")
 	public String setTableToUnavailable(@RequestParam long id) {
 		wS.setBusy(id);
@@ -38,7 +39,7 @@ public class WaiterController {
 	public List<Reservation> getReservations(){
 		return reservations.findAll();
 	}
-	@GetMapping(path = "/setGuest")
+	@PostMapping(path = "/setGuest")
 	public String setTableAsGuest(@RequestParam long tableid) {
 		wS.setGuestBusy(tableid);
 		return "redirect:/tables";
@@ -47,10 +48,7 @@ public class WaiterController {
 	public List<Reservation> tReservations(){
 		return wS.todayReservations();
 	}
-	@DeleteMapping(path = "/deleteReservation")
-	public void deleteReservation(@RequestParam long id) {
-		wS.removeReservation(id);
-	}
+	
 	@DeleteMapping(path = "deleteExpiredReservations")
 	public void deleteExpiredReservations() {
 		wS.removeExpiredReservations();

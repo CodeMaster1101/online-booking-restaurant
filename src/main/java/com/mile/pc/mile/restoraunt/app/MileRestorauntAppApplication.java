@@ -52,7 +52,7 @@ public class MileRestorauntAppApplication {
 			ur.save(new User(null, "user6", "123", 1500, null, new HashSet<>(), null));
 
 			
-			//cs.AddRoleToUser("cpthermes", "WAITER");
+			cs.AddRoleToUser("cpthermes", "ADMIN");
 		};
 	}
 	

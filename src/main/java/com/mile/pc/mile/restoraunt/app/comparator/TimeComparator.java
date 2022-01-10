@@ -25,32 +25,36 @@ public class TimeComparator implements Comparator<Reservation>{
 	/**
 	 * Checks if the two reservations are in the same day, if they aren't, then continues. Otherwise,
 	 * Compares two Sets of integers, each containing the hours from the beginning to the end of the reservation.
-	 * If they have atleast one mutual integer the distance would be bad as the reservations would overlap;
+	 * If they have at least one mutual integer the distance would be bad as the reservations would overlap;
 	 * @param left -> x reservation
 	 * @param right -> y reservation
-	 * @return true if they are not in the same day or they don't have same values in their individual sets.
+	 * @return true if they are not in the same day or (when combined, they don't have same values in their individual sets).
 	 */
 	private boolean compareTwoReservationsTimes(Reservation left, Reservation right) {
-
+		if(checkNotSameDay(left, right))return true;
+		//creating the sets
+		Set<Integer> leftHourContainer = new HashSet<>(), rightHourContainer = new HashSet<>();
+		for(int i = left.getTime().getHour(); i <= left.getMaxTime().getHour(); i++)
+			leftHourContainer.add(i);
+		for(int i = right.getTime().getHour(); i <= right.getMaxTime().getHour(); i++)
+			rightHourContainer.add(i);	
+		//checks if they have mutual elements. return true if they don't
+		return Collections.disjoint(leftHourContainer, rightHourContainer);
+	}
+	/**
+	 * @param left
+	 * @param right
+	 * @return true if the two reservation left and right are not in the same day.
+	 */
+	private boolean checkNotSameDay(Reservation left, Reservation right) {
 		if(left.getTime().getYear() != right.getTime().getYear())
 			return true;
 		if(left.getTime().getMonth() != right.getTime().getMonth())
 			return true;
 		if(left.getTime().getDayOfMonth() != right.getTime().getDayOfMonth()) 
 			return true;
-		//creating the sets
-		Set<Integer> leftHourContainer = new HashSet<>(), rightHourContainer = new HashSet<>();
-		for(int i = left.getTime().getHour(); i <= left.getMaxTime().getHour(); i++) {
-			//adds every hour as an integer
-			leftHourContainer.add(i);
-		}
-		for(int i = right.getTime().getHour(); i <= right.getMaxTime().getHour(); i++) {
-			rightHourContainer.add(i);	
-		}
-		//checks if they have mutual elements. return true if they don't
-		return Collections.disjoint(leftHourContainer, rightHourContainer);
+		return false;
 	}
-	
 	/**
 	 * simple comparing method in which, for every loop the two reservations o1 and o2 would be compared
 	 * as well as their time intervals mentioned above.

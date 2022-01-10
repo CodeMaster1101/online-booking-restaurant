@@ -17,13 +17,15 @@ import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.model.User;
 import com.mile.pc.mile.restoraunt.app.repo.CurrentDeployedReservations;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
+import com.mile.pc.mile.restoraunt.app.repo.GuestRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
+import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 
 import lombok.SneakyThrows;
 
 /**
- * The semi-administrator service which is responsible for the waiter in the locale.
+ * The one-half administrator service which is responsible for the waiter in the locale.
  * It's job is monitoring the changes to the reservations and the tables in the locale.
  * It can perform the following actions: telling the DB that a user/guest has just arrived on the their reservation according
  * to the time of the reservation; Telling the DB that a guest/client has just called for check and is ready to leave based on the table respectively
@@ -32,11 +34,14 @@ import lombok.SneakyThrows;
  * 
  */
 @Service @Transactional 
+
 public class WaiterService {
 
+	@Autowired RoleRepository roleRepo;
 	@Autowired CustomTableRepository tRepo;
 	@Autowired ReservationRepository reservations;
 	@Autowired UserRepository urepo;
+	@Autowired GuestRepository gRepository;
 	@Autowired CurrentDeployedReservations currentReservations;
 	@Autowired MainService main_S;
 
@@ -54,14 +59,12 @@ public class WaiterService {
 			Reservation currentRes = findCurrentReservation(table);
 			if(currentRes == null)
 				throw new NullPointerException("reservation not found");
-			//keeps the reservation as a "busy reservation" in a map to ease the complexity, later implemented in the setCalm(long id) method
-			currentRes.setLivingReservation(currentReservations.save(new BusyReservation(null, currentRes)));
-			userArrived(currentRes.getId());
+			reservationBusyLogic(currentRes);
 			table.setBusy(true);
 			return;
 		}throw new Exception("already busy");
 	}
-
+	
 	/**
 	 * Clarifies that on this table nobody is sitting, or to be more precise, 
 	 * the current client/guest had called for check and is ready to leave.
@@ -78,90 +81,112 @@ public class WaiterService {
 
 	/**
 	 * Sets the current table as a busy table, but without a user, rather with a guest.
-	 * the guest is someone who just walked in the restoraunt and has no idea that he can reserve a table, 
+	 * the guest is someone who just walked in the restaurant and has no idea that he can reserve a table, 
 	 * or they just don't want to go through the process of reserving a table.
 	 * The algorithm calls the main service which has a protected method for comparing two reservations, in this scenario we want to create
 	 * a nonUser or rather a guest reservation that will be specifically long 4 hours and compare the time intervals with the others on this table.
 	 * this reservation won't be having a user. So there wont be any need of refunding processes.
+	 * The procedure is standard regarding the Non-User oriented reservation requirements.
+	 * @see MainService
 	 * @param id the identifier for the table object
 	 */
+	@SneakyThrows
 	public void setGuestBusy(long id) {
-		CustomTable table = tRepo.findById(id).get();
-		Reservation reservation = CONSTANTS.GUEST_RESERVATION;
+		CustomTable t = tRepo.findById(id).get();
+		if(t.getBusy()) return;
+		Reservation reservation = reservations.save(CONSTANTS.GUEST_RESERVATION);
+		if(!checkGuestArrival(reservation)) return;
+		reservation.setUTable(t);	
+		main_S.checkOtherReservations(t, reservation);
 		reservation.getGuest().setReservation(reservation);
-		main_S.checkOtherReservations(table, reservation);
 		currentReservations.save(new BusyReservation(null, reservation));
-		tRepo.save(table);
+		checkTableFull(t);
+		t.setBusy(true);
 	}
+	
 	/**
-	 * 
-	 * @return the reservations for today
+	 * Calls the main service and checks whether the table is full or not. 
+	 * Sets the table to full if the method returns true.
+	 * @see MainService more information.
+	 * @param t
+	 */
+	private void checkTableFull(CustomTable t) {
+		if(main_S.tableFull(t))
+			t.setFull(true);					
+	}
+	
+	/**
+	 * @return the reservations for today -> every reservation which LocalDate is the current Date
 	 */
 	public List<Reservation> todayReservations(){
 		return reservations.findAll().stream()
 				.filter(r -> r.getTime().getDayOfMonth() == LocalDate.now().getDayOfMonth())
 				.collect(Collectors.toList());
 	}
+	
 	/**
-	 * Removes the reservation via the User referenced by the reservation with orphan removal
+	 * Removes every reservation that has expired, in other words, 
+	 * every reservation that has been canceled but nobody has arrived or the user hadn't shown up on time.
+	 * Also sends all the fee to the Administrator from every reservation that their respective user hasn't attended to.
+	 */
+	public void removeExpiredReservations() {
+		List<Reservation> expiredReservations = reservations.findAll().stream()
+				.filter(r -> r.getTime().isBefore(LocalDateTime.now().minusMinutes(CONSTANTS.AFTER_RESERVATION_TIME)) 
+						&& r.getLivingReservation() == null)
+				.collect(Collectors.toList());
+		if(expiredReservations.isEmpty() == false) {
+			for (Reservation reservation : expiredReservations) {
+				sendMoneyToAdmin(reservation);
+			}
+		}
+	}
+	//PRIVATE HELPING METHODS
+
+	/** Checks if the new guest is over the time limit. For example, if the guest arrives in 22:30. 
+	 * Then he wont be able to sit.
+	 * @param reservation
+	 * @return true if the guest arrived before 22:30
+	 */
+	private boolean checkGuestArrival(Reservation reservation) {
+		if(reservation.getTime().isAfter(LocalDateTime.of(LocalDate.now(), CONSTANTS.END)))
+			return false;
+		return true;
+	}
+	
+	/**
+	 * Cleans the reservation in two ways depending if it's a User based reservation
+	 * or a Guest based reservation. 
+	 * The reservation instance is cut off from every referenced entity, and so it is not dependent to any object 
+	 * and can be removed from the DB
 	 * @param id
 	 */
-	public void removeReservation(long id) {
+	private void removeReservation(long id) {
 		Reservation reservation = reservations.findById(id).get();
-		if(reservation.getUser() != null && reservation.getGuest() == null)
+		if(reservation.getUser() != null && reservation.getGuest() == null) {
 			reservation.getUser().setReservation(null);
+			reservation.getUser().setReservationMoment(null);
+		}	
 		else if(reservation.getUser() == null && reservation.getGuest() != null)
 			reservation.getGuest().setReservation(null);
 		reservation.getTable().removeReservation(reservation);
 		reservations.deleteById(id);
 	}
+	
 	/**
-	 * Removes every reservation that has expired, in other words, 
-	 * every reservation that has been canceled but nobody has arrived
+	 * Deletes the reservation and sends the money to the administrator from the reservation 
+	 * that hasn't been attended to. Removes the reservation time from the user
+	 * @param reservation
 	 */
-	public void removeExpiredReservations() {
-		reservations.findAll().stream()
-		.filter(r -> r.isExpired() == true &&
-		r.getTime().isBefore(LocalDateTime.now().minusMinutes(CONSTANTS.AFTER_RESERVATION_TIME)))
-		.collect(Collectors.toList()).stream()
-		.forEach(r -> reservations.deleteById(r.getId()));
-	}
-
-	//PRIVATE HELPING METHODS
-
-	/**
-	 * Checks whether a user is on time or not.
-	 * Conditions -> 
-	 * - the current time must be after the reservation time minus some minutes referenced by CONSTANTS.BEFORE_RESERVATION_TIME
-	 *      this means that the user can come earlier to their reservation by a certain amount of time. If he comes to early, well... no refund.
-	 * -the current time must be before the reservation time plus some minutes referenced by CONSTANTS.AFTER_RESERVATION_TIME  
-	 * 		this means that the user can come later, more precisely, the user can be late by a certain amount of minutes. 
-	 * @param reservationId the id that fetches the reservation object
-	 * @return true if all the testing is correct
-	 */
-	private boolean checkUserOnTime(long reservationId) {
-		Reservation reservation = reservations.findById(reservationId).get();
-		LocalTime now = LocalTime.now();
-		User user = reservation.getUser();
-		if(!(now.isAfter(user.getReservation().getTime().toLocalTime().minusMinutes(CONSTANTS.BEFORE_RESERVATION_TIME)) &&
-				now.isBefore(user.getReservation().getTime().toLocalTime().plusMinutes(CONSTANTS.AFTER_RESERVATION_TIME)))) {
-			return false;
-		}return true;
-	}
-	/**
-	 * Identifies that the user has arrived at the restoraunt, checks if the user is on time for their reservation.
-	 * if true, then the fee that the user gave to reserve a table is returned to him. 
-	 * @param reservationId
-	 */
-	@SneakyThrows
-	private void userArrived(long reservationId) {
-		if(checkUserOnTime(reservationId)) {
-			User user = reservations.findById(reservationId).get().getUser();
-			user.setBalance(user.getBalance() + user.getReservation().getFee());
+	protected void sendMoneyToAdmin(Reservation reservation) {
+		if(reservation.getFee() != null || reservation.getFee() == 0l) {
+			User admin = urepo.findAll().stream().filter(u -> u.getRoles().contains(roleRepo.findByType("ADMIN"))).findFirst().get();
+			admin.setBalance(admin.getBalance() + reservation.getFee());
 		}
+		removeReservation(reservation.getId());
 	}
+	
 	/**
-	 * Probably the most weird algorithm, but... since the comparing is done by hours, this is made possible.
+	 * Since the comparing is done by hours, this is made possible.
 	 * The algorithm checks the following relation: x -> y -> z. 
 	 * (reservation time - minutes) -> (current time) -> (reservation time + minutes)
 	 * Procedure ->
@@ -181,19 +206,31 @@ public class WaiterService {
 				now.isAfter(r.getTime().toLocalTime().minusMinutes(CONSTANTS.BEFORE_RESERVATION_TIME))
 				&&  now.isBefore(r.getTime().toLocalTime().plusMinutes((CONSTANTS.AFTER_RESERVATION_TIME)))).findFirst().get();
 	}
+	
 	/**
-	 * Cleans the reservation in two ways depending if it's a User based reservation
-	 * or a Guest based reservation. No matter the way, the cleaning is done via reference removal.
+	 * Removes the reservation from the DB. Sets the table to available(busy == null)
+	 * This method is called to clean up the current user sitting on the table and his reservation.
+	 * Checks if the table is full calling the main service where the method lives.
 	 * @param table 
 	 * @param currentReservation
 	 */
 	private void emptyTableAndReservations(CustomTable table, BusyReservation currentReservation) {
-		if(currentReservation.getReservation().getUser() == null)
-			currentReservation.getReservation().getGuest().setReservation(null);
-		else
-			removeReservation(currentReservation.getReservation().getId());
-
+		removeReservation(currentReservation.getReservation().getId());		
 		table.setBusy(false);
+		if(main_S.tableFull(table) == false) table.setFull(false);
 	}
+	
+	/**
+	 * Creates a "busy reservation" later to be fetched by the @see setCalm(long id).
+	 * Returns the user's money from the reservation fee. Sets the fee to null.
+	 * @param reservation
+	 */
+	private void reservationBusyLogic(Reservation reservation) {
+		//keeps the reservation as a "busy reservation" in a map to ease the complexity, later implemented in the setCalm(long id) method
+		reservation.setLivingReservation(currentReservations.save(new BusyReservation(null, reservation)));
+		reservation.getUser().setBalance(reservation.getUser().getBalance() + reservation.getFee());
+		reservation.setFee(null);
+	}
+
 
 }

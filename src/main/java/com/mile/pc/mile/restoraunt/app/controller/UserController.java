@@ -47,8 +47,10 @@ public class UserController {
 	}
 	@DeleteMapping(path ="/cancelReservation")
 	public String cancelReservation(@RequestBody UserPasswordForm u_p_form) {
-		main.cancelReservation(u_p_form);
+		if(main.cancelReservation(u_p_form))
 		return "redirect:/tables";
+		else 
+			return"Oops! The time for canceling has expired. The reservation lives on. You can still attend to it.";
 
 	}
 	@GetMapping(path = "/tableReservations")

@@ -142,10 +142,10 @@ public class WaiterService {
 	}
 	//PRIVATE HELPING METHODS
 
-	/** Checks if the new guest is over the time limit. For example, if the guest arrives in 22:30. 
+	/** Checks if the new guest is over the time limit. For example, if the guest arrives in 22:00. 
 	 * Then he wont be able to sit.
 	 * @param reservation
-	 * @return true if the guest arrived before 22:30
+	 * @return true if the guest arrived before 22:00
 	 */
 	private boolean checkGuestArrival(Reservation reservation) {
 		if(reservation.getTime().isAfter(LocalDateTime.of(LocalDate.now(), CONSTANTS.END)))

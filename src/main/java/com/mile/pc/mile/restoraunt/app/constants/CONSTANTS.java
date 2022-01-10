@@ -16,7 +16,7 @@ public class CONSTANTS {
 	public final static int AFTER_RESERVATION_TIME = 45;
 	public final static int BEFORE_RESERVATION_TIME = 50;
 	public static final LocalTime START = LocalTime.of(7, 0);
-	public static final LocalTime END = LocalTime.of(22, 30);
+	public static final LocalTime END = LocalTime.of(22, 00);
 	public static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm";
     public static final LocalDateTime FIXED_DATE = LocalDateTime.now();
     public static final LocalTime MAX_TIME= LocalTime.of(23, 59); 

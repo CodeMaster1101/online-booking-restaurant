@@ -121,9 +121,7 @@ public class MainService {
 	protected boolean tableFull(CustomTable table) {
 		return table.getReservations().stream()
 				.anyMatch(r ->  (r.getTime().getDayOfMonth() == LocalDateTime.now().getDayOfMonth()) && 
-						(r.getMaxTime().toLocalTime().isAfter(CONSTANTS.END.minusMinutes(1)))
-						|| r.getTime().toLocalTime().equals(CONSTANTS.END)
-						|| r.getMaxTime().toLocalTime().equals(CONSTANTS.END));		   
+						(r.getTime().toLocalTime().isAfter(CONSTANTS.END.minusMinutes(1))));		   
 	}
 	
 	/*

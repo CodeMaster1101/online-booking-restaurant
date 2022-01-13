@@ -80,24 +80,6 @@ public class CrudService {
 	}
 	
 	/**
-	 * saves a new user to the DB
-	 * @param user
-	 * @return the new User
-	 */
-	public User addUser(User user) {
-		return userRepo.save(user);
-	}
-	
-	/**
-	 * saves a new table to the DB
-	 * @param table
-	 * @return the new Table
-	 */
-	public CustomTable addTable(CustomTable table) {
-		return tableRepo.save(table);
-	}
-	
-	/**
 	 * filters through all the users to fetch every waiter
 	 * @return every user that has a role "WAITER"
 	 */
@@ -111,16 +93,6 @@ public class CrudService {
 	 */
 	public List<Role> allRoles(){
 		return roleRepo.findAll();
-	}
-	
-	/**
-	 * fetches every role from a certain user
-	 * @param id
-	 * @return the collection of the roles from that user based on his id
-	 */
-	public Collection<Role> userRoles(long id){
-		User user = userRepo.findById(id).get();
-		return user.getRoles();
 	}
 
 }

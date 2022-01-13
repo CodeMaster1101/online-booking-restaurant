@@ -84,11 +84,7 @@ public class CrudController {
 		crudService.removeRolefromUser(rtu.getUsername(), rtu.getType());
 		return "redirect:/admin/users";
 	}
-	@PostMapping(path = "/saveUser")
-	public String addUser(@ModelAttribute User user) {
-		crudService.addUser(user);
-		return "redirect:/admin/users";
-	}
+	
 	@GetMapping(path = "/deleteUser")
 	public String deleteUser(@RequestParam long id) {
 		crudService.removeUser(id);

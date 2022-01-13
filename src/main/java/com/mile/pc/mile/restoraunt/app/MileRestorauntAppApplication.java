@@ -34,25 +34,25 @@ public class MileRestorauntAppApplication {
 	@Transactional
 	CommandLineRunner commandLineRunner() {
 		return args -> {
-			tr.save(new CustomTable(null, false, false, null));
-			tr.save(new CustomTable(null, false, false, null));
-			tr.save(new CustomTable(null, false, false, null));
-			tr.save(new CustomTable(null, false, false, null));
-			tr.save(new CustomTable(null, false, false, null));
-
-			rr.save(new Role(null, "WAITER"));
-			rr.save(new Role(null, "ADMIN"));
-			rr.save(new Role(null, "USER"));
-			
-			ur.save(new User(9l, "cpthermes", "madafaka", 1500, null, new HashSet<>(), null));
-			ur.save(new User(null, "user2", "wow", 1500, null, new HashSet<>(), null));
-			ur.save(new User(null, "user3", "123", 1500, null, new HashSet<>(), null));
-			ur.save(new User(null, "user4", "123", 1500, null, new HashSet<>(), null));
-			ur.save(new User(null, "user5", "123", 1500, null, new HashSet<>(), null));
-			ur.save(new User(null, "user6", "123", 1500, null, new HashSet<>(), null));
-
-			
-			cs.AddRoleToUser("cpthermes", "ADMIN");
+//			tr.save(new CustomTable(null, false, false, null));
+//			tr.save(new CustomTable(null, false, false, null));
+//			tr.save(new CustomTable(null, false, false, null));
+//			tr.save(new CustomTable(null, false, false, null));
+//			tr.save(new CustomTable(null, false, false, null));
+//
+//			rr.save(new Role(null, "WAITER"));
+//			rr.save(new Role(null, "ADMIN"));
+//			rr.save(new Role(null, "USER"));
+//			
+//			ur.save(new User(9l, "cpthermes", "madafaka", 1500, null, new HashSet<>(), null));
+//			ur.save(new User(null, "user2", "wow", 1500, null, new HashSet<>(), null));
+//			ur.save(new User(null, "user3", "123", 1500, null, new HashSet<>(), null));
+//			ur.save(new User(null, "user4", "123", 1500, null, new HashSet<>(), null));
+//			ur.save(new User(null, "user5", "123", 1500, null, new HashSet<>(), null));
+//			ur.save(new User(null, "user6", "123", 1500, null, new HashSet<>(), null));
+//
+//			
+//			cs.AddRoleToUser("cpthermes", "ADMIN");
 		};
 	}
 	

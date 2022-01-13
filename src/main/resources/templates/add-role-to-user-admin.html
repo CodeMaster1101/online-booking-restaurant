@@ -1,36 +1,103 @@
 <html xmlns="http://www.thymeleaf.org">
 
 <head>
-<title>remove role from user</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-	crossorigin="anonymous">
-</head>
 <style>
-	.container-1{
-		display: flex;
-   		justify-content: left;
-    	flex-direction: row;
-	}
+body {
+  margin:0;
+  padding:0;
+  font-family: sans-serif;
+  background: linear-gradient(#141e30, #243b55);
+  color: #ffffff;
+}
+.navbar{
+	background-color: rgb(119, 0, 119);
+	width: 100%;
+	height: 10vh;
+	margin: auto;
+	display: flex;
+	align-items: center;
+}
+nav{
+	flex: 1;
+	
+}	
+nav ul li{
+	display: inline-block;
+	list-style: none;
+	margin: 0px 20px;
+}
+nav ul li a{
+	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+	font-size: large;
+	color: rgb(255, 255, 255);
+}
+input[type=text], radio {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.form{
+	height: 40vh;
+	background-color: rgb(14, 14, 48);
+	justify-content: center;
+	margin: 0;
+	padding: 30px;
+}
+.form .h4{
+	text-align: center;
+	height: 10vh;
+}
+.form .roles{
+	display: flex;
+	justify-content: center;
+	padding: 10px;
+	
+}
+input[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: rgb(0, 0, 0);
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: rgb(128, 128, 255);
+}
 </style>
 <body>
-	<div class="container">
-		<form th:action="@{/admin/add-RTU}" th:object="${rtu}" 
-			th:method="POST">
-			 <label>Input the role type:</label>
-			 <hr/>
-			 <div class = "container-1">
-			 	<input type="radio" th:field="*{type}" value="USER" />User
+	<div class = "navbar">
+			<nav>
+				<ul>
+				<li><a th:href="@{/admin/home}">Home</a></li>
+				<li><a th:href="@{/admin/users}" >Users</a></li>
+				<li><a th:href="@{/admin/users/waiters}">Waiters</a> </li>
+				<li><a th:href="@{/admin/roles}"> Roles</a></li>
+				</ul>
+			</nav>		
+		</div> 
+<div class = "form">
+</br>
+</br>
+</br>
+<div class = "h4"><h4>Assign role</h4></div>
+	<div class = "roles">
+		<form th:action="@{/admin/add-RTU}" th:object="${rtu}" th:method="POST">
+   				<input type="radio" th:field="*{type}" value="USER" />User
         	 	<input type="radio" th:field="*{type}" value="WAITER" />Waiter
         	 	<input type="radio" th:field="*{type}" value="ADMIN" />Admin<br/>
 			 	<input type="hidden"th:field ="*{username}" > 
-			 </div >
-			<hr/>
-			<button class="btn btn-warning" type="submit">add Role</button>
-		</form>
-		<hr />
-		<a th:href="@{/admin/users}">Back to users</a>
-	</div>
+   				<input type="submit" value="Submit">
+  </form>
+</div>
+
+</div  >
+  
 </body>
 </html>

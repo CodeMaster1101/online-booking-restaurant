@@ -18,7 +18,6 @@ import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 
-import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 /**
@@ -29,7 +28,7 @@ import lombok.SneakyThrows;
  * @author Mile Stanislavov
  * 
  */
-@Service @Transactional @NoArgsConstructor
+@Service @Transactional 
 
 public class MainService {
 
@@ -54,7 +53,10 @@ public class MainService {
 			throw new Exception("bad radius");
 		if(!checkTime(reservation))
 			throw new Exception("can't reserve a table after the current time of the day");
+		String password = reservation.getUser().getPassword();
 		User user = uRepo.findByUsername(reservation.getUser().getUsername());
+		if(password != user.getPassword())
+			throw new Exception("password incorrect");
 		if(user.getReservation() != null)
 			throw new Exception("already a reservation on this user");
 		user.setUReservation(reservation);

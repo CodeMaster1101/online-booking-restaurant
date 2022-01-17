@@ -1,26 +1,23 @@
 package com.mile.pc.mile.restoraunt.app.controller;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.mile.pc.mile.restoraunt.app.dao.UserPasswordForm;
-import com.mile.pc.mile.restoraunt.app.model.CustomTable;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.service.MainService;
 
-@RestController
+@Controller
 @RequestMapping("/public")
 public class UserController {
 
@@ -31,32 +28,49 @@ public class UserController {
 	@Autowired MainService main;
 	@Autowired ReservationRepository rRepo;
 	
+	
+	/*
+	 * Getting the model methods
+	 *
+	 */
+	
 	@GetMapping(path = "/tables")
-	public List<CustomTable> getTables(){
-		return tableRepo.findAll();
+	public ModelAndView getTables(){
+		return new ModelAndView("tables-user", "tables", tableRepo.findAll());
 	}
-	@GetMapping(path = "/reserveTable-form")
-	public Optional<CustomTable> getTableModel(@RequestParam Long id) {
-		
-		return tableRepo.findById(id);
+	
+	@GetMapping(path = "/viewTable")
+	public ModelAndView getTableModel(@RequestParam Long id) {
+		return new ModelAndView("view-table-user", "reservations", rRepo.findAll().stream()
+				.filter(r -> r.getTable().getId() == id).collect(Collectors.toList()));
 	}
+	
+	@GetMapping(path = "/reserve-form")
+	public ModelAndView reserveTableForm(@RequestParam long id) {
+		return new ModelAndView("reserve-form-user", "reservation", Reservation.builder().table(tableRepo.findById(id).get()).build());
+	}
+	
+	@GetMapping(path = "/cancel-reservation-form")
+	public ModelAndView getCancelingForm() {
+		return new ModelAndView("cancel-form-user", "userPassword", new UserPasswordForm());
+	}
+	
+	/*
+	 * Executing the action
+	 */
+	
 	@PostMapping(path = "/reserveTable")
-	public String reserveTable(@RequestBody Reservation reservation) {
+	public String reserveTable(@ModelAttribute Reservation reservation) {
 		main.reserveTable(reservation);
 		return "redirect:/tables";
 	}
-	@DeleteMapping(path ="/cancelReservation")
-	public String cancelReservation(@RequestBody UserPasswordForm u_p_form) {
+	@GetMapping(path ="/cancelReservation")
+	public String cancelReservation(@ModelAttribute UserPasswordForm u_p_form) {
 		if(main.cancelReservation(u_p_form))
 		return "redirect:/tables";
 		else 
 			return"Oops! The time for canceling has expired. The reservation lives on. You can still attend to it.";
 
 	}
-	@GetMapping(path = "/tableReservations")
-	public List<Reservation> reservationsOnTable(@RequestParam long id){
-		return rRepo.findAll().stream()
-				.filter(r -> r.getTable().getId() == id).collect(Collectors.toList());
-	}
-	
+
 }

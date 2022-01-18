@@ -10,7 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mile.pc.mile.restoraunt.app.comparator.TimeComparator;
 import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
-import com.mile.pc.mile.restoraunt.app.dao.UserPasswordForm;
+import com.mile.pc.mile.restoraunt.app.dto.ReservationDTO;
+import com.mile.pc.mile.restoraunt.app.dto.UserPasswordForm;
 import com.mile.pc.mile.restoraunt.app.model.CustomTable;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.model.User;
@@ -48,14 +49,16 @@ public class MainService {
 	 * @param reservation -> the object that contains all the startup information
 	 */
 	@SneakyThrows
-	public void reserveTable(Reservation reservation) {
+	public void reserveTable(ReservationDTO dto) {
+		Reservation reservation = reservations.save(new Reservation(null, dto.isAccepted(), uRepo.findByUsername(dto.getUser().getUsername()), 
+				tRepo.findById(dto.getTableid()).get(), dto.getTime(), dto.getMaxTime(), 0, null, null, null));
 		if(checkReservationRadius(reservation) == false)
 			throw new Exception("bad radius");
 		if(!checkTime(reservation))
 			throw new Exception("can't reserve a table after the current time of the day");
 		String password = reservation.getUser().getPassword();
 		User user = uRepo.findByUsername(reservation.getUser().getUsername());
-		if(password != user.getPassword())
+		if(password.equals(user.getPassword()) == false)
 			throw new Exception("password incorrect");
 		if(user.getReservation() != null)
 			throw new Exception("already a reservation on this user");
@@ -233,6 +236,17 @@ public class MainService {
 	 */
 	private long incrementFee(User user) {
 		return Duration.between(user.getReservation().getTime(), user.getReservation().getMaxTime()).toHours();
+	}
+	/**
+	 * adds the table by the id to the new reservation
+	 * @param tID
+	 * @return the new reservation
+	 */
+	public Reservation setTable(long tID) {
+		CustomTable t = tRepo.findById(tID).get();
+		Reservation r = reservations.save(new Reservation());
+		r.setUTable(t);
+		return r;
 	}
 
 }

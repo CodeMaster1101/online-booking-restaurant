@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -41,7 +44,9 @@ public class Reservation
     @JoinColumn(name = "table_id")
     @JsonBackReference
     private CustomTable table;
+    @DateTimeFormat(iso = ISO.DATE_TIME)
     private LocalDateTime time;
+    @DateTimeFormat(iso = ISO.DATE_TIME)
     private LocalDateTime maxTime;
     private int numberOfPeople;
     @JsonIgnore

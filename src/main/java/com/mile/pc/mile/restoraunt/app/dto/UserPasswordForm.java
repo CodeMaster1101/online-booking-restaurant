@@ -1,4 +1,4 @@
-package com.mile.pc.mile.restoraunt.app.dao;
+package com.mile.pc.mile.restoraunt.app.dto;
 
 import org.springframework.stereotype.Component;
 

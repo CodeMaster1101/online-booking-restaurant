@@ -47,7 +47,6 @@ public class CrudService {
 		}
 		User user = userRepo.findByUsername(username);
 		Role role = roleRepo.findByType(roleType);
-		System.out.println();
 		user.getRoles().add(role);
 	}
 	

@@ -76,7 +76,7 @@ nav ul li a{
 			<tbody>
 				<tr th:each="r: ${reservations}">
 					<td th:text="${r.time}"></td>
-					<td th:text="${t.maxTime}"></td>
+					<td th:text="${r.maxTime}"></td>
 				</tr>
 			</tbody>
 		</table>

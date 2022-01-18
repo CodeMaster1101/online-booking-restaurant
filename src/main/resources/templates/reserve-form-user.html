@@ -85,7 +85,7 @@ input[type=submit]:hover {
 </br>
 <div class = "h4"><h4>Reserve</h4></div>
 	<div class = "content">
-		<form th:action="@{/public/reserveTable}" th:object="${reservation}" th:method="POST">
+		<form th:action="@{/public/reserveTable}" th:object="${reservation}" th:method="post">
 				<label>Fee</label>
 				<p>Important notice! For each hour the fee will be incremented by 150 mkd. Do you accept?</p>
 				<input type="checkbox" th:field ="*{accepted}" value="true"/> Accept
@@ -96,17 +96,23 @@ input[type=submit]:hover {
    				<input type="text" th:field="*{user.username}">
    				<label>Password</label>
    				</br>
-   				<input type = "text" th:field = "*{user.password}">
+   				</br>
+   				<input type = "password" th:field = "*{user.password}">
    				</br>
    				</br>
    				<label>Time of the reservation</label>
+   				</br>
+   				</br>
    				<input type = "datetime-local" th:field ="*{time}">
    				</br>
    				</br>
    				<label>Aproximate time of calling for check</label>
+   				</br>
+   				</br>
    				<input type = "datetime-local" th:field ="*{maxTime}">
    				</br>
    				</br>
+   				<input type="hidden" th:field ="*{tableid}">
    				<input type="submit" value="Submit">
   </form>
  </div>

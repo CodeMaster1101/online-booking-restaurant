@@ -1,23 +1,19 @@
 <html xmlns="http://www.thymeleaf.org">
 
 <head>
-<title>Waiters</title>
+<title>Tables</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 	crossorigin="anonymous">
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.css" />
-</head>
-<style>
-	h3{
-		font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-	}
-	#waiter-table th {
-  	background-color: rgb(211, 31, 117);
+	<style>
+	#w_tables-table th {
+  	background-color: rgb(255, 128, 0);
   	color: rgb(0, 0, 0);
-}   #waiter-table tr{background-color: #f2f2f2;}
-	#waiter-table tr:hover {background-color: #ddd;}
+}   #w_tables-table tr{background-color: #f2f2f2;}
+	#w_tables-table tr:hover {background-color: #ddd;}
 	.background{
     height: 100vh;
     width: 100%;
@@ -26,6 +22,7 @@
     background-size: cover;
     position: relative;
     box-sizing: content-box;
+    color: #ffffff;
     }
     .navbar{
 	background-color: rgb(119, 0, 119);
@@ -50,46 +47,48 @@ nav ul li a{
 	color: rgb(255, 255, 255);
 }
 	</style>
+</head>
 <body>
 	<div class="background">
-		<div class = "navbar">
+	<div class = "navbar">
 			<nav>
 				<ul>
-				<li><a th:href="@{/admin/home}">Home</a></li>
-				<li><a th:href="@{/admin/users}" >Users</a></li>
-				<li><a th:href="@{/admin/users/waiters}">Waiters</a> </li>
-				<li><a th:href="@{/admin/roles}"> Roles</a></li>
+				<li><a th:href="@{/waiter/tables}">Home</a></li>
+				<li><a th:href="@{/waiter/reservations}" >Reservations</a></li>
+				<li><a th:href="@{/waiter/todayReservations}">Today reservations</a> </li>
+				<li><a th:href="@{/waiter/deleteExpiredReservations}">Expired reservations</a></li>
 				</ul>
 			</nav>		
 			</div> 
-		<br/>		
-		<table class="table table-bordered table" id = "waiter-table">
+		<div class ="welcome"> 
+		</div>
+		<br/>
+		<table class="table table-bordered table" id = "w_tables-table">
 			<thead>
 				<tr>
-					<th>Username</th>
-					<th>Balance</th>
-					<th>Roles</th>
+					<th>ID</th>
+					<th>Occupied</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="user: ${waiters}">
-					<td th:text="${user.username}"></td>
-					<td th:text="${user.balance}"></td>
-					<td th:text="${user.roles}"></td>
-					<td><a th:href="@{/admin/updateUser(id = ${user.id})}"
-						class="btn btn-warning">Update</a> <a
-						th:href="@{/admin/deleteUser(id = ${user.id})}"
-						class="btn btn-danger">Delete</a></td>
+				<tr th:each="t: ${tables}">
+					<td th:text="${t.id}"></td>
+					<td th:text="${t.busy}"></td>
+					<td><a th:href="@{/waiter/setBusy(id = ${t.id})}"
+						class="btn btn-success">Occupied</a> <a
+						th:href="@{/waiter/setCalm(id = ${t.id})}"
+						class="btn btn-warning">Empty</a>
+					<a th:href="@{/waiter/setGuest(id = ${t.id})}" class = "btn btn-info">Guest</a ></td>
 				</tr>
 			</tbody>
 		</table>
-	</div>
+	</div >
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.js"></script>
 <script>
 	$(document).ready(function(){
-		$("#waiter-table").DataTable();
+		$("#w_tables-table").DataTable();
 	})
 </script>
 </body>

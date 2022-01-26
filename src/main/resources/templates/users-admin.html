@@ -1,7 +1,7 @@
 <html xmlns="http://www.thymeleaf.org">
 
 <head>
-<title>List of all users</title>
+<title>Users</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -17,7 +17,7 @@
 	.background{
     height: 100vh;
     width: 100%;
-    background-image: url("https://images.pexels.com/photos/310452/pexels-photo-310452.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500");
+    background-color: rgb(14, 14, 48);
     background-position: center;
     background-size: cover;
     position: relative;
@@ -66,7 +66,6 @@ nav ul li a{
 			<thead>
 				<tr>
 					<th>Username</th>
-					<th>Password</th>
 					<th>Balance</th>
 					<th>Roles</th>
 					<th>Actions</th>
@@ -75,7 +74,6 @@ nav ul li a{
 			<tbody>
 				<tr th:each="user: ${users}">
 					<td th:text="${user.username}"></td>
-					<td th:text="${user.password}"></td>
 					<td th:text="${user.balance}"></td>
 					<td th:text="${user.roles}"></td>
 					<td><a th:href="@{/admin/updateUser(id = ${user.id})}"

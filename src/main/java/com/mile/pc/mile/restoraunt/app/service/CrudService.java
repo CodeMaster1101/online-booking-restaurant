@@ -2,14 +2,15 @@ package com.mile.pc.mile.restoraunt.app.service;
 
 
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.mile.pc.mile.restoraunt.app.model.CustomTable;
+import com.mile.pc.mile.restoraunt.app.dto.admin.UserDTO;
 import com.mile.pc.mile.restoraunt.app.model.Role;
 import com.mile.pc.mile.restoraunt.app.model.User;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
@@ -27,20 +28,19 @@ import lombok.SneakyThrows;
  * @author Mile Stanislavov
  *
  */
-@Service @Transactional
-
+@Service 
 public class CrudService {
 	
 	@Autowired UserRepository userRepo;
 	@Autowired RoleRepository roleRepo;
 	@Autowired CustomTableRepository tableRepo;
-
+	@Autowired DTOserDes dto_Ser;
 	/**
 	 * adds a given role to a certain user, throws an exception if the role or user is non existent
 	 * @param username
 	 * @param roleType
 	 */
-	@SneakyThrows
+	@SneakyThrows @Transactional
 	public void AddRoleToUser(String username, String roleType){
 		if(userRepo.findByUsername(username)== null || roleRepo.findByType(roleType) == null) {
 			throw new Exception("user or role non exsistent");
@@ -55,6 +55,7 @@ public class CrudService {
 	 * @param username
 	 * @param roleType
 	 */
+	@Transactional
 	public void removeRolefromUser(String username, String roleType){
 		User user = userRepo.findByUsername(username);
 		Role role = roleRepo.findByType(roleType);
@@ -65,32 +66,17 @@ public class CrudService {
 	 * removes the user found by the given id
 	 * @param id
 	 */
+	@Transactional
 	public void removeUser(long id) {
 		userRepo.deleteById(id);;
 	}
-	
-	/**
-	 * removes a certain table based on the table object
-	 * @param table
-	 */
-	public void removeTable(CustomTable table) {
-		tableRepo.delete(table);
-	}
-	
 	/**
 	 * filters through all the users to fetch every waiter
 	 * @return every user that has a role "WAITER"
 	 */
-	public List<User> getWaiters(){
-		return userRepo.findAll().stream()
-				.filter(u -> u.getRoles().contains(roleRepo.findByType("WAITER"))).collect(Collectors.toList());
-	}
-	
-	/**
-	 * @return every role in the DB
-	 */
-	public List<Role> allRoles(){
-		return roleRepo.findAll();
+	public Set<UserDTO> getWaiters(){
+		return dto_Ser.usersDTO(userRepo.findAll().stream()
+				.filter(u -> u.getRoles().contains(roleRepo.findByType("WAITER"))).collect(Collectors.toList()));
 	}
 
 }

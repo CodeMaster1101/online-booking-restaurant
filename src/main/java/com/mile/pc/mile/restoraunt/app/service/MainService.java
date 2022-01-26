@@ -4,14 +4,14 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.mile.pc.mile.restoraunt.app.comparator.TimeComparator;
 import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
-import com.mile.pc.mile.restoraunt.app.dto.ReservationDTO;
-import com.mile.pc.mile.restoraunt.app.dto.UserPasswordForm;
+import com.mile.pc.mile.restoraunt.app.dto.publi.ReservationDTO;
+import com.mile.pc.mile.restoraunt.app.dto.publi.UserPasswordForm;
 import com.mile.pc.mile.restoraunt.app.model.CustomTable;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.model.User;
@@ -29,8 +29,7 @@ import lombok.SneakyThrows;
  * @author Mile Stanislavov
  * 
  */
-@Service @Transactional 
-
+@Service  
 public class MainService {
 
 	@Autowired ReservationRepository reservations;
@@ -48,16 +47,17 @@ public class MainService {
 	 * Finally if there weren't any exceptions during the process, all changes are flushed into the DB. 
 	 * @param reservation -> the object that contains all the startup information
 	 */
-	@SneakyThrows
+	@SneakyThrows @Transactional
 	public void reserveTable(ReservationDTO dto) {
-		Reservation reservation = reservations.save(new Reservation(null, dto.isAccepted(), uRepo.findByUsername(dto.getUser().getUsername()), 
-				tRepo.findById(dto.getTableid()).get(), dto.getTime(), dto.getMaxTime(), 0, null, null, null));
+		Reservation reservation = reservations.save(new Reservation(null, dto.isAccepted(), uRepo.findByUsername(dto.getUsername()), 
+				tRepo.findById(dto.getTableid()).get(), dto.getTime(), LocalDateTime.of(dto.getTime().toLocalDate(), dto.getMaxTime()), 0, null, null, null));
 		if(checkReservationRadius(reservation) == false)
 			throw new Exception("bad radius");
 		if(!checkTime(reservation))
 			throw new Exception("can't reserve a table after the current time of the day");
-		String password = reservation.getUser().getPassword();
-		User user = uRepo.findByUsername(reservation.getUser().getUsername());
+		reservation.getUser().setUsername(dto.getUsername());
+		String password = dto.getPassword();
+		User user = reservation.getUser();
 		if(password.equals(user.getPassword()) == false)
 			throw new Exception("password incorrect");
 		if(user.getReservation() != null)
@@ -69,9 +69,7 @@ public class MainService {
 		checkOtherReservations(reservation.getTable(), reservation);
 		user.setReservationMoment(LocalDateTime.now());
 		reservation.setFee(CONSTANTS.FEE * incrementFee(reservation.getUser()));
-		user.setBalance(user.getBalance() - reservation.getFee());
-		if(tableFull(reservation.getTable()))
-			reservation.getTable().setFull(true);			
+		user.setBalance(user.getBalance() - reservation.getFee());			
 	}
 	
 	/**
@@ -81,7 +79,7 @@ public class MainService {
 	 * @param user
 	 * @return true if all the conditions are met
 	 */
-	@SneakyThrows
+	@SneakyThrows @Transactional
 	public boolean cancelReservation(UserPasswordForm user) {
 		User localUser = uRepo.findByUsername(user.getUsername());
 		if(!cancelReservationRequirements(localUser, user.getPassword()))
@@ -113,20 +111,6 @@ public class MainService {
 			table.removeReservation(reservation);
 			throw new Exception("distance between reservations is bad");
 		}
-	}
-	
-	/**
-	 * Filters through every reservation which date is the current date on the table object.	 
-	 * if there's a reservation after the "final reservation" -> CONSTANTS.END or 
-	 * if there's a reservation in exactly CONSTANTS.END time, whether its the end or the beginning of the reservation.
-	 * The table would be full for today
-	 * @param table
-	 * @return true if the table is full for today
-	 */
-	protected boolean tableFull(CustomTable table) {
-		return table.getReservations().stream()
-				.anyMatch(r ->  (r.getTime().getDayOfMonth() == LocalDateTime.now().getDayOfMonth()) && 
-						(r.getTime().toLocalTime().isAfter(CONSTANTS.END.minusMinutes(1))));		   
 	}
 	
 	/*
@@ -191,9 +175,9 @@ public class MainService {
 	 */
 	private boolean cancelReservationRequirements(User user, String password) {
 
-		if(user.getPassword() == (password))
-			return false;
-		return true;
+		if(user.getPassword().contentEquals(password))
+			return true;
+		return false;
 	}
 	
 	/**
@@ -202,6 +186,7 @@ public class MainService {
 	 * as the reservation has been canceled. 
 	 * @param localUser
 	 */
+	@Transactional
 	private void basicUserReservationCancelLogic(User localUser) {
 		Reservation res = localUser.getReservation();
 		localUser.setReservation(null);
@@ -236,17 +221,6 @@ public class MainService {
 	 */
 	private long incrementFee(User user) {
 		return Duration.between(user.getReservation().getTime(), user.getReservation().getMaxTime()).toHours();
-	}
-	/**
-	 * adds the table by the id to the new reservation
-	 * @param tID
-	 * @return the new reservation
-	 */
-	public Reservation setTable(long tID) {
-		CustomTable t = tRepo.findById(tID).get();
-		Reservation r = reservations.save(new Reservation());
-		r.setUTable(t);
-		return r;
 	}
 
 }

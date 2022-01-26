@@ -1,33 +1,31 @@
 <html xmlns="http://www.thymeleaf.org">
 
 <head>
-<title>Waiters</title>
+<title>All reservations</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 	crossorigin="anonymous">
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.css" />
-</head>
-<style>
-	h3{
-		font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-	}
-	#waiter-table th {
-  	background-color: rgb(211, 31, 117);
+	<style>
+	#reservations th {
+  	background-color: rgb(249, 124, 0);
   	color: rgb(0, 0, 0);
-}   #waiter-table tr{background-color: #f2f2f2;}
-	#waiter-table tr:hover {background-color: #ddd;}
+}   #reservations tr{background-color: #f2f2f2;}
+	#reservations tr:hover {background-color: #ddd;
+	
+	}
 	.background{
     height: 100vh;
     width: 100%;
-    background-color: rgb(14, 14, 48);
+    background-color: rgb(14, 14, 48);  color: #ffffff;
     background-position: center;
     background-size: cover;
     position: relative;
     box-sizing: content-box;
     }
-    .navbar{
+.navbar{
 	background-color: rgb(119, 0, 119);
 	width: 100%;
 	height: 10vh;
@@ -49,47 +47,50 @@ nav ul li a{
 	font-size: large;
 	color: rgb(255, 255, 255);
 }
+#a_reserve{
+	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+	font-size: large;
+	color: rgb(255, 255, 255);
+}
 	</style>
+</head>
 <body>
-	<div class="background">
-		<div class = "navbar">
+ <div class="background">
+	<div class = "navbar">
 			<nav>
 				<ul>
-				<li><a th:href="@{/admin/home}">Home</a></li>
-				<li><a th:href="@{/admin/users}" >Users</a></li>
-				<li><a th:href="@{/admin/users/waiters}">Waiters</a> </li>
-				<li><a th:href="@{/admin/roles}"> Roles</a></li>
+				<li><a th:href="@{/waiter/tables}">Home</a></li>
+				<li><a th:href="@{/waiter/reservations}" >Reservations</a></li>
+				<li><a th:href="@{/waiter/todayReservations}">Today reservations</a> </li>
+				<li><a th:href="@{/waiter/deleteExpiredReservations}">Expired reservations</a></li>
 				</ul>
 			</nav>		
 			</div> 
-		<br/>		
-		<table class="table table-bordered table" id = "waiter-table">
+		<br/>
+		<div class = "table">
+		<table class="table table-bordered table" id = "reservations">
 			<thead>
 				<tr>
+					<th>Start</th>
+					<th>End</th>
 					<th>Username</th>
-					<th>Balance</th>
-					<th>Roles</th>
-					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="user: ${waiters}">
-					<td th:text="${user.username}"></td>
-					<td th:text="${user.balance}"></td>
-					<td th:text="${user.roles}"></td>
-					<td><a th:href="@{/admin/updateUser(id = ${user.id})}"
-						class="btn btn-warning">Update</a> <a
-						th:href="@{/admin/deleteUser(id = ${user.id})}"
-						class="btn btn-danger">Delete</a></td>
+				<tr th:each="r: ${reservations}">
+					<td th:text="${r.time}"></td>
+					<td th:text="${r.maxTime}"></td>
+					<td th:text ="${r.username}"></td>
 				</tr>
 			</tbody>
 		</table>
+		</div>
 	</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.js"></script>
 <script>
 	$(document).ready(function(){
-		$("#waiter-table").DataTable();
+		$("#reservations").DataTable();
 	})
 </script>
 </body>

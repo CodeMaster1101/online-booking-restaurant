@@ -4,11 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
 import com.mile.pc.mile.restoraunt.app.model.BusyReservation;
@@ -33,8 +35,7 @@ import lombok.SneakyThrows;
  * @author Mile Stanislavov
  * 
  */
-@Service @Transactional 
-
+@Service  
 public class WaiterService {
 
 	@Autowired RoleRepository roleRepo;
@@ -44,6 +45,7 @@ public class WaiterService {
 	@Autowired GuestRepository gRepository;
 	@Autowired CurrentDeployedReservations currentReservations;
 	@Autowired MainService main_S;
+	@Autowired DTOserDes dto_sDes;
 
 	/**
 	 * Sets the table to busy, in other words, the table says that someone is currently sitting on that table.
@@ -52,7 +54,7 @@ public class WaiterService {
 	 * Also runs a few tests to see if the user arrived within the time range or not. Lastly, sets the table to a "busy table".
 	 * @param tableid, the id used to fetch the table object
 	 */
-	@SneakyThrows
+	@SneakyThrows @Transactional
 	public void setBusy(long tableid) {
 		CustomTable table = tRepo.findById(tableid).get();
 		if(table.getBusy()!=true) {
@@ -72,6 +74,7 @@ public class WaiterService {
 	 * Fetches the busy reservation referencing the table and does some cleaning logic.
 	 * @param tableid the id that identifies the table object
 	 */
+	@Transactional
 	public void setCalm(long tableid) {
 		CustomTable table = tRepo.findById(tableid).get();
 		BusyReservation currentReservation = currentReservations.findAll().stream()
@@ -90,7 +93,7 @@ public class WaiterService {
 	 * @see MainService
 	 * @param id the identifier for the table object
 	 */
-	@SneakyThrows
+	@SneakyThrows @Transactional
 	public void setGuestBusy(long id) {
 		CustomTable t = tRepo.findById(id).get();
 		if(t.getBusy()) return;
@@ -100,21 +103,9 @@ public class WaiterService {
 		main_S.checkOtherReservations(t, reservation);
 		reservation.getGuest().setReservation(reservation);
 		currentReservations.save(new BusyReservation(null, reservation));
-		checkTableFull(t);
 		t.setBusy(true);
 	}
-	
-	/**
-	 * Calls the main service and checks whether the table is full or not. 
-	 * Sets the table to full if the method returns true.
-	 * @see MainService more information.
-	 * @param t
-	 */
-	private void checkTableFull(CustomTable t) {
-		if(main_S.tableFull(t))
-			t.setFull(true);					
-	}
-	
+
 	/**
 	 * @return the reservations for today -> every reservation which LocalDate is the current Date
 	 */
@@ -129,6 +120,7 @@ public class WaiterService {
 	 * every reservation that has been canceled but nobody has arrived or the user hadn't shown up on time.
 	 * Also sends all the fee to the Administrator from every reservation that their respective user hasn't attended to.
 	 */
+	@Transactional
 	public void removeExpiredReservations() {
 		List<Reservation> expiredReservations = reservations.findAll().stream()
 				.filter(r -> r.getTime().isBefore(LocalDateTime.now().minusMinutes(CONSTANTS.AFTER_RESERVATION_TIME)) 
@@ -160,6 +152,7 @@ public class WaiterService {
 	 * and can be removed from the DB
 	 * @param id
 	 */
+	@Transactional
 	private void removeReservation(long id) {
 		Reservation reservation = reservations.findById(id).get();
 		if(reservation.getUser() != null && reservation.getGuest() == null) {
@@ -177,6 +170,7 @@ public class WaiterService {
 	 * that hasn't been attended to. Removes the reservation time from the user
 	 * @param reservation
 	 */
+	@Transactional
 	protected void sendMoneyToAdmin(Reservation reservation) {
 		if(reservation.getFee() != null || reservation.getFee() == 0l) {
 			User admin = urepo.findAll().stream().filter(u -> u.getRoles().contains(roleRepo.findByType("ADMIN"))).findFirst().get();
@@ -217,7 +211,6 @@ public class WaiterService {
 	private void emptyTableAndReservations(CustomTable table, BusyReservation currentReservation) {
 		removeReservation(currentReservation.getReservation().getId());		
 		table.setBusy(false);
-		if(main_S.tableFull(table) == false) table.setFull(false);
 	}
 	
 	/**
@@ -225,12 +218,12 @@ public class WaiterService {
 	 * Returns the user's money from the reservation fee. Sets the fee to null.
 	 * @param reservation
 	 */
+	@Transactional
 	private void reservationBusyLogic(Reservation reservation) {
 		//keeps the reservation as a "busy reservation" in a map to ease the complexity, later implemented in the setCalm(long id) method
 		reservation.setLivingReservation(currentReservations.save(new BusyReservation(null, reservation)));
 		reservation.getUser().setBalance(reservation.getUser().getBalance() + reservation.getFee());
 		reservation.setFee(null);
 	}
-
 
 }

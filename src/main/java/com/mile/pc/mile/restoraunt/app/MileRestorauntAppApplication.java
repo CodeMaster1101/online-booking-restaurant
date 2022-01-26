@@ -34,11 +34,11 @@ public class MileRestorauntAppApplication {
 	@Transactional
 	CommandLineRunner commandLineRunner() {
 		return args -> {
-//			tr.save(new CustomTable(null, false, false, null));
-//			tr.save(new CustomTable(null, false, false, null));
-//			tr.save(new CustomTable(null, false, false, null));
-//			tr.save(new CustomTable(null, false, false, null));
-//			tr.save(new CustomTable(null, false, false, null));
+//			tr.save(new CustomTable(null, false, null));
+//			tr.save(new CustomTable(null, false, null));
+//			tr.save(new CustomTable(null, false, null));
+//			tr.save(new CustomTable(null, false, null));
+//			tr.save(new CustomTable(null, false, null));
 //
 //			rr.save(new Role(null, "WAITER"));
 //			rr.save(new Role(null, "ADMIN"));

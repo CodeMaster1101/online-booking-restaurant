@@ -30,7 +30,6 @@ public class CustomTable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private Boolean busy;
-    private Boolean full;
     @JsonIgnore
     @OneToMany(mappedBy = "table", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference

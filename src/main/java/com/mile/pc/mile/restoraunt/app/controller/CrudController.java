@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mile.pc.mile.restoraunt.app.dto.RoleToUser;
-import com.mile.pc.mile.restoraunt.app.model.User;
+import com.mile.pc.mile.restoraunt.app.dto.admin.RoleToUser;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 import com.mile.pc.mile.restoraunt.app.service.CrudService;
+import com.mile.pc.mile.restoraunt.app.service.DTOserDes;
 
 @Controller
 @RequestMapping("/admin")
@@ -27,7 +27,7 @@ public class CrudController {
 	@Autowired UserRepository uRepo;
 	@Autowired RoleRepository rRepo;
 	@Autowired CustomTableRepository tRepo;
-
+	@Autowired DTOserDes dto_ser;
 	/*
 	 * Home page the administrator(MENU)
 	 */
@@ -41,30 +41,31 @@ public class CrudController {
 	 */
 	@GetMapping(path = "/roles")
 	public ModelAndView getRoles(){
-		return new ModelAndView("roles-admin", "roles", rRepo.findAll());
+		return new ModelAndView("roles-admin", "roles", rRepo.roleDTO());
 	}
+	
 	@GetMapping(path = "/users")
 	public ModelAndView allUsers() {
-		return new ModelAndView("users-admin","users", uRepo.findAll());
+		return new ModelAndView("users-admin","users", dto_ser.usersDTO(uRepo.findAll()));
 	}
+	
 	@GetMapping(path = "users/waiters")
 	public ModelAndView getWaiters(){
 		return new ModelAndView("waiters-admin","waiters", crudService.getWaiters());
 	}
+	
 	@GetMapping(path = "/add-RTU-form")
 	public ModelAndView addRoleToUserForm(@RequestParam long id) {
 		return new ModelAndView("add-role-to-user-admin", "rtu", 
 				new RoleToUser(null,  uRepo.findById(id).get().getUsername()));
 	}
+	
 	@GetMapping(path = "/remove-RFU-form")
 	public ModelAndView removeRoleFromUser(@RequestParam long id) {
 		return new ModelAndView("remove-role-from-user-admin", "rfu", 
 				new RoleToUser(null,  uRepo.findById(id).get().getUsername()));
 	}
-	@GetMapping(path = "/addUser-form")
-	public ModelAndView addUserForm() {
-		return new ModelAndView("add-user-form-admin", "user", new User());
-	}
+	
 	@GetMapping(path = "/updateUser")
 	public ModelAndView getUpdateOptions(@RequestParam long id) {
 		return new ModelAndView("update-admin","user", uRepo.findById(id).get());
@@ -79,6 +80,7 @@ public class CrudController {
 		crudService.AddRoleToUser(rtu.getUsername(), rtu.getType());
 		return "redirect:/admin/users";
 	}
+	
 	@GetMapping(path = "/remove-RFU")
 	public String removeRoleFromUser(@ModelAttribute RoleToUser rtu) {
 		crudService.removeRolefromUser(rtu.getUsername(), rtu.getType());

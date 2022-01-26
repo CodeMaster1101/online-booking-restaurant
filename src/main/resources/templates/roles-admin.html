@@ -1,7 +1,7 @@
 <html xmlns="http://www.thymeleaf.org">
 
 <head>
-<title>List of all roles</title>
+<title>All roles</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -15,7 +15,7 @@
     width: 100%;
     background-position: center;
     background-size: cover;
-    background: linear-gradient(#141e30, #243b55);
+    background-color: rgb(14, 14, 48);
     position: relative;
     box-sizing: content-box;
     }
@@ -64,13 +64,11 @@ nav ul li a{
 		<table class="table table-bordered table" id = "role-table">
 			<thead>
 				<tr>
-					<th>Id</th>
 					<th>Type</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="role: ${roles}">
-					<td th:text="${role.id}"></td>
 					<td th:text="${role.type}"></td>
 				</tr>
 			</tbody>

@@ -1,4 +1,4 @@
-package com.mile.pc.mile.restoraunt.app.dto;
+package com.mile.pc.mile.restoraunt.app.dto.publi;
 
 import java.util.List;
 
@@ -16,6 +16,5 @@ public class TableDTO {
 
 	private long id;
 	private boolean busy;
-	private boolean full;
 	private List<ReservationDTO> reservations;
 }

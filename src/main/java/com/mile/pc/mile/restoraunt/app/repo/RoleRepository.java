@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.mile.pc.mile.restoraunt.app.dto.admin.RoleDTO;
+import com.mile.pc.mile.restoraunt.app.dto.RoleDTO;
 import com.mile.pc.mile.restoraunt.app.model.Role;
 
 @Repository

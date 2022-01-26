@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mile.pc.mile.restoraunt.app.dto.admin.UserDTO;
-import com.mile.pc.mile.restoraunt.app.dto.publi.ReservationDTO;
-import com.mile.pc.mile.restoraunt.app.dto.publi.ReservationOutro;
+import com.mile.pc.mile.restoraunt.app.dto.ReservationDTO;
+import com.mile.pc.mile.restoraunt.app.dto.ReservationOutro;
+import com.mile.pc.mile.restoraunt.app.dto.UserDTO;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.model.User;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;

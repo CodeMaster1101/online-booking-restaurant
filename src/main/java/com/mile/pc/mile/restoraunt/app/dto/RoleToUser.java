@@ -1,4 +1,4 @@
-package com.mile.pc.mile.restoraunt.app.dto.admin;
+package com.mile.pc.mile.restoraunt.app.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

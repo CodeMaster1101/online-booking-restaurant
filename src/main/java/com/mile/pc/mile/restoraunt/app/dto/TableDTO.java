@@ -1,4 +1,4 @@
-package com.mile.pc.mile.restoraunt.app.dto.publi;
+package com.mile.pc.mile.restoraunt.app.dto;
 
 import java.util.List;
 

@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mile.pc.mile.restoraunt.app.dto.admin.UserDTO;
+import com.mile.pc.mile.restoraunt.app.dto.UserDTO;
 import com.mile.pc.mile.restoraunt.app.model.Role;
 import com.mile.pc.mile.restoraunt.app.model.User;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;

@@ -25,4 +25,9 @@ public class ReservationDTO {
 	@DateTimeFormat(iso = ISO.TIME)
 	private LocalTime maxTime;
 	private long tableid;
+	
+	public ReservationDTO(LocalDateTime time, LocalTime maxTime) {
+		this.time = time;
+		this.maxTime = maxTime;
+	}
 }

@@ -14,7 +14,7 @@ import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 import com.mile.pc.mile.restoraunt.app.service.CrudService;
-import com.mile.pc.mile.restoraunt.app.service.DTOserDes;
+import com.mile.pc.mile.restoraunt.app.service.CustomDTOservice;
 
 @Controller
 @RequestMapping("/admin")
@@ -27,7 +27,7 @@ public class CrudController {
 	@Autowired UserRepository uRepo;
 	@Autowired RoleRepository rRepo;
 	@Autowired CustomTableRepository tRepo;
-	@Autowired DTOserDes dto_ser;
+	@Autowired CustomDTOservice dto_ser;
 	/*
 	 * Home page the administrator(MENU)
 	 */

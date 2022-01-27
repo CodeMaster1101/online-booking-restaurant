@@ -21,7 +21,7 @@ import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 
 @Service
-public class DTOserDes {
+public class CustomDTOservice {
 
 	@Autowired ReservationRepository rRepo;
 	@Autowired UserRepository uRepository;
@@ -39,20 +39,33 @@ public class DTOserDes {
 	public Set<ReservationDTO> reservationDTOconv(Collection<Reservation> coll){
 		Set<ReservationDTO> dto = new HashSet<>();
 		coll.forEach(e -> {
-			dto.add(new ReservationDTO(e.getAccepted(), e.getUser().getUsername(),
-					e.getUser().getPassword(), e.getTime(), e.getMaxTime().toLocalTime(), e.getTable().getId()));
+			if(e.getGuest() == null) {
+				dto.add(new ReservationDTO(e.getAccepted(), e.getUser().getUsername(),
+						e.getUser().getPassword(), e.getTime(), e.getMaxTime().toLocalTime(), e.getTable().getId()));
+			}
 		});
 		return dto;
 	}
 	public List<ReservationOutro> reservationTimes(long id){
 		List<ReservationOutro> reservationsOutro = new ArrayList<>();
-	 	List<Reservation> resevations = rRepo.findAll().stream()
-		.filter(r -> r.getTable().getId() == id).collect(Collectors.toList());
-	 	resevations.forEach(r-> {
-	 		reservationsOutro.add(new ReservationOutro(r.getTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), 
+		List<Reservation> resevations = rRepo.findAll().stream()
+				.filter(r -> r.getTable().getId() == id).collect(Collectors.toList());
+		resevations.forEach(r-> {
+			reservationsOutro.add(new ReservationOutro(r.getTable().getId(), r.getTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), 
 					r.getMaxTime().toLocalTime().format(DateTimeFormatter.ISO_LOCAL_TIME)));
-		
-	 	});
+
+		});
+		return reservationsOutro;
+	}
+	public List<ReservationOutro> guestReservations(){
+		List<ReservationOutro> reservationsOutro = new ArrayList<>();
+		List<Reservation> resevations = rRepo.findAll();
+		resevations.forEach(r-> {
+			if(r.getGuest() != null) {
+				reservationsOutro.add(new ReservationOutro(r.getTable().getId(),r.getTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), 
+						r.getMaxTime().toLocalTime().format(DateTimeFormatter.ISO_LOCAL_TIME)));
+			}
+		});
 		return reservationsOutro;
 	}
 }

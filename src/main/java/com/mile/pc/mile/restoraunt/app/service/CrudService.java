@@ -34,7 +34,7 @@ public class CrudService {
 	@Autowired UserRepository userRepo;
 	@Autowired RoleRepository roleRepo;
 	@Autowired CustomTableRepository tableRepo;
-	@Autowired DTOserDes dto_Ser;
+	@Autowired CustomDTOservice dto_Ser;
 	/**
 	 * adds a given role to a certain user, throws an exception if the role or user is non existent
 	 * @param username

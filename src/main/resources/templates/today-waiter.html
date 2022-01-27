@@ -71,6 +71,7 @@ nav ul li a{
 		<table class="table table-bordered table" id = "reservations">
 			<thead>
 				<tr>
+					<th>Table ID</th>
 					<th>Start</th>
 					<th>End</th>
 					<th>Username</th>
@@ -78,6 +79,7 @@ nav ul li a{
 			</thead>
 			<tbody>
 				<tr th:each="r: ${reservations}">
+					<td th:text ="${r.tableid}"></td> 
 					<td th:text="${r.time}"></td>
 					<td th:text="${r.maxTime}"></td>
 					<td th:text ="${r.username}"></td>

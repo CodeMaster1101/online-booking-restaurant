@@ -9,13 +9,12 @@
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.css" />
 	<style>
-	#reservations th {
+	#reservations th, #g_reservations th {
   	background-color: rgb(249, 124, 0);
   	color: rgb(0, 0, 0);
-}   #reservations tr{background-color: #f2f2f2;}
-	#reservations tr:hover {background-color: #ddd;
-	
-	}
+}   #reservations tr, #g_reservations tr{background-color: #f2f2f2;}
+	#reservations tr:hover {background-color: #ddd;}
+	#g_reservations tr:hover {background-color: #ddd;}
 	.background{
     height: 100vh;
     width: 100%;
@@ -71,13 +70,15 @@ nav ul li a{
 		<table class="table table-bordered table" id = "reservations">
 			<thead>
 				<tr>
+					<th>Table ID</th>
 					<th>Start</th>
 					<th>End</th>
 					<th>Username</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="r: ${reservations}">
+				<tr th:each="r: ${noGuestReservations}">
+					<td th:text ="${r.tableid}"></td> 
 					<td th:text="${r.time}"></td>
 					<td th:text="${r.maxTime}"></td>
 					<td th:text ="${r.username}"></td>
@@ -85,12 +86,39 @@ nav ul li a{
 			</tbody>
 		</table>
 		</div>
+		</br>
+		</hr>
+		<h4>Guest Reservations</h4>
+		</br>
+		</br>
+		<div class = "table2">
+		<table class="table table-bordered table-2" id = "g_reservations">
+			<thead>
+				<tr>
+					<th>Table ID</th>
+					<th>Start</th>
+					<th>End</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="r: ${guestReservations}">
+					<td th:text ="${r.id}"></td> 
+					<td th:text="${r.time}"></td>
+					<td th:text="${r.maxTime}"></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+		
 	</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.js"></script>
 <script>
 	$(document).ready(function(){
 		$("#reservations").DataTable();
+	})
+	$(document).ready(function(){
+		$("#g_reservations").DataTable();
 	})
 </script>
 </body>

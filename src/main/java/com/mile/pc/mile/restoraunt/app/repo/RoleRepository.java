@@ -12,6 +12,6 @@ import com.mile.pc.mile.restoraunt.app.model.Role;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 	Role findByType(String type);
-	@Query("SELECT new com.mile.pc.mile.restoraunt.app.dto.admin.RoleDTO(r.type)" +
+	@Query("SELECT new com.mile.pc.mile.restoraunt.app.dto.RoleDTO(r.type)" +
 	"FROM Role r") Set<RoleDTO> roleDTO();
 }

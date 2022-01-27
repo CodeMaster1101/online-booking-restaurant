@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservationOutro {
+	long id;
 	private String time;
 	private String maxTime;
 }

@@ -44,7 +44,6 @@ public class WaiterService {
 	@Autowired GuestRepository gRepository;
 	@Autowired CurrentDeployedReservations currentReservations;
 	@Autowired MainService main_S;
-	@Autowired DTOserDes dto_sDes;
 
 	/**
 	 * Sets the table to busy, in other words, the table says that someone is currently sitting on that table.
@@ -104,7 +103,6 @@ public class WaiterService {
 		currentReservations.save(new BusyReservation(null, reservation));
 		t.setBusy(true);
 	}
-
 	/**
 	 * @return the reservations for today -> every reservation which LocalDate is the current Date
 	 */
@@ -171,7 +169,7 @@ public class WaiterService {
 	 */
 	@Transactional
 	protected void sendMoneyToAdmin(Reservation reservation) {
-		if(reservation.getFee() != null || reservation.getFee() == 0l) {
+		if(reservation.getFee() != null) {
 			User admin = urepo.findAll().stream().filter(u -> u.getRoles().contains(roleRepo.findByType("ADMIN"))).findFirst().get();
 			admin.setBalance(admin.getBalance() + reservation.getFee());
 		}
@@ -201,7 +199,7 @@ public class WaiterService {
 	}
 	
 	/**
-	 * Removes the reservation from the DB. Sets the table to available(busy == null)
+	 * Removes the reservation from the DB. Set the table to available(busy == null)
 	 * This method is called to clean up the current user sitting on the table and his reservation.
 	 * Checks if the table is full calling the main service where the method lives.
 	 * @param table 

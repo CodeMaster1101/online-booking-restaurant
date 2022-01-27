@@ -13,7 +13,7 @@ import com.mile.pc.mile.restoraunt.app.dto.ReservationDTO;
 import com.mile.pc.mile.restoraunt.app.dto.UserPasswordForm;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
-import com.mile.pc.mile.restoraunt.app.service.DTOserDes;
+import com.mile.pc.mile.restoraunt.app.service.CustomDTOservice;
 import com.mile.pc.mile.restoraunt.app.service.MainService;
 
 @Controller
@@ -26,7 +26,7 @@ public class UserController {
 	@Autowired CustomTableRepository tableRepo;
 	@Autowired MainService main;
 	@Autowired ReservationRepository rRepo;
-	@Autowired DTOserDes des;
+	@Autowired CustomDTOservice des;
 	
 	/*
 	 * Getting the model methods

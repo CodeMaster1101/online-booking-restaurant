@@ -18,7 +18,6 @@ import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.model.User;
 import com.mile.pc.mile.restoraunt.app.repo.CurrentDeployedReservations;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
-import com.mile.pc.mile.restoraunt.app.repo.GuestRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
@@ -41,7 +40,6 @@ public class WaiterService {
 	@Autowired CustomTableRepository tRepo;
 	@Autowired ReservationRepository reservations;
 	@Autowired UserRepository urepo;
-	@Autowired GuestRepository gRepository;
 	@Autowired CurrentDeployedReservations currentReservations;
 	@Autowired MainService main_S;
 
@@ -95,11 +93,10 @@ public class WaiterService {
 	public void setGuestBusy(long id) {
 		CustomTable t = tRepo.findById(id).get();
 		if(t.getBusy()) return;
-		Reservation reservation = reservations.save(CONSTANTS.GUEST_RESERVATION);
+		Reservation reservation = reservations.save(new Reservation(null,true,null,null,LocalDateTime.now(), LocalDateTime.now().plusHours(4),0, null, null));
 		if(!checkGuestArrival(reservation)) return;
 		reservation.setUTable(t);	
 		main_S.checkOtherReservations(t, reservation);
-		reservation.getGuest().setReservation(reservation);
 		currentReservations.save(new BusyReservation(null, reservation));
 		t.setBusy(true);
 	}
@@ -152,12 +149,11 @@ public class WaiterService {
 	@Transactional
 	private void removeReservation(long id) {
 		Reservation reservation = reservations.findById(id).get();
-		if(reservation.getUser() != null && reservation.getGuest() == null) {
+		if(reservation.getUser() != null) {
 			reservation.getUser().setReservation(null);
 			reservation.getUser().setReservationMoment(null);
 		}	
-		else if(reservation.getUser() == null && reservation.getGuest() != null)
-			reservation.getGuest().setReservation(null);
+		else if(reservation.getUser() == null)
 		reservation.getTable().removeReservation(reservation);
 		reservations.deleteById(id);
 	}

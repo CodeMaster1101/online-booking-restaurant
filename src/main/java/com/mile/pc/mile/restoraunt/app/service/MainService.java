@@ -50,7 +50,7 @@ public class MainService {
 	@SneakyThrows @Transactional
 	public void reserveTable(ReservationDTO dto) {
 		Reservation reservation = reservations.save(new Reservation(null, dto.isAccepted(), uRepo.findByUsername(dto.getUsername()), 
-				tRepo.findById(dto.getTableid()).get(), dto.getTime(), LocalDateTime.of(dto.getTime().toLocalDate(), dto.getMaxTime()), 0, null, null, null));
+				tRepo.findById(dto.getTableid()).get(), dto.getTime(), LocalDateTime.of(dto.getTime().toLocalDate(), dto.getMaxTime()), 0, null, null));
 		if(checkReservationRadius(reservation) == false)
 			throw new Exception("bad radius");
 		if(!checkTime(reservation))
@@ -207,8 +207,9 @@ public class MainService {
 	private boolean checkReservationRadius(Reservation reservation) {
 		if(reservation.getMaxTime().isBefore(reservation.getTime()))
 			return false;	
-		if(Duration.between(reservation.getTime(), reservation.getMaxTime()).toHours() > 8l 
-				&& !(reservation.getTime().isBefore(reservation.getMaxTime().minusHours(1).plusMinutes(1))))
+		if(Duration.between(reservation.getTime(), reservation.getMaxTime()).toHours() > 8l )
+			return false;
+		if(Duration.between(reservation.getTime(), reservation.getMaxTime()).toMinutes() < 61)
 			return false;
 		return true;
 	}

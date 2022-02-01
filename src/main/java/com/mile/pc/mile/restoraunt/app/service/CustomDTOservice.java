@@ -39,13 +39,24 @@ public class CustomDTOservice {
 	public Set<ReservationDTO> reservationDTOconv(Collection<Reservation> coll){
 		Set<ReservationDTO> dto = new HashSet<>();
 		coll.forEach(e -> {
-			if(e.getGuest() == null) {
-				dto.add(new ReservationDTO(e.getAccepted(), e.getUser().getUsername(),
-						e.getUser().getPassword(), e.getTime(), e.getMaxTime().toLocalTime(), e.getTable().getId()));
-			}
+			dto.add(new ReservationDTO(e.getAccepted(), null,
+					null, e.getTime(), e.getMaxTime().toLocalTime(), e.getTable().getId()));
 		});
 		return dto;
 	}
+
+	public Set<ReservationDTO> reservationDTOconvNoGuest(Collection<Reservation> coll){
+		Set<ReservationDTO> dto = new HashSet<>();
+		coll.forEach(e -> {
+			if(e.getUser() != null) {
+				dto.add(new ReservationDTO(e.getAccepted(), null,
+						null, e.getTime(), e.getMaxTime().toLocalTime(), e.getTable().getId()));dto.add(new ReservationDTO(e.getAccepted(), null,
+								null, e.getTime(), e.getMaxTime().toLocalTime(), e.getTable().getId()));
+			}			
+		});
+		return dto;
+	}
+
 	public List<ReservationOutro> reservationTimes(long id){
 		List<ReservationOutro> reservationsOutro = new ArrayList<>();
 		List<Reservation> resevations = rRepo.findAll().stream()
@@ -54,17 +65,6 @@ public class CustomDTOservice {
 			reservationsOutro.add(new ReservationOutro(r.getTable().getId(), r.getTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), 
 					r.getMaxTime().toLocalTime().format(DateTimeFormatter.ISO_LOCAL_TIME)));
 
-		});
-		return reservationsOutro;
-	}
-	public List<ReservationOutro> guestReservations(){
-		List<ReservationOutro> reservationsOutro = new ArrayList<>();
-		List<Reservation> resevations = rRepo.findAll();
-		resevations.forEach(r-> {
-			if(r.getGuest() != null) {
-				reservationsOutro.add(new ReservationOutro(r.getTable().getId(),r.getTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), 
-						r.getMaxTime().toLocalTime().format(DateTimeFormatter.ISO_LOCAL_TIME)));
-			}
 		});
 		return reservationsOutro;
 	}

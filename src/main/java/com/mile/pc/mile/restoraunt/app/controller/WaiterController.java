@@ -76,8 +76,7 @@ public class WaiterController {
 	@GetMapping(path = "/reservations")
 	public ModelAndView getReservations(){
 		ModelAndView mvc = new ModelAndView("all-reservations-waiter");
-		mvc.addObject("noGuestReservations", dtoDes.reservationDTOconv(reservations.findAll()));
-		mvc.addObject("guestReservations", dtoDes.guestReservations());
+		mvc.addObject("reservations", dtoDes.reservationDTOconvNoGuest(reservations.findAll()));
 		return mvc;
 	}
 	
@@ -87,8 +86,5 @@ public class WaiterController {
 		r.getTable().getId() == id).collect(Collectors.toSet()));
 		return new ModelAndView("table-reservations-waiter", "reservations", dto);
 	}
-	@GetMapping(path = "/guestReservations")
-	public ModelAndView allGuestReservations() {
-		return new ModelAndView("table-reservations-waiter", "reservations", null);
-	}
+
 }

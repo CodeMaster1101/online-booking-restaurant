@@ -52,8 +52,6 @@ public class Reservation
     @JsonIgnore
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     private BusyReservation livingReservation;
-    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
-    private Guest guest;
     private Long fee;
     public void setUTable(CustomTable table) {
     	this.table = table;

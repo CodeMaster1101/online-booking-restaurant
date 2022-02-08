@@ -1,0 +1,39 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+<title>Cancel reservation</title>
+<link th:href="@{/publicStyles/cancel-form-user.css}" rel="stylesheet" />
+
+</head>
+<body>
+	<body>
+	<div class="background">
+	<div class = "navbar">
+			<nav>
+				<ul>
+				<li><a th:href="@{/public/tables}">Tables</a></li>
+				<li><a th:href="@{/public/cancel-reservation-form}" >Cancel reservation</a></li>
+				</ul>
+			</nav>		
+			</div> 
+		<br/>
+<div class = "form">
+</br>
+<div class = "h4"><h4>Cancel Reservation</h4></div>
+	<div class = "content">
+		<form th:action="@{/public/cancelReservation}" th:object="${userPassword}" th:method="GET">
+				<label>Username</label>
+				</br>
+   				<input type="text" th:field="*{username}">
+   				<label>Password</label>
+   				</br>
+   				<input type = "text" th:field = "*{password}">
+   				</br>
+   				<input type="submit" value="Submit">
+  </form>
+</div>
+
+</div >
+  
+</body>
+</html>

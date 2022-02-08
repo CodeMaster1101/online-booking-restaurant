@@ -34,7 +34,7 @@ public class WaiterController {
 	
 	@GetMapping(path = {"/tables", ""})
 	public ModelAndView allTables() {
-		return new ModelAndView("tables-waiter", "tables", customTableRepository.findAll());
+		return new ModelAndView("waiter/tables-waiter", "tables", customTableRepository.findAll());
 	}
 	
 	/*
@@ -70,12 +70,12 @@ public class WaiterController {
 	
 	@GetMapping(path ="/todayReservations")
 	public ModelAndView tReservations(){
-		return new ModelAndView("today-waiter", "reservations", dtoDes.reservationDTOconv(wS.todayReservations()));
+		return new ModelAndView("waiter/today-waiter", "reservations", dtoDes.reservationDTOconv(wS.todayReservations()));
 	}
 	
 	@GetMapping(path = "/reservations")
 	public ModelAndView getReservations(){
-		ModelAndView mvc = new ModelAndView("all-reservations-waiter");
+		ModelAndView mvc = new ModelAndView("waiter/all-reservations-waiter");
 		mvc.addObject("reservations", dtoDes.reservationDTOconvNoGuest(reservations.findAll()));
 		return mvc;
 	}
@@ -84,7 +84,7 @@ public class WaiterController {
 	public ModelAndView tableReservations(@RequestParam long id) {
 		Set<ReservationDTO> dto = dtoDes.reservationDTOconv(reservations.findAll().stream().filter(r->
 		r.getTable().getId() == id).collect(Collectors.toSet()));
-		return new ModelAndView("table-reservations-waiter", "reservations", dto);
+		return new ModelAndView("waiter/table-reservations-waiter", "reservations", dto);
 	}
 
 }

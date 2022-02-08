@@ -1,14 +1,8 @@
-<html xmlns="http://www.thymeleaf.org">
-
-<head>
-<title>Assign role</title>
-<style>
 body {
   margin:0;
   padding:0;
   font-family: sans-serif;
-  background:  rgb(14, 14, 48);
-  color: #ffffff;
+  background-color: rgb(14, 14, 48);  color: #ffffff;
 }
 .navbar{
 	background-color: rgb(119, 0, 119);
@@ -50,7 +44,7 @@ input[type=text], radio {
 	text-align: center;
 	height: 10vh;
 }
-.form .roles{
+.form .content{
 	display: flex;
 	justify-content: center;
 	padding: 10px;
@@ -70,34 +64,3 @@ input[type=submit] {
 input[type=submit]:hover {
   background-color: rgb(128, 128, 255);
 }
-</style>
-<body>
-	<div class = "navbar">
-			<nav>
-				<ul>
-				<li><a th:href="@{/admin/home}">Home</a></li>
-				<li><a th:href="@{/admin/users}" >Users</a></li>
-				<li><a th:href="@{/admin/users/waiters}">Waiters</a> </li>
-				<li><a th:href="@{/admin/roles}"> Roles</a></li>
-				</ul>
-			</nav>		
-		</div> 
-<div class = "form">
-</br>
-</br>
-</br>
-<div class = "h4"><h4>Assign role</h4></div>
-	<div class = "roles">
-		<form th:action="@{/admin/add-RTU}" th:object="${rtu}" th:method="POST">
-   				<input type="radio" th:field="*{type}" value="USER" />User
-        	 	<input type="radio" th:field="*{type}" value="WAITER" />Waiter
-        	 	<input type="radio" th:field="*{type}" value="ADMIN" />Admin<br/>
-			 	<input type="hidden"th:field ="*{username}" > 
-   				<input type="submit" value="Submit">
-  </form>
-</div>
-
-</div  >
-  
-</body>
-</html>

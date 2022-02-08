@@ -153,9 +153,10 @@ public class WaiterService {
 			reservation.getUser().setReservation(null);
 			reservation.getUser().setReservationMoment(null);
 		}	
-		else if(reservation.getUser() == null)
+		else {
 		reservation.getTable().removeReservation(reservation);
 		reservations.deleteById(id);
+		}
 	}
 	
 	/**

@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.mile.pc.mile.restoraunt.app.dto.ReservationDTO;
@@ -23,9 +24,11 @@ import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 @Service
 public class CustomDTOservice {
 
+	@Autowired JdbcTemplate jdbcTemplate;
 	@Autowired ReservationRepository rRepo;
 	@Autowired UserRepository uRepository;
 	@Autowired RoleRepository roleRepository;
+	
 	private Set<String> roles(User user){
 		return user.getRoles().stream().map(r -> r.getType()).collect(Collectors.toSet());
 	}

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.mile.pc.mile.restoraunt.app.dto.UserDTO;
 import com.mile.pc.mile.restoraunt.app.model.Role;
 import com.mile.pc.mile.restoraunt.app.model.User;
-import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 
@@ -33,7 +32,6 @@ public class CrudService {
 	
 	@Autowired UserRepository userRepo;
 	@Autowired RoleRepository roleRepo;
-	@Autowired CustomTableRepository tableRepo;
 	@Autowired CustomDTOservice dto_Ser;
 	/**
 	 * adds a given role to a certain user, throws an exception if the role or user is non existent

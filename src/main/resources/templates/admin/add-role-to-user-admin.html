@@ -1,0 +1,36 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+<title>Assign role</title>
+<link th:href="@{/adminStyles/add-role-to-user-admin.css}" rel="stylesheet" />
+
+<body>
+	<div class = "navbar">
+			<nav>
+				<ul>
+				<li><a th:href="@{/admin/home}">Home</a></li>
+				<li><a th:href="@{/admin/users}" >Users</a></li>
+				<li><a th:href="@{/admin/users/waiters}">Waiters</a> </li>
+				<li><a th:href="@{/admin/roles}"> Roles</a></li>
+				</ul>
+			</nav>		
+		</div> 
+<div class = "form">
+</br>
+</br>
+</br>
+<div class = "h4"><h4>Assign role</h4></div>
+	<div class = "roles">
+		<form th:action="@{/admin/add-RTU}" th:object="${rtu}" th:method="POST">
+   				<input type="radio" th:field="*{type}" value="USER" />User
+        	 	<input type="radio" th:field="*{type}" value="WAITER" />Waiter
+        	 	<input type="radio" th:field="*{type}" value="ADMIN" />Admin<br/>
+			 	<input type="hidden"th:field ="*{username}" > 
+   				<input type="submit" value="Submit">
+  </form>
+</div>
+
+</div  >
+  
+</body>
+</html>

@@ -1,13 +1,9 @@
-<html xmlns="http://www.thymeleaf.org">
-
-<head>
-<title>Cancel reservation</title>
-<style>
 body {
   margin:0;
   padding:0;
   font-family: sans-serif;
-  background-color: rgb(14, 14, 48);  color: #ffffff;
+  background-color: rgb(14, 14, 48);
+  color: #ffffff;
 }
 .navbar{
 	background-color: rgb(119, 0, 119);
@@ -49,7 +45,7 @@ input[type=text], radio {
 	text-align: center;
 	height: 10vh;
 }
-.form .content{
+.form .roles{
 	display: flex;
 	justify-content: center;
 	padding: 10px;
@@ -57,7 +53,7 @@ input[type=text], radio {
 }
 input[type=submit] {
   width: 100%;
-  background-color: #4CAF50;
+  background-color: rgb(117, 0, 0);
   color: rgb(0, 0, 0);
   padding: 14px 20px;
   margin: 8px 0;
@@ -69,36 +65,3 @@ input[type=submit] {
 input[type=submit]:hover {
   background-color: rgb(128, 128, 255);
 }
-</style>
-<body>
-	<body>
-	<div class="background">
-	<div class = "navbar">
-			<nav>
-				<ul>
-				<li><a th:href="@{/public/tables}">Tables</a></li>
-				<li><a th:href="@{/public/cancel-reservation-form}" >Cancel reservation</a></li>
-				</ul>
-			</nav>		
-			</div> 
-		<br/>
-<div class = "form">
-</br>
-<div class = "h4"><h4>Cancel Reservation</h4></div>
-	<div class = "content">
-		<form th:action="@{/public/cancelReservation}" th:object="${userPassword}" th:method="GET">
-				<label>Username</label>
-				</br>
-   				<input type="text" th:field="*{username}">
-   				<label>Password</label>
-   				</br>
-   				<input type = "text" th:field = "*{password}">
-   				</br>
-   				<input type="submit" value="Submit">
-  </form>
-</div>
-
-</div >
-  
-</body>
-</html>

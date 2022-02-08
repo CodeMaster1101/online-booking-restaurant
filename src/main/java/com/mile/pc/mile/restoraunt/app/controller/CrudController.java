@@ -33,7 +33,7 @@ public class CrudController {
 	 */
 	@GetMapping(path = {"","/home"})
 	public ModelAndView adminHome() {
-		return new ModelAndView("home-admin");
+		return new ModelAndView("admin/home-admin");
 	}
 
 	/*
@@ -41,34 +41,34 @@ public class CrudController {
 	 */
 	@GetMapping(path = "/roles")
 	public ModelAndView getRoles(){
-		return new ModelAndView("roles-admin", "roles", rRepo.roleDTO());
+		return new ModelAndView("admin/roles-admin", "roles", rRepo.roleDTO());
 	}
 	
 	@GetMapping(path = "/users")
 	public ModelAndView allUsers() {
-		return new ModelAndView("users-admin","users", dto_ser.usersDTO(uRepo.findAll()));
+		return new ModelAndView("admin/users-admin","users", dto_ser.usersDTO(uRepo.findAll()));
 	}
 	
 	@GetMapping(path = "users/waiters")
 	public ModelAndView getWaiters(){
-		return new ModelAndView("waiters-admin","waiters", crudService.getWaiters());
+		return new ModelAndView("admin/waiters-admin","waiters", crudService.getWaiters());
 	}
 	
 	@GetMapping(path = "/add-RTU-form")
 	public ModelAndView addRoleToUserForm(@RequestParam long id) {
-		return new ModelAndView("add-role-to-user-admin", "rtu", 
+		return new ModelAndView("admin/add-role-to-user-admin", "rtu", 
 				new RoleToUser(null,  uRepo.findById(id).get().getUsername()));
 	}
 	
 	@GetMapping(path = "/remove-RFU-form")
 	public ModelAndView removeRoleFromUser(@RequestParam long id) {
-		return new ModelAndView("remove-role-from-user-admin", "rfu", 
+		return new ModelAndView("admin/remove-role-from-user-admin", "rfu", 
 				new RoleToUser(null,  uRepo.findById(id).get().getUsername()));
 	}
 	
 	@GetMapping(path = "/updateUser")
 	public ModelAndView getUpdateOptions(@RequestParam long id) {
-		return new ModelAndView("update-admin","user", uRepo.findById(id).get());
+		return new ModelAndView("admin/update-admin","user", uRepo.findById(id).get());
 	}
 	
 	/*

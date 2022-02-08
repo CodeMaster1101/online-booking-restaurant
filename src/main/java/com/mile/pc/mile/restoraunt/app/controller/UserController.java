@@ -35,21 +35,21 @@ public class UserController {
 	
 	@GetMapping(path = {"/tables", ""})
 	public ModelAndView getTables(){
-		return new ModelAndView("tables-user", "tables", tableRepo.findAll());
+		return new ModelAndView("public/tables-user", "tables", tableRepo.findAll());
 	}
 	
 	@GetMapping(path = "/viewTable")
 	public ModelAndView getTableModel(@RequestParam Long id) {
-		return new ModelAndView("view-table-user", "reservations", des.reservationTimes(id));
+		return new ModelAndView("public/view-table-user", "reservations", des.reservationTimes(id));
 	}
 	@GetMapping(path = "/reserve-form")
 	public ModelAndView reserveTableForm(@RequestParam long id) {
-		return new ModelAndView("reserve-form-user", "reservation", new ReservationDTO(false,null, null, null, null, id));
+		return new ModelAndView("public/reserve-form-user", "reservation", new ReservationDTO(false,null, null, null, null, id));
 	}
 	
 	@GetMapping(path = "/cancel-reservation-form")
 	public ModelAndView getCancelingForm() {
-		return new ModelAndView("cancel-form-user", "userPassword", new UserPasswordForm());
+		return new ModelAndView("public/cancel-form-user", "userPassword", new UserPasswordForm());
 	}
 	
 	/*

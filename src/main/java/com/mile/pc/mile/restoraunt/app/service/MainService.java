@@ -50,7 +50,7 @@ public class MainService {
 	@SneakyThrows @Transactional
 	public void reserveTable(ReservationDTO dto) {
 		Reservation reservation = reservations.save(new Reservation(null, dto.isAccepted(), uRepo.findByUsername(dto.getUsername()), 
-				tRepo.findById(dto.getTableid()).get(), dto.getTime(), LocalDateTime.of(dto.getTime().toLocalDate(), dto.getMaxTime()), 0, null, null));
+				tRepo.getById(dto.getTableid()), dto.getTime(), LocalDateTime.of(dto.getTime().toLocalDate(), dto.getMaxTime()), 0, null, null));
 		if(checkReservationRadius(reservation) == false)
 			throw new Exception("bad radius");
 		if(!checkTime(reservation))
@@ -103,7 +103,7 @@ public class MainService {
 	 * @param table the object to which the reservation will be added
 	 * @param reservation the object to be added in a collection on the table.
 	 */
-	@SneakyThrows
+	@SneakyThrows @Transactional
 	protected void checkOtherReservations(CustomTable table, Reservation reservation) {	
 		TimeComparator tComp = new TimeComparator();
 		Collections.sort(table.getReservations(), tComp);

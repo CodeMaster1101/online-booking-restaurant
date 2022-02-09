@@ -93,7 +93,7 @@ public class WaiterService {
 	public void setGuestBusy(long id) {
 		CustomTable t = tRepo.findById(id).get();
 		if(t.getBusy()) return;
-		Reservation reservation = reservations.save(new Reservation(null,true,null,null,LocalDateTime.now(), LocalDateTime.now().plusHours(4),0, null, null));
+		Reservation reservation = reservations.save(new Reservation(null,true,null,null,LocalDateTime.now(), LocalDateTime.now().plusHours(4),null, null));
 		if(!checkGuestArrival(reservation)) return;
 		reservation.setUTable(t);	
 		main_S.checkOtherReservations(t, reservation);

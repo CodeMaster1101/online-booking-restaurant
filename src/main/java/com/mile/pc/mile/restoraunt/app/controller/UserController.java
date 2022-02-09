@@ -1,5 +1,7 @@
 package com.mile.pc.mile.restoraunt.app.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.mile.pc.mile.restoraunt.app.dto.ReservationDTO;
 import com.mile.pc.mile.restoraunt.app.dto.UserPasswordForm;
+import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.service.CustomDTOservice;
@@ -58,7 +61,7 @@ public class UserController {
 	
 	@PostMapping(path = "/reserveTable")
 	public String reserveTable(@ModelAttribute ReservationDTO reservationDTO) {
-		main.reserveTable(reservationDTO);
+		main.reserveTable(reservationDTO, new Reservation(null, reservationDTO.isAccepted(), null, null, reservationDTO.getTime(), LocalDateTime.of(reservationDTO.getTime().toLocalDate(), reservationDTO.getMaxTime()), null, null));
 		return "redirect:/public/tables";
 	}
 	@GetMapping(path ="/cancelReservation")

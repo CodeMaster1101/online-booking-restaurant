@@ -48,7 +48,6 @@ public class Reservation
     private LocalDateTime time;
     @DateTimeFormat(iso = ISO.DATE_TIME)
     private LocalDateTime maxTime;
-    private int numberOfPeople;
     @JsonIgnore
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     private BusyReservation livingReservation;

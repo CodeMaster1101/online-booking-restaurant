@@ -48,24 +48,23 @@ public class MainService {
 	 * @param reservation -> the object that contains all the startup information
 	 */
 	@SneakyThrows @Transactional
-	public void reserveTable(ReservationDTO dto) {
-		Reservation reservation = reservations.save(new Reservation(null, dto.isAccepted(), uRepo.findByUsername(dto.getUsername()), 
-				tRepo.getById(dto.getTableid()), dto.getTime(), LocalDateTime.of(dto.getTime().toLocalDate(), dto.getMaxTime()), 0, null, null));
+	public void reserveTable(ReservationDTO dto, Reservation reservation) {
+		reservations.save(reservation);
+		reservation.setUser(uRepo.findByUsername(dto.getUsername()));
+		User user = reservation.getUser();
+		if(user.getReservation() != null)
+			throw new Exception("already a reservation on this user");
+		user.setReservation(reservation);
+		if(!reservationRequirements(reservation))
+			throw new Exception("didnt meet the reservation requierements");
 		if(checkReservationRadius(reservation) == false)
 			throw new Exception("bad radius");
 		if(!checkTime(reservation))
 			throw new Exception("can't reserve a table after the current time of the day");
-		reservation.getUser().setUsername(dto.getUsername());
 		String password = dto.getPassword();
-		User user = reservation.getUser();
 		if(password.equals(user.getPassword()) == false)
 			throw new Exception("password incorrect");
-		if(user.getReservation() != null)
-			throw new Exception("already a reservation on this user");
-		user.setUReservation(reservation);
-		reservation.setUTable(tRepo.findById(reservation.getTable().getId()).get());	
-		if(!reservationRequirements(reservation))
-			throw new Exception("didnt meet the reservation requierements");
+		reservation.setUTable(tRepo.findById(dto.getTableid()).get());	
 		checkOtherReservations(reservation.getTable(), reservation);
 		user.setReservationMoment(LocalDateTime.now());
 		reservation.setFee(CONSTANTS.FEE * incrementFee(reservation.getUser()));

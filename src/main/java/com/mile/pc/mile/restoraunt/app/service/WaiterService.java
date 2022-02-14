@@ -36,12 +36,11 @@ public class WaiterService {
 		CustomTable table = tRepo.findById(tableid).get();
 		if(table.getBusy()!=true) {
 			Reservation currentRes = findCurrentReservation(table);
-			if(currentRes == null)
-				throw new NullPointerException("reservation not found");
 			reservationBusyLogic(currentRes);
 			table.setBusy(true);
 			return;
-		}throw new Exception("already busy");
+		}
+		throw new Exception("already busy");
 	}
 
 	

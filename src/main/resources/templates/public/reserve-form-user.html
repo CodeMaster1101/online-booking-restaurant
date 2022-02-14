@@ -11,8 +11,9 @@
 	<div class = "navbar">
 			<nav>
 				<ul>
-				<li><a th:href="@{/public/tables}">Tables</a></li>
-				<li><a th:href="@{/public/cancel-reservation-form}" >Cancel reservation</a></li>
+				<li><a th:href="@{/public/home}"> Home </a></li>
+				<li><a th:href="@{/public/reserve-form}"> Reserve </a></li>
+				<li><a th:href="@{/public/cancel-reservation-form}" > Cancel reservation </a></li>
 				</ul>
 			</nav>		
 			</div> 
@@ -22,54 +23,53 @@
 <div class = "h4"><h4>Reserve</h4></div>
 	<div class = "content">
 		<form th:action="@{/public/reserveTable}" th:object="${reservation}" th:method="post">
-				<label>Fee</label>
-				<p>Important notice! For each hour the fee will be incremented by 150 mkd. Do you accept?</p>
+				</br>
 				<input type="checkbox" th:field ="*{accepted}" value="true"/> Accept
 				</br>
 				</br>
 				<label>Username</label>
 				</br>
    				<input type="text" th:field="*{username}">
-   				<label>Password</label>
    				</br>
+   				</br>
+   				<label>Password</label>
    				</br>
    				<input type = "password" th:field = "*{password}">
    				</br>
    				</br>
-   				<label>Time of the reservation</label>
+   				<label>Reservation date</label>
+   				</br>
+   				</br>				
+   				<input type = "date" th:field ="*{date}">
    				</br>
    				</br>
-   				<input type = "datetime-local" th:field ="*{time}">
+   				</br>
+   				<label>Period of the day</label>
    				</br>
    				</br>
-   				<label>Aproximate time of calling for check</label>
+   				<input type="radio" th:field ="*{period}" value="1" /> Breakfast
    				</br>
    				</br>
-   				<input type="time" th:field ="*{maxTime}">
+   				<input type="radio" th:field ="*{period}" value="2" /> Lunch
    				</br>
    				</br>
-   				<input type="hidden" th:field ="*{tableid}">
+   				<input type="radio" th:field ="*{period}" value="3" /> Dinner
+   				</br>
+   				</br>
+   				</br>
+   				</br>
+   				<label>Specific time</label>
+   				</br>
+   				</br>
+   				<input type="time" th:field ="*{time}">
+   				</br>
+   				</br>
+   				<label>Notes</label>
+   				<input type="text" th:field ="*{note}">
    				<input type="submit" value="Submit">
   </form>
-  	<div class ="rnd">
-  		<p style="font-family: Arial, Helvetica, sans-serif;">
-  			<strong>Disclaimer</strong>
-  			<br/>
-  			<br/>
-  			When reserving try to keep the minute input rounded to 30 or 00, for example,
-  			17:00/17:30. Thank you!
-  			<br/>
-  			</br>
-  			<strong>Rules</strong>
-  			<br/>
-  			</br>
-  			1. The terms and conditions must be accepted;
-  			2. The reservation must be long atleast an hour;
-  			3. Minimum reservation time - 7:00 AM. Maximum - 10PM;
-  		</p>
-  	</div >
  </div>
 </div >
-  
+</div>
 </body>
 </html>

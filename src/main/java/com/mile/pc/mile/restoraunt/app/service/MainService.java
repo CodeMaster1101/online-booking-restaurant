@@ -78,9 +78,7 @@ public class MainService {
 	private boolean reservationRequirements(Reservation reservation, ReservationDTO dto) {
 		if(reservation.getUser().getBalance() < incrementFee(reservation.getPeriod()))
 			return false;
-		if(reservation.getAccepted() == false)
-			return false;
-		if(reservation.getUser().getReservation() != null)
+		if(reservation.getAccepted() == false && reservation.getUser().getReservation() != null)
 			return false;
 		if(!OneDayBefore(reservation))
 			throw new Exception("one day minimum for reserving ahead");

@@ -35,19 +35,13 @@ public class UserController {
 	 * Getting the model methods
 	 *
 	 */
-	
-	@GetMapping(path = {"/tables", ""})
-	public ModelAndView getTables(){
-		return new ModelAndView("public/tables-user", "tables", tableRepo.findAll());
-	}
-	
-	@GetMapping(path = "/viewTable")
-	public ModelAndView getTableModel(@RequestParam Long id) {
-		return new ModelAndView("public/view-table-user", "reservations", des.reservationTimes(id));
+	@GetMapping(path = {"", "/home"})
+	public ModelAndView homePage() {
+		return new ModelAndView("home-page");
 	}
 	@GetMapping(path = "/reserve-form")
 	public ModelAndView reserveTableForm(@RequestParam long id) {
-		return new ModelAndView("public/reserve-form-user", "reservation", new ReservationDTO(false,null, null, null, null, id));
+		return new ModelAndView("public/reserve-form-user", "reservation", new ReservationDTO());
 	}
 	
 	@GetMapping(path = "/cancel-reservation-form")
@@ -61,7 +55,7 @@ public class UserController {
 	
 	@PostMapping(path = "/reserveTable")
 	public String reserveTable(@ModelAttribute ReservationDTO reservationDTO) {
-		main.reserveTable(reservationDTO, new Reservation(null, reservationDTO.isAccepted(), null, null, reservationDTO.getTime(), LocalDateTime.of(reservationDTO.getTime().toLocalDate(), reservationDTO.getMaxTime()), null, null));
+		main.reserveTable(reservationDTO);
 		return "redirect:/public/tables";
 	}
 	@GetMapping(path ="/cancelReservation")

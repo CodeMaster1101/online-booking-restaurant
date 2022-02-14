@@ -8,13 +8,7 @@ import java.util.Set;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 
 import lombok.Getter;
-/**
- * 
- * @author Mile Stanislavov
- * 
- * Custom Comparator class, it's goal is to check if one reservation time interval overlaps another.
- * If so, the distance would be bad. Otherwise, it will move on with the algorithm.
- */
+
 @Getter
 public class TimeComparator implements Comparator<Reservation>{
 
@@ -22,25 +16,7 @@ public class TimeComparator implements Comparator<Reservation>{
 	 * measuring the distance
 	 */
 	private boolean goodDistance = true;
-	/**
-	 * Checks if the two reservations are in the same day, if they aren't, then continues. Otherwise,
-	 * Compares two Sets of integers, each containing the hours from the beginning to the end of the reservation.
-	 * If they have at least one mutual integer the distance would be bad as the reservations would overlap;
-	 * @param left -> x reservation
-	 * @param right -> y reservation
-	 * @return true if they are not in the same day or (when combined, they don't have same values in their individual sets).
-	 */
-	private boolean compareTwoReservationsTimes(Reservation left, Reservation right) {
-		if(checkNotSameDay(left, right))return true;
-		//creating the sets
-		Set<Integer> leftHourContainer = new HashSet<>(), rightHourContainer = new HashSet<>();
-		for(int i = left.getTime().getHour(); i <= left.getMaxTime().getHour(); i++)
-			leftHourContainer.add(i);
-		for(int i = right.getTime().getHour(); i <= right.getMaxTime().getHour(); i++)
-			rightHourContainer.add(i);	
-		//checks if they have mutual elements. return true if they don't
-		return Collections.disjoint(leftHourContainer, rightHourContainer);
-	}
+	
 	/**
 	 * @param left
 	 * @param right
@@ -52,6 +28,11 @@ public class TimeComparator implements Comparator<Reservation>{
 		if(left.getTime().getMonth() != right.getTime().getMonth())
 			return true;
 		if(left.getTime().getDayOfMonth() != right.getTime().getDayOfMonth()) 
+			return true;
+		return false;
+	}
+	private boolean compareTwoReservationsTimes(Reservation o1, Reservation o2) {
+		if(checkNotSameDay(o1, o2) || (o1.getFee() != o2.getFee())) 
 			return true;
 		return false;
 	}

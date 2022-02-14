@@ -17,7 +17,6 @@
 			<nav>
 				<ul>
 				<li><a th:href="@{/waiter/tables}">Home</a></li>
-				<li><a th:href="@{/waiter/reservations}" >Reservations</a></li>
 				<li><a th:href="@{/waiter/todayReservations}">Today reservations</a> </li>
 				<li><a th:href="@{/waiter/deleteExpiredReservations}">Expired reservations</a></li>
 				</ul>
@@ -41,8 +40,7 @@
 					<td><a th:href="@{/waiter/setBusy(id = ${t.id})}"
 						class="btn btn-success">Occupied</a> <a
 						th:href="@{/waiter/setCalm(id = ${t.id})}"
-						class="btn btn-warning">Empty</a>
-					<a th:href="@{/waiter/setGuest(id = ${t.id})}" class = "btn btn-info">Guest</a></td>
+						class="btn btn-warning">Empty</a></td>
 				</tr>
 			</tbody>
 		</table>

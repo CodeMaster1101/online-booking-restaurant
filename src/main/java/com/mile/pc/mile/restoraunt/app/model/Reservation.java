@@ -2,7 +2,6 @@ package com.mile.pc.mile.restoraunt.app.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +14,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -46,12 +44,11 @@ public class Reservation
     private CustomTable table;
     @DateTimeFormat(iso = ISO.DATE_TIME)
     private LocalDateTime time;
-    @DateTimeFormat(iso = ISO.DATE_TIME)
-    private LocalDateTime maxTime;
-    @JsonIgnore
-    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
-    private BusyReservation livingReservation;
     private Long fee;
+    private boolean busy;
+    private boolean expired;
+    private int period;
+    private String note;
     public void setUTable(CustomTable table) {
     	this.table = table;
     	table.addReservation(this);

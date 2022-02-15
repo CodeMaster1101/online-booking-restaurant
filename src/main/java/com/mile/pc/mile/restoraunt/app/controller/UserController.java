@@ -52,12 +52,12 @@ public class UserController {
 	@PostMapping(path = "/reserveTable")
 	public String reserveTable(@ModelAttribute ReservationDTO reservationDTO) {
 		main.reserveTable(reservationDTO);
-		return "redirect:/public/tables";
+		return "redirect:/public/home";
 	}
 	@GetMapping(path ="/cancelReservation")
 	public String cancelReservation(@ModelAttribute UserPasswordForm u_p_form) {
 		if(main.cancelReservation(u_p_form))
-		return "redirect:/public/tables";
+		return "redirect:/public/home";
 		else 
 			return"Oops! The time for canceling has expired. The reservation lives on. You can still attend to it.";
 

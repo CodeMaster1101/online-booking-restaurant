@@ -105,7 +105,7 @@ public class WaiterService {
 				&&  now.isBefore(r.getTime().toLocalTime().plusMinutes((CONSTANTS.AFTER_RESERVATION_TIME)))).findFirst().get();
 	}
 
-	
+	@Transactional
 	private void emptyTableAndReservations(CustomTable table, Reservation currentReservation) {
 		removeReservation(currentReservation.getId());		
 		table.setBusy(false);

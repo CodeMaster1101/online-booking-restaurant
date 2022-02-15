@@ -1,9 +1,6 @@
 package com.mile.pc.mile.restoraunt.app.comparator;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 
@@ -32,7 +29,11 @@ public class TimeComparator implements Comparator<Reservation>{
 		return false;
 	}
 	private boolean compareTwoReservationsTimes(Reservation o1, Reservation o2) {
-		if(checkNotSameDay(o1, o2) || (o1.getFee() != o2.getFee())) 
+		if(o1.getTable().getId() == o2.getTable().getId())
+			return true;
+		if(checkNotSameDay(o1, o2)) 
+			return true;
+		if(o1.getFee() != o2.getFee())
 			return true;
 		return false;
 	}

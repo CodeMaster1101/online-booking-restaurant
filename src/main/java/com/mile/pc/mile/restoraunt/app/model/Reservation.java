@@ -46,7 +46,6 @@ public class Reservation
     private LocalDateTime time;
     private Long fee;
     private boolean busy;
-    private boolean expired;
     private int period;
     private String note;
     public void setUTable(CustomTable table) {

@@ -38,6 +38,7 @@ public class MainService {
 		Reservation reservation = saveNewRes(dto);
 		if(!reservationRequirements(reservation, dto))
 			throw new Exception("didn't meet reservation requirements");
+		reservation.setFee(incrementFee(reservation.getPeriod()));
 		checkOtherReservations(reservation.getTable(), reservation);
 		User user = reservation.getUser();
 		basicReservingProcedure(user, reservation);
@@ -52,7 +53,7 @@ public class MainService {
 			localUser.setBalance(localUser.getBalance() + localUser.getReservation().getFee());
 			basicUserReservationCancelLogic(localUser);
 			return true;
-		}return false;
+		}throw new Exception("time out!");
 	}
 
 	/*
@@ -61,7 +62,7 @@ public class MainService {
 
 
 	@SneakyThrows @Transactional
-	protected void checkOtherReservations(CustomTable table, Reservation reservation) {	
+	private void checkOtherReservations(CustomTable table, Reservation reservation) {	
 		table.getReservations().add(reservation);
 		TimeComparator tComp = new TimeComparator();
 		Collections.sort(table.getReservations(), tComp);
@@ -70,7 +71,6 @@ public class MainService {
 			throw new Exception("distance between reservations is bad");
 		}
 	}
-
 	/*
 	 * PRIVATE HELPING METHODS
 	 */
@@ -78,7 +78,7 @@ public class MainService {
 	private boolean reservationRequirements(Reservation reservation, ReservationDTO dto) {
 		if(reservation.getUser().getBalance() < incrementFee(reservation.getPeriod()))
 			return false;
-		if(reservation.getAccepted() == false && reservation.getUser().getReservation() != null)
+		if(reservation.getAccepted() == false || reservation.getUser().getReservation() != null)
 			return false;
 		if(!OneDayBefore(reservation))
 			throw new Exception("one day minimum for reserving ahead");
@@ -95,16 +95,16 @@ public class MainService {
 					dto.getTime().isBefore(CONSTANTS.NOON))return true;
 		}
 		else if(dto.getPeriod() == 2) {
-			if(dto.getTime().isAfter(CONSTANTS.NOON) && 
+			if(dto.getTime().isAfter(CONSTANTS.NOON.plusHours(1)) && 
 					dto.getTime().isBefore(CONSTANTS.EVENING))return true;
 		}
 		else if(dto.getPeriod() == 3) {
-			if(dto.getTime().isAfter(CONSTANTS.EVENING) && 
+			if(dto.getTime().isAfter(CONSTANTS.EVENING.minusMinutes(1)) && 
 					dto.getTime().isBefore(CONSTANTS.END.plusMinutes(1)))return true;
 		}
 		return false;
 	}
-
+	
 	private boolean passwordWithUser(User user, String password) {
 		if(user.getPassword().contentEquals(password))
 			return true;
@@ -126,17 +126,17 @@ public class MainService {
 		localUser.setReservationMoment(null);
 	}
 	
-	private void basicReservingProcedure(User user, Reservation reservation) {
+	@Transactional
+	private void basicReservingProcedure(User user, Reservation reservation) throws Exception {
 		user.setReservation(reservation);
 		user.setReservationMoment(LocalDateTime.now());
-		reservation.setFee(incrementFee(reservation.getPeriod()));
 		user.setBalance(user.getBalance() - reservation.getFee());		
 	}
 	
 	private boolean OneDayBefore(Reservation reservation) {
-		if(LocalDateTime.now().plusDays(1).isBefore(reservation.getTime()))
+//		if(LocalDateTime.now().plusDays(1).isBefore(reservation.getTime()))
 			return true;
-		return false;
+		//return false;
 	}
 
 	@SneakyThrows
@@ -149,15 +149,16 @@ public class MainService {
 		}
 	}
 
+	@Transactional
 	private Reservation saveNewRes(ReservationDTO dto) {
 		return reservations.save(new Reservation(null, dto.isAccepted(), uRepo.findByUsername(dto.getUsername())
-				,findAvailableTable(dto), LocalDateTime.of(dto.getDate(), dto.getTime()), null, false, false, dto.getPeriod(), dto.getNote()));
+				,findAvailableTable(dto), LocalDateTime.of(dto.getDate(), dto.getTime()), null, false, dto.getPeriod(), dto.getNote()));
 	}
 
 	@SneakyThrows
 	private CustomTable findAvailableTable(ReservationDTO dto) {
 		for (CustomTable table : tRepo.findAll()) {
-			Optional<Reservation> res = table.getReservations().stream().filter(r -> r.getPeriod() == dto.getPeriod()).findFirst();
+			Optional<Reservation> res = table.getReservations().stream().filter(r -> r.getPeriod() == dto.getPeriod() && (r.getTime().toLocalDate().isEqual(dto.getDate()))).findFirst();
 			if(!res.isPresent())
 				return table;
 		}

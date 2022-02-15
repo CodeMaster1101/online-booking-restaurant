@@ -46,7 +46,6 @@ public class MileRestorauntAppApplication {
 //			ur.save(new User(null, "user2", "wow", 1500, null, new HashSet<>(), null));
 //			ur.save(new User(null, "user3", "123", 1500, null, new HashSet<>(), null));
 //			ur.save(new User(null, "user4", "123", 1500, null, new HashSet<>(), null));
-//
 //			
 //			cs.AddRoleToUser("cpthermes", "ADMIN");
 		};

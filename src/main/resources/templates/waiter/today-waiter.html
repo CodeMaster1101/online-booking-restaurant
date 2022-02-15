@@ -16,7 +16,6 @@
 	<div class = "navbar">
 			<nav>
 				<ul>
-				<li><a th:href="@{/waiter/tables}">Home</a></li>
 				<li><a th:href="@{/waiter/todayReservations}">Today reservations</a> </li>
 				<li><a th:href="@{/waiter/deleteExpiredReservations}">Expired reservations</a></li>
 				</ul>
@@ -28,15 +27,19 @@
 			<thead>
 				<tr>
 					<th>Table ID</th>
-					<th>Start</th>
-					<th>End</th>
+					<th>Username</th>
+					<th>Period</th>
+					<th>Time</th>
+					<th>Note</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="r: ${reservations}">
 					<td th:text ="${r.tableid}"></td> 
+					<td th:text="${r.username}"></td>
+					<td th:text="${r.period}"></td>
 					<td th:text="${r.time}"></td>
-					<td th:text="${r.maxTime}"></td>
+					<td th:text="${r.note}"></td>
 				</tr>
 			</tbody>
 		</table>

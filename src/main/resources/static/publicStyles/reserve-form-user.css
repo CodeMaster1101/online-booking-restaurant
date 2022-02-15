@@ -25,6 +25,8 @@ nav ul li a{
 	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 	font-size: large;
 	color: rgb(255, 255, 255);
+	text-decoration: wavy;
+
 }
 input[type=text], radio {
   width: 100%;

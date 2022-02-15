@@ -17,9 +17,7 @@
 				</ul>
 			</nav>		
 			</div> 
-		<br/>
 <div class = "form">
-</br>
 <div class = "h4"><h4>Reserve</h4></div>
 	<div class = "content">
 		<form th:action="@{/public/reserveTable}" th:object="${reservation}" th:method="post">
@@ -47,13 +45,13 @@
    				<label>Period of the day</label>
    				</br>
    				</br>
-   				<input type="radio" th:field ="*{period}" value="1" /> Breakfast
+   				<input type="radio" th:field ="*{period}" value="1" /> Breakfast  07:00 AM - 12:00 PM
    				</br>
    				</br>
-   				<input type="radio" th:field ="*{period}" value="2" /> Lunch
+   				<input type="radio" th:field ="*{period}" value="2" /> Lunch 01:00 PM - 07:00 PM
    				</br>
    				</br>
-   				<input type="radio" th:field ="*{period}" value="3" /> Dinner
+   				<input type="radio" th:field ="*{period}" value="3" /> Dinner 08:00 PM - 10:00 PM
    				</br>
    				</br>
    				</br>
@@ -62,6 +60,7 @@
    				</br>
    				</br>
    				<input type="time" th:field ="*{time}">
+   				</br>
    				</br>
    				</br>
    				<label>Notes</label>

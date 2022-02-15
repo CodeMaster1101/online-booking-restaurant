@@ -30,7 +30,7 @@ public class WaiterService {
 	@Autowired ReservationRepository reservations;
 	@Autowired UserRepository urepo;
 
-	
+
 	@SneakyThrows @Transactional
 	public void setBusy(long tableid) {
 		CustomTable table = tRepo.findById(tableid).get();
@@ -43,7 +43,7 @@ public class WaiterService {
 		throw new Exception("already busy");
 	}
 
-	
+
 	@Transactional
 	public void setCalm(long tableid) {
 		CustomTable table = tRepo.findById(tableid).get();
@@ -52,19 +52,20 @@ public class WaiterService {
 		emptyTableAndReservations(table, currentReservation);
 	}
 
-	
-	
+
+
 	public List<Reservation> todayReservations(){
 		return reservations.findAll().stream()
 				.filter(r -> r.getTime().getDayOfMonth() == LocalDate.now().getDayOfMonth())
 				.collect(Collectors.toList());
 	}
 
-	
+
 	@Transactional
 	public void removeExpiredReservations() {
 		List<Reservation> expiredReservations = reservations.findAll().stream()
-				.filter(r -> r.getTime().plusDays(1).isBefore(LocalDateTime.now()))
+				.filter(r -> r.getTime().plusMinutes(CONSTANTS.AFTER_RESERVATION_TIME).isBefore(LocalDateTime.now()) 
+						&& r.isBusy() == false)
 				.collect(Collectors.toList());
 		if(expiredReservations.isEmpty() == false) {
 			for (Reservation reservation : expiredReservations) {
@@ -74,28 +75,28 @@ public class WaiterService {
 	}
 	//PRIVATE HELPING METHODS
 
-	
+
 	@Transactional
 	private void removeReservation(long id) {
 		Reservation reservation = reservations.findById(id).get();
 		reservation.getUser().setReservation(null);
 		reservation.getUser().setReservationMoment(null);
 		reservation.getTable().removeReservation(reservation);
-		reservations.deleteById(id);
 	}
 
 
-	
+
 	@Transactional
 	protected void sendMoneyToAdmin(Reservation reservation) {
 		if(reservation.getFee() != null) {
-			User admin = urepo.findAll().stream().filter(u -> u.getRoles().contains(roleRepo.findByType("ADMIN"))).findFirst().get();
+			User admin = urepo.findAll().stream().filter(u -> u.getRoles().contains(
+					roleRepo.findByType("ADMIN"))).findFirst().get();
 			admin.setBalance(admin.getBalance() + reservation.getFee());
 		}
 		removeReservation(reservation.getId());
 	}
 
-	
+
 	private Reservation findCurrentReservation(CustomTable table) {
 		LocalTime now = LocalTime.now();
 		return table.getReservations().stream()
@@ -111,7 +112,7 @@ public class WaiterService {
 		table.setBusy(false);
 	}
 
-	
+
 	@Transactional
 	private void reservationBusyLogic(Reservation reservation) {
 		//keeps the reservation as a "busy reservation" in a map to ease the complexity, later implemented in the setCalm(long id) method

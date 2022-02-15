@@ -95,8 +95,8 @@ public class MainService {
 					dto.getTime().isBefore(CONSTANTS.NOON))return true;
 		}
 		else if(dto.getPeriod() == 2) {
-			if(dto.getTime().isAfter(CONSTANTS.NOON.plusHours(1)) && 
-					dto.getTime().isBefore(CONSTANTS.EVENING))return true;
+			if(dto.getTime().isAfter(CONSTANTS.NOON.plusMinutes(59)) && 
+					dto.getTime().isBefore(CONSTANTS.EVENING.minusHours(1)))return true;
 		}
 		else if(dto.getPeriod() == 3) {
 			if(dto.getTime().isAfter(CONSTANTS.EVENING.minusMinutes(1)) && 
@@ -122,7 +122,6 @@ public class MainService {
 		Reservation res = localUser.getReservation();
 		localUser.setReservation(null);
 		res.getTable().removeReservation(res);
-		reservations.deleteById(res.getId());
 		localUser.setReservationMoment(null);
 	}
 	

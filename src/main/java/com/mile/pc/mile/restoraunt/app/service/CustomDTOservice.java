@@ -15,8 +15,6 @@ import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 
-import lombok.SneakyThrows;
-
 @Service
 public class CustomDTOservice {
 
@@ -35,7 +33,7 @@ public class CustomDTOservice {
 	public Set<ReservationWaiterDTO> reservationDTOconv(List<Reservation> todayReservations) {
 
 		return todayReservations.stream().map(r-> new ReservationWaiterDTO(r.getTable().getId(),
-				r.getUser().getUsername(), fetchPeriodAsString(r), r.getTime().toLocalTime(), r.getNote())).collect(Collectors.toSet());
+				r.getUser().getUsername(), fetchPeriodAsString(r), r.getTime().toLocalTime(), r.isBusy(), r.getNote())).collect(Collectors.toSet());
 	}
 
 	private String fetchPeriodAsString(Reservation reservation) {

@@ -22,5 +22,6 @@ public class ReservationWaiterDTO {
 	private String period;
 	@DateTimeFormat(iso = ISO.TIME)
 	private LocalTime time;
+	private boolean arrived;
 	private String note;
 }

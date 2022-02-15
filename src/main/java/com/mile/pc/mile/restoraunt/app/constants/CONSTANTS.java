@@ -14,7 +14,7 @@ public class CONSTANTS {
 	public final static long  BREAKFAST_FEE = 150;
 	public final static long  LUNCH_FEE = 300;
 	public final static long  DINNER_FEE = 600;
-	public final static int AFTER_RESERVATION_TIME = 45;
+	public final static int AFTER_RESERVATION_TIME = 50;
 	public final static int BEFORE_RESERVATION_TIME = 50;
 	public static final LocalTime START = LocalTime.of(7, 0);
 	public static final LocalTime END = LocalTime.of(22, 00);

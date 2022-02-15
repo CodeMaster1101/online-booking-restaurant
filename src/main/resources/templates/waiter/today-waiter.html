@@ -1,6 +1,9 @@
 <html xmlns="http://www.thymeleaf.org">
 
 <head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Today reservations</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -16,7 +19,7 @@
 	<div class = "navbar">
 			<nav>
 				<ul>
-				<li><a th:href="@{/waiter/todayReservations}">Today reservations</a> </li>
+				<li><a th:href="@{/waiter/tables}">Tables</a> </li>
 				<li><a th:href="@{/waiter/deleteExpiredReservations}">Expired reservations</a></li>
 				</ul>
 			</nav>		
@@ -31,6 +34,7 @@
 					<th>Period</th>
 					<th>Time</th>
 					<th>Note</th>
+					<th>Arrived</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -40,6 +44,7 @@
 					<td th:text="${r.period}"></td>
 					<td th:text="${r.time}"></td>
 					<td th:text="${r.note}"></td>
+					<td th:text = "${r.arrived}"></td> 
 				</tr>
 			</tbody>
 		</table>

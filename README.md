@@ -21,8 +21,7 @@ For the API to work correctly, all three sections must be in sync.
 
 ### Basic overview
 
-In order to reserve a table, the client must sign up/login. Following the authentication procedure, the client is redirected to the public section where they can see all
-the tables in the restoraunt, as well as other actions based on these "tables".
+In order to reserve a table, the client must sign up/login. Following the authentication procedure, the client is redirected to the public section where they can view the home page/main page for the restoraunt. From the page they can either make a reservation or cancel their current reservation. Each user can have up to one reservation.
 The CEO/manager keeps track of all the users including all of the registered clients and the restoraunt's waiters.
 For all three sections to be synced there must be a human maintenance in the restoraunt itself. This is where the waiter section comes in to play where there are 1+ responsible "waiters" for the tables and the clients's reservations.
 Each user has a "balance" that corresponds to their money.
@@ -42,28 +41,27 @@ after signing up, by default the role "USER", corresponding to the client(public
 
 The Public section is based on the client's functionalities. Every client has the following functionalities:
 
-- View of all the tables
-- Viewing every table in detail -> every reservation on this table.
+- View of the home page for the restoraunt.
 - Reserving a table at a certain time and day.
 - Canceling the same reservation -> input username and password.
 
 ### RULES:
 
 ### Reserving 
-    
-The client must fill in a form containing the username and password of the client. The form allows the user to select the date-time for the reservation using a calendar. 
-Now, for the service to be functional and fair for every client, the form asks the client how long will they be sitting approximately. Each reservation has a "fee" that the client must pay in advance to insure that the they will in fact show up to the reservation. For every
-hour of the reservation duration, the client has to pay plus 150 mkd. This must be accepted.
+
+The client must fill in a form containing the username and password of the client. The form allows the user to select the date for the reservation using a calendar. 
+Now, for the service to be functional and fair for every client, the form asks the client at which period of the day they would like to attend to their reservation. There are three periods, "Breakfast" {07:00 AM - 12:00 PM}, "Lunch" {01:00 PM - 07:00 PM}, "Dinner" {08:00 PM - 10:00 PM}. Following the period, the user needs to specify a time of arrival within their respective period interval. Every reservation has a "fee" that the client must pay in advance to insure that the they will in fact show up on the reservation. Breakfast - 150. Lunch - 300. Dinner - 600.
+This must be accepted. The minimal time to reserve must be within a day from now. For example, if today is 18/2/22, the minimum time to make a reservation would be on 19/2/22. 
  
+ ### Basic reservation procedure 
+  
+In case the client does not show up in the restoraunt within 50 minutes after the specified time, the reservation dies and the fee from the reservation is transfered to the admin's account. If the user is 50 minutes earlier before the time of the reservation the service will not find their reservation.
+
 ### Canceling the reservation 
    
-The canceling procedure must be executed within 15 minutes from the reserving moment. For example if the current local time is 18:00
-the client must cancel their reservation until 18:16. If the client doesn't cancel it within 15 minutes, the reservation lives on.
+The canceling procedure must be executed within 2 hours from the reserving moment. For example if the current time is 06:00 PM
+the client must cancel their reservation until 08:00 PM. If the client doesn't cancel it within two hours, the reservation lives on.
  
-### Basic reservation procedure 
-  
-In case the client does not show up in the restoraunt within 45 minutes after the reservation time, the reservation dies and the fee from the reservation is transfered to the admin's balance. If the user is 50 minutes earlier before the time of the reservation the service will not find their reservation.
-
 ## Waiter section
  
  This section follows the actions of the "waiter" - the person responsible for the reservations in the local place(restoraunt).
@@ -71,7 +69,6 @@ In case the client does not show up in the restoraunt within 45 minutes after th
  Functionalities: 
  - View of all the tables in the restoraunt (ID, Occupied/Not, Actions). 
  - View of today reservations.
- - View of all reservations.
  - Removing all "expired reservations" -> Each reservation that hasn't been attended to is marked as an expired reservation, which the waiter can remove. While doing so
    the fee from every reservation with a user(non-guest reservation) is being transfered to the admin's wallet.
  - Actions -> on one table the waiter can execute the following commands:
@@ -79,16 +76,18 @@ In case the client does not show up in the restoraunt within 45 minutes after th
 ### Occupied  
 Informs the service that a user with a reservation has just arrived. The service looks for the current reservation
 and sets that table to occupied with the current user that has just arrived. If the service does not return a reservation, the user is either late
-(the user has arrived after 45 minutes from his original reservation time) or the user is too early (50 minutes before his reservation time).
+(the user has arrived after 50 minutes from his original reservation time) or the user is too early (50 minutes before his reservation time).
    
-### Guest  
-Infroms the service that someone wants to sit on this particular table, but this "someone" does not have a reservation, out of two reasons.
-This person did not want to reserve or they hadn't known about the app. The service creates a proxy reservation long 4 hours, if and only if, there                               arent any other reservations on that table in the next 4 hours. The proxy reservation does not have a user.
- 
 ### Empty 
 Informs the service that the current client has called for check or has gotten up from the table. This is crucial as one 
 table must be empty in order for another client to sit on tha table.
  
+### No reservation arrival
+
+What if a person without a reservation arrives and sits on a table where there is a reservation around the time when this person arrived? 
+This is why the minimal time for reserving is one day. The waiters know that this day has only these reservations and nothing more. Having this in mind they can easily organise
+and place this guest on a table without a reservation at this time of the day. Everyone is happy!
+
 ## Security
 
 Each user has a collection of roles. 

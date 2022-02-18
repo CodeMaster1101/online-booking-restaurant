@@ -1,7 +1,5 @@
 package com.mile.pc.mile.restoraunt.app;
 
-import java.util.HashSet;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.mile.pc.mile.restoraunt.app.model.CustomTable;
-import com.mile.pc.mile.restoraunt.app.model.Role;
-import com.mile.pc.mile.restoraunt.app.model.User;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;

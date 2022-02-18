@@ -51,7 +51,7 @@ public class CrudController {
 	
 	@GetMapping(path = "users/waiters")
 	public ModelAndView getWaiters(){
-		return new ModelAndView("admin/waiters-admin","waiters", crudService.getWaiters());
+		return new ModelAndView("admin/waiters-admin","waiters", dto_ser.usersDTO(crudService.getWaiters()));
 	}
 	
 	@GetMapping(path = "/add-RTU-form")

@@ -2,7 +2,7 @@ package com.mile.pc.mile.restoraunt.app.service;
 
 
 
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mile.pc.mile.restoraunt.app.dto.UserDTO;
 import com.mile.pc.mile.restoraunt.app.model.Role;
 import com.mile.pc.mile.restoraunt.app.model.User;
 import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;
@@ -72,9 +71,9 @@ public class CrudService {
 	 * filters through all the users to fetch every waiter
 	 * @return every user that has a role "WAITER"
 	 */
-	public Set<UserDTO> getWaiters(){
-		return dto_Ser.usersDTO(userRepo.findAll().stream()
-				.filter(u -> u.getRoles().contains(roleRepo.findByType("WAITER"))).collect(Collectors.toList()));
+	public List<User> getWaiters(){
+		return userRepo.findAll().stream()
+				.filter(u -> u.getRoles().contains(roleRepo.findByType("WAITER"))).collect(Collectors.toList());
 	}
 
 }

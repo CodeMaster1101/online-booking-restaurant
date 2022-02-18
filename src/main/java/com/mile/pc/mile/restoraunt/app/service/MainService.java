@@ -92,7 +92,7 @@ public class MainService {
 	private boolean specificTimeBasedOnPeriod(ReservationDTO dto) {
 		if(dto.getPeriod() == 1) {
 			if(dto.getTime().isAfter(CONSTANTS.START.minusMinutes(1)) && 
-					dto.getTime().isBefore(CONSTANTS.NOON))return true;
+					dto.getTime().isBefore(CONSTANTS.NOON.plusMinutes(30)))return true;
 		}
 		else if(dto.getPeriod() == 2) {
 			if(dto.getTime().isAfter(CONSTANTS.NOON.plusMinutes(59)) && 

@@ -64,9 +64,7 @@ public class WaiterService {
 	@Transactional
 	public void removeExpiredReservations() {
 		List<Reservation> expiredReservations = reservations.findAll().stream()
-				.filter(r -> r.getTime().plusMinutes(CONSTANTS.AFTER_RESERVATION_TIME).isBefore(LocalDateTime.now()) 
-						&& r.isBusy() == false)
-				.collect(Collectors.toList());
+				.filter(r ->  r.isBusy() == false && r.getTime().plusMinutes(CONSTANTS.AFTER_RESERVATION_TIME).isBefore(LocalDateTime.now())).collect(Collectors.toList());
 		if(expiredReservations.isEmpty() == false) {
 			for (Reservation reservation : expiredReservations) {
 				sendMoneyToAdmin(reservation);
@@ -87,7 +85,7 @@ public class WaiterService {
 
 
 	@Transactional
-	protected void sendMoneyToAdmin(Reservation reservation) {
+	private void sendMoneyToAdmin(Reservation reservation) {
 		if(reservation.getFee() != null) {
 			User admin = urepo.findAll().stream().filter(u -> u.getRoles().contains(
 					roleRepo.findByType("ADMIN"))).findFirst().get();

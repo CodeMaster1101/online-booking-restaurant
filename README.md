@@ -70,7 +70,7 @@ the client must cancel their reservation until 08:00 PM. If the client doesn't c
  - View of all the tables in the restoraunt (ID, Occupied/Not, Actions). 
  - View of today reservations.
  - Removing all "expired reservations" -> Each reservation that hasn't been attended to is marked as an expired reservation, which the waiter can remove. While doing so
-   the fee from every reservation with a user(non-guest reservation) is being transfered to the admin's wallet.
+   the fee from every reservation is being transfered to the admin's wallet and the user on that reservation does not get the money.
  - Actions -> on one table the waiter can execute the following commands:
  
 ### Occupied  
@@ -80,7 +80,7 @@ and sets that table to occupied with the current user that has just arrived. If 
    
 ### Empty 
 Informs the service that the current client has called for check or has gotten up from the table. This is crucial as one 
-table must be empty in order for another client to sit on tha table.
+table must be empty in order for another client to sit on that table.
  
 ### No reservation arrival
 
@@ -91,7 +91,7 @@ and place this guest on a table without a reservation at this time of the day. E
 ## Security
 
 Each user has a collection of roles. 
-There are three roles [User, Waiter, Admin].
+There are three roles (User, Waiter, Admin).
 Based on these roles, one user can access different urls.
 But if the user does not contain one or two of these roles then they will not be authorised for some urls.
 By default each user has the role USER that corresponds to the public section.

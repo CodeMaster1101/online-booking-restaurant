@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
+import com.mile.pc.mile.restoraunt.app.exceptions.AlreadyBusyException;
 import com.mile.pc.mile.restoraunt.app.model.CustomTable;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.model.User;
@@ -40,7 +41,7 @@ public class WaiterService {
 			table.setBusy(true);
 			return;
 		}
-		throw new Exception("already busy");
+		throw new AlreadyBusyException(tableid);
 	}
 
 

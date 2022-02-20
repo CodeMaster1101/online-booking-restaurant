@@ -1,5 +1,7 @@
 package com.mile.pc.mile.restoraunt.app.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,7 +52,7 @@ public class UserController {
 	 */
 	
 	@PostMapping(path = "/reserveTable")
-	public String reserveTable(@ModelAttribute ReservationDTO reservationDTO) {
+	public String reserveTable(@Valid @ModelAttribute ReservationDTO reservationDTO) {
 		main.reserveTable(reservationDTO);
 		return "redirect:/public/home";
 	}

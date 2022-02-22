@@ -38,7 +38,7 @@ class WaiterServiceTest {
 
 	@Test
 	void testSetBusy() {
-		User user = new User(2l, "username", "123", 600l, null, new HashSet<>(), LocalDateTime.now().minusDays(1));
+		User user = new User(2l,"Mile", "username", "123", 600l, null, new HashSet<>(), LocalDateTime.now().minusDays(1));
 		CustomTable table = new CustomTable(3l, false, new ArrayList<Reservation>());
 		Reservation r = new Reservation(1l, true, user, table, LocalDateTime.now().plusMinutes(15), 300l, false, 2, null);
 		r.setUTable(table);
@@ -53,7 +53,7 @@ class WaiterServiceTest {
 
 	@Test
 	void testSetCalm() {
-		User user = new User(2l, "username", "123", 600l, null, new HashSet<>(), LocalDateTime.now().minusDays(1));
+		User user = new User(2l,"Mile", "username", "123", 600l, null, new HashSet<>(), LocalDateTime.now().minusDays(1));
 		CustomTable table = new CustomTable(3l, true, new ArrayList<Reservation>());
 		Reservation r = new Reservation(1l, true, user, table, LocalDateTime.now().plusMinutes(15), 300l, true, 2, null);
 		r.setUTable(table);

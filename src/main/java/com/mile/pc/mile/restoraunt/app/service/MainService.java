@@ -46,9 +46,9 @@ public class MainService {
 		basicReservingProcedure(user, reservation);
 	}
 
-	@SneakyThrows @Transactional
-	public boolean cancelReservation(UserPasswordForm dto) {
-		User localUser = uRepo.findByUsername(dto.getUsername());
+	@Transactional
+	public boolean cancelReservation(UserPasswordForm dto) throws PasswordException, TimeOutForCancelingException {
+		User localUser = uRepo.getUserByUsername(dto.getUsername());
 		if(!passwordWithUser(localUser, dto.getPassword()))
 			throw new PasswordException();
 		if(refund(localUser)) {
@@ -137,7 +137,7 @@ public class MainService {
 
 	@Transactional
 	private Reservation saveNewRes(ReservationDTO dto) {
-		return reservations.save(new Reservation(null, dto.isAccepted(), uRepo.findByUsername(dto.getUsername())
+		return reservations.save(new Reservation(null, dto.isAccepted(), uRepo.getUserByUsername(dto.getUsername())
 				,findAvailableTable(dto), LocalDateTime.of(dto.getDate(), dto.getTime()), null, false, dto.getPeriod(), dto.getNote()));
 	}
 

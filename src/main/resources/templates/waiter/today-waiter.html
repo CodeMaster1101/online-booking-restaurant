@@ -30,6 +30,7 @@
 			<thead>
 				<tr>
 					<th>Table ID</th>
+					<th>Name</th>
 					<th>Username</th>
 					<th>Period</th>
 					<th>Time</th>
@@ -40,6 +41,7 @@
 			<tbody>
 				<tr th:each="r: ${reservations}">
 					<td th:text ="${r.tableid}"></td> 
+					<td th:text = "${r.firstName}"></td >
 					<td th:text="${r.username}"></td>
 					<td th:text="${r.period}"></td>
 					<td th:text="${r.time}"></td>

@@ -17,6 +17,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.mile.pc.mile.restoraunt.app.dto.UserPasswordForm;
+import com.mile.pc.mile.restoraunt.app.exceptions.PasswordException;
+import com.mile.pc.mile.restoraunt.app.exceptions.TimeOutForCancelingException;
 import com.mile.pc.mile.restoraunt.app.model.CustomTable;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.model.User;
@@ -34,32 +36,32 @@ class MainServiceTest {
 	@Mock ReservationRepository reservationRepository;
 
 	@Test
-	void testCancelReservationWhenUserLate() {
+	void testCancelReservationWhenUserLate() throws PasswordException {
 		try {
 			CustomTable table = new CustomTable(2l,false,new ArrayList<>());
 			Reservation r = new Reservation(3l, true, null, null, LocalDateTime.now().plusDays(1), 400l, false, 3, "");
 			r.setUTable(table);
-			User user = new User(1l,"username","123",800,r,new HashSet<>(),LocalDateTime.now().minusMinutes(12));
+			User user = new User(1l,"Mile", "username","123",800,r,new HashSet<>(),LocalDateTime.now().minusMinutes(12));
 			r.setUser(user);
 			UserPasswordForm upf = new UserPasswordForm("username", "123");
-			Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+			Mockito.when(userRepository.getUserByUsername(user.getUsername())).thenReturn(user);
 			mainService.cancelReservation(upf);
 		} 
-		catch (Exception e) {
-			assertTrue(e.getMessage() == "time out!");
+		catch (TimeOutForCancelingException e) {
+			assertTrue(e.error().contains("hours have passed since the moment of your reservation"));
 		}
 
 	}
 
 	@Test
-	void testCancelReservationWhenUserOnTime() {
+	void testCancelReservationWhenUserOnTime() throws PasswordException, TimeOutForCancelingException {
 		CustomTable table = new CustomTable(2l,false,new ArrayList<>());
 		Reservation r = new Reservation(3l, true, null, null, LocalDateTime.now().plusDays(1), 400l, false, 3, "");
 		r.setUTable(table);
-		User user = new User(1l,"username","123",800,r,new HashSet<>(),LocalDateTime.now().minusMinutes(7));
+		User user = new User(1l,"Mile", "username","123",800,r,new HashSet<>(),LocalDateTime.now().minusMinutes(7));
 		r.setUser(user);
 		UserPasswordForm upf = new UserPasswordForm("username", "123");
-		Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+		Mockito.when(userRepository.getUserByUsername(user.getUsername())).thenReturn(user);
 		mainService.cancelReservation(upf);
 		assertAll(
 				() -> assertEquals(null, user.getReservation()),

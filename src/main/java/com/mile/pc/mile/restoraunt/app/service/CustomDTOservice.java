@@ -33,7 +33,7 @@ public class CustomDTOservice {
 	public Set<ReservationWaiterDTO> reservationDTOconv(List<Reservation> todayReservations) {
 
 		return todayReservations.stream().map(r-> new ReservationWaiterDTO(r.getTable().getId(),
-				r.getUser().getUsername(), fetchPeriodAsString(r), r.getTime().toLocalTime(), r.isBusy(), r.getNote())).collect(Collectors.toSet());
+			r.getUser().getFirstName(), r.getUser().getUsername(), fetchPeriodAsString(r), r.getTime().toLocalTime(), r.isBusy(), r.getNote())).collect(Collectors.toSet());
 	}
 
 	private String fetchPeriodAsString(Reservation reservation) {

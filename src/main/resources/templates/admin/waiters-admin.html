@@ -31,6 +31,7 @@
 			<thead>
 				<tr>
 					<th>Username</th>
+					<th>First name</th>
 					<th>Balance</th>
 					<th>Roles</th>
 					<th>Actions</th>
@@ -39,6 +40,7 @@
 			<tbody>
 				<tr th:each="user: ${waiters}">
 					<td th:text="${user.username}"></td>
+					<td th:text = "${user.firstName}"></td >
 					<td th:text="${user.balance}"></td>
 					<td th:text="${user.roles}"></td>
 					<td><a th:href="@{/admin/updateUser(id = ${user.id})}"

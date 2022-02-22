@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReservationWaiterDTO {
 	private long tableid;
+	private String firstName;
 	private String username;
 	private String period;
 	@DateTimeFormat(iso = ISO.TIME)

@@ -17,6 +17,8 @@ import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.service.CustomDTOservice;
 import com.mile.pc.mile.restoraunt.app.service.MainService;
 
+import lombok.SneakyThrows;
+
 @Controller
 @RequestMapping("/public")
 public class UserController {
@@ -56,6 +58,7 @@ public class UserController {
 		main.reserveTable(reservationDTO);
 		return "redirect:/public/home";
 	}
+	@SneakyThrows
 	@GetMapping(path ="/cancelReservation")
 	public String cancelReservation(@ModelAttribute UserPasswordForm u_p_form) {
 		if(main.cancelReservation(u_p_form))

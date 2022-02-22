@@ -1,0 +1,38 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<link th:href="@{/securityStyles/login.css}" rel="stylesheet" />
+
+</head>
+<body>
+	<div class="background">
+	</br>
+	<div class="alert-register"th:if="${param.success}">
+				Registration successfull!</div>
+<div class = "form">
+</br>
+<div class = "h4"><h3>Login</h3></div>
+	<div class = "content">
+		<form th:action="@{/public/saveUser}" th:object="${dto}" th:method="POST">
+				<label>Username</label>
+				</br>
+   				<input type="text" th:field="*{username}">
+   				<label>Password</label>
+   				</br>
+   				<input type = "text" th:field = "*{password}">
+   				</br>
+   				<input type="submit" value="Login">
+  </form>
+</div>
+</br>
+<div class="goSignUp">
+<p>Don't have an account? Sign up</p><a th:href="@{/security/signUp}">here</a >
+</div >
+</div >
+	</div>
+</body>
+</html>

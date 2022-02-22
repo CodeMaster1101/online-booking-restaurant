@@ -39,10 +39,10 @@ public class CrudService {
 	 */
 	@SneakyThrows @Transactional
 	public void AddRoleToUser(String username, String roleType){
-		if(userRepo.findByUsername(username)== null || roleRepo.findByType(roleType) == null) {
+		if(userRepo.getUserByUsername(username)== null || roleRepo.findByType(roleType) == null) {
 			throw new Exception("user or role non exsistent");
 		}
-		User user = userRepo.findByUsername(username);
+		User user = userRepo.getUserByUsername(username);
 		Role role = roleRepo.findByType(roleType);
 		user.getRoles().add(role);
 	}
@@ -54,7 +54,7 @@ public class CrudService {
 	 */
 	@Transactional
 	public void removeRolefromUser(String username, String roleType){
-		User user = userRepo.findByUsername(username);
+		User user = userRepo.getUserByUsername(username);
 		Role role = roleRepo.findByType(roleType);
 		user.getRoles().remove(role);
 	}

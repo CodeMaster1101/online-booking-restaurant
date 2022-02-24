@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mile.pc.mile.restoraunt.app.dto.SignUpDTO;
-import com.mile.pc.mile.restoraunt.app.dto.UserPasswordForm;
 import com.mile.pc.mile.restoraunt.app.security.UserService;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +24,7 @@ public class SecurityController {
 
 	@GetMapping(path = {"/login", ""})
 	public ModelAndView login() {
-		return new ModelAndView("security/login-security", "dto",new UserPasswordForm());
+		return new ModelAndView("security/login-security");
 	}
 
 	@GetMapping(path = "/signUp")

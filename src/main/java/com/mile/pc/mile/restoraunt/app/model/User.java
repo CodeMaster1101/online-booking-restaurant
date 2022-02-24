@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.transaction.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -28,12 +30,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name =  "user", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	private String firstName;
-	@Column(unique = true)
+	@Column(unique = true, name = "username")
 	private String username;
 	private String password;
 	private long balance;

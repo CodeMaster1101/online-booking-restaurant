@@ -27,7 +27,11 @@ public class UserServiceImpl implements UserService{
 	@Autowired UserRepository userRepository;
 	@Autowired RoleRepository roleRepository;
 	@Autowired BCryptPasswordEncoder passwordEncoder;
-
+	
+	public UserServiceImpl(UserRepository userRepository) {
+		super();
+		this.userRepository = userRepository;
+	}
 	@Override @Transactional
 	public User save(SignUpDTO registrationDto) {
 		Set<Role> roles = new HashSet<>();
@@ -43,13 +47,11 @@ public class UserServiceImpl implements UserService{
 	
 		User user = userRepository.getUserByUsername(username);
 		if(user == null) {
-			throw new UsernameNotFoundException("Invalid username or password.");
+			throw new UsernameNotFoundException("Invalid username");
 		}
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));		
 	}
-	
 	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
-		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getType())).collect(Collectors.toSet());
+		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getType())).collect(Collectors.toList());
 	}
-	
 }

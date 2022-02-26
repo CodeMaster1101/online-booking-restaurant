@@ -27,7 +27,7 @@ public class CustomDTOservice {
 	}
 	
 	public Set<UserDTO> usersDTO(List<User> repoUsers){
-		return repoUsers.stream().map(u-> new UserDTO(u.getId(), u.getUsername(), u.getBalance(), roles(u))).collect(Collectors.toSet());
+		return repoUsers.stream().map(u-> new UserDTO(u.getId(), u.getFirstName(), u.getUsername(), u.getBalance(), roles(u))).collect(Collectors.toSet());
 	}
 	
 	public Set<ReservationWaiterDTO> reservationDTOconv(List<Reservation> todayReservations) {

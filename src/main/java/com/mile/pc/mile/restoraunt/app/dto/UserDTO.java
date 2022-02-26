@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDTO {
 	private long id;
+	private String firstName;
 	private String username;
 	private long balance;
 	private Set<String> roles;

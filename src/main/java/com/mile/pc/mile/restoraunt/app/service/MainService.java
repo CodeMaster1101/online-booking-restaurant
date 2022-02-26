@@ -6,16 +6,15 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
 import com.mile.pc.mile.restoraunt.app.dto.ReservationDTO;
-import com.mile.pc.mile.restoraunt.app.dto.UserPasswordForm;
 import com.mile.pc.mile.restoraunt.app.exceptions.BadReservationRadiusException;
 import com.mile.pc.mile.restoraunt.app.exceptions.InvalidSpecificTimeException;
 import com.mile.pc.mile.restoraunt.app.exceptions.NoAvailableTablesTodayException;
 import com.mile.pc.mile.restoraunt.app.exceptions.NotMetReservingRequirementsException;
-import com.mile.pc.mile.restoraunt.app.exceptions.PasswordException;
 import com.mile.pc.mile.restoraunt.app.exceptions.TimeOutForCancelingException;
 import com.mile.pc.mile.restoraunt.app.exceptions.invalidFeeException;
 import com.mile.pc.mile.restoraunt.app.model.CustomTable;
@@ -46,17 +45,15 @@ public class MainService {
 		basicReservingProcedure(user, reservation);
 	}
 
-	@Transactional
-	public boolean cancelReservation(UserPasswordForm dto) throws PasswordException, TimeOutForCancelingException {
-		User localUser = uRepo.getUserByUsername(dto.getUsername());
-		if(!passwordWithUser(localUser, dto.getPassword()))
-			throw new PasswordException();
+	@Transactional 
+	public void cancelReservation(String username) throws TimeOutForCancelingException {
+		User localUser = uRepo.getUserByUsername(username);
 		if(refund(localUser)) {
 			localUser.setBalance(localUser.getBalance() + localUser.getReservation().getFee());
 			basicUserReservationCancelLogic(localUser);
-			return true;
+		}else {
+			throw new TimeOutForCancelingException();
 		}
-		throw new TimeOutForCancelingException();
 	}
 
 	/*
@@ -64,13 +61,10 @@ public class MainService {
 	 */
 	@SneakyThrows
 	private void reservationRequirements(Reservation reservation, ReservationDTO dto) {
-		if(reservation.getUser().getBalance() < incrementFee(reservation.getPeriod()) || 
-				reservation.getUser().getReservation() != null)
+		if(reservation.getUser().getBalance() < incrementFee(reservation.getPeriod()))
 			throw new NotMetReservingRequirementsException();
 		if(!OneDayBefore(reservation))
 			throw new BadReservationRadiusException(reservation.getTime());
-		if(!passwordWithUser(reservation.getUser(), dto.getPassword()))
-			throw new PasswordException();
 		if(!specificTimeBasedOnPeriod(dto))
 			throw new InvalidSpecificTimeException(dto.getTime(), dto.getPeriod());
 	}
@@ -88,12 +82,6 @@ public class MainService {
 			if(dto.getTime().isAfter(CONSTANTS.EVENING.minusMinutes(1)) && 
 					dto.getTime().isBefore(CONSTANTS.END.plusMinutes(1)))return true;
 		}
-		return false;
-	}
-
-	private boolean passwordWithUser(User user, String password) {
-		if(user.getPassword().contentEquals(password))
-			return true;
 		return false;
 	}
 
@@ -135,9 +123,11 @@ public class MainService {
 		}
 	}
 
-	@Transactional
+	@Transactional @SneakyThrows
 	private Reservation saveNewRes(ReservationDTO dto) {
-		return reservations.save(new Reservation(null, dto.isAccepted(), uRepo.getUserByUsername(dto.getUsername())
+		User user = uRepo.getUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		if(user.getReservation() != null) throw new NotMetReservingRequirementsException();
+		return reservations.save(new Reservation(null, dto.isAccepted(), user
 				,findAvailableTable(dto), LocalDateTime.of(dto.getDate(), dto.getTime()), null, false, dto.getPeriod(), dto.getNote()));
 	}
 

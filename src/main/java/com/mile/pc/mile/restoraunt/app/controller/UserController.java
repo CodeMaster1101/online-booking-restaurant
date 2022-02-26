@@ -3,6 +3,7 @@ package com.mile.pc.mile.restoraunt.app.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mile.pc.mile.restoraunt.app.dto.ReservationDTO;
-import com.mile.pc.mile.restoraunt.app.dto.UserPasswordForm;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.service.CustomDTOservice;
@@ -44,28 +44,20 @@ public class UserController {
 		return new ModelAndView("public/reserve-form-user", "reservation", new ReservationDTO());
 	}
 	
-	@GetMapping(path = "/cancel-reservation-form")
-	public ModelAndView getCancelingForm() {
-		return new ModelAndView("public/cancel-form-user", "userPassword", new UserPasswordForm());
-	}
-	
 	/*
 	 * Executing the action
 	 */
 	
 	@PostMapping(path = "/reserveTable")
 	public String reserveTable(@Valid @ModelAttribute ReservationDTO reservationDTO) {
-		main.reserveTable(reservationDTO);
-		return "redirect:/public/home";
+			main.reserveTable(reservationDTO);
+			return "redirect:/public/home";
 	}
 	@SneakyThrows
 	@GetMapping(path ="/cancelReservation")
-	public String cancelReservation(@ModelAttribute UserPasswordForm u_p_form) {
-		if(main.cancelReservation(u_p_form))
+	public String cancelReservation() {
+		main.cancelReservation(SecurityContextHolder.getContext().getAuthentication().getName());
 		return "redirect:/public/home";
-		else 
-			return"Oops! The time for canceling has expired. The reservation lives on. You can still attend to it.";
-
 	}
 
 }

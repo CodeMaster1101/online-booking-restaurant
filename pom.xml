@@ -27,7 +27,6 @@
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.5.2</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -91,5 +90,6 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>
 

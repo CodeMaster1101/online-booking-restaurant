@@ -44,7 +44,6 @@ public class WaiterService {
 		throw new AlreadyBusyException(tableid);
 	}
 
-
 	@Transactional
 	public void setCalm(long tableid) {
 		CustomTable table = tRepo.findById(tableid).get();

@@ -1,5 +1,4 @@
-<html xmlns="http://www.thymeleaf.org">
-
+<html xmlns="http://www.thymeleaf.org" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +14,7 @@
 				<ul>
 				<li><a th:href="@{/public/home}"> Home </a></li>
 				<li><a th:href="@{/public/reserve-form}"> Reserve </a></li>
-				<li><a th:href="@{/public/cancel-reservation-form}" > Cancel reservation </a></li>
+				<li><a id="cancel" th:href="@{/public/cancelReservation}" onclick="return proceed()" >Cancel reservation</a></li>
 				</ul>
 			</nav>		
 			</div> 
@@ -27,16 +26,6 @@
 				<input type="checkbox" th:field ="*{accepted}" value="true"/> Accept
 				</br>
 				</br>
-				<label>Username</label>
-				</br>
-   				<input type="text" th:field="*{username}">
-   				</br>
-   				</br>
-   				<label>Password</label>
-   				</br>
-   				<input type = "password" th:field = "*{password}">
-   				</br>
-   				</br>
    				<label>Reservation date</label>
    				</br>
    				</br>				
@@ -72,5 +61,14 @@
  </div>
 </div >
 </div>
+<script type="text/javascript">
+ 
+ function proceed(){
+	 if (confirm('Are you sure you want to cancel the reservation?'))
+          return true;
+       else
+           return false;
+}
+ </script > 
 </body>
 </html>

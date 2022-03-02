@@ -37,7 +37,7 @@ public class UserController {
 	 */
 	@GetMapping(path = {"", "/home"})
 	public ModelAndView homePage() {
-		return new ModelAndView("public/home-page");
+		return new ModelAndView("index");
 	}
 	@GetMapping(path = "/reserve-form")
 	public ModelAndView reserveTableForm() {

@@ -9,15 +9,29 @@
 </head>
 <body>
 	<div class="background">
-	<div class = "navbar">
-			<nav>
-				<ul>
-				<li><a th:href="@{/public/home}"> Home </a></li>
-				<li><a th:href="@{/public/reserve-form}"> Reserve </a></li>
-				<li><a id="cancel" th:href="@{/public/cancelReservation}" onclick="return proceed()" >Cancel reservation</a></li>
-				</ul>
-			</nav>		
-			</div> 
+		 <nav class="navbar">
+      <div class="navbar__container">
+        <a th:href="@{/public/home}" id="navbar__logo">Restoraunt</a>
+        <div class="navbar__toggle" id="mobile-menu">
+          <span class="bar"></span> <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <ul class="navbar__menu">
+          <li class="navbar__item">
+            <a th:href="@{/public/home}" class="navbar__links" >Home</a>
+          </li>
+          <li class="navbar__item">
+          <a th:href="@{/public/reserve-form/}" class="navbar__links">Reserve</a>
+          </li>
+          <li class="navbar__item">
+          <a th:href="@{/public/cancelReservation}" class="navbar__links" onclick="proceed()">Cancel reservation</a>
+          </li>
+          <li class="navbar__btn">
+            <a th:href="@{/logout}" class="button" id="signup">Log out</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
 <div class = "form">
 <div class = "h4"><h4>Reserve</h4></div>
 	<div class = "content">
@@ -70,5 +84,6 @@
            return false;
 }
  </script > 
+ <script src="/js/home.js"></script >
 </body>
 </html>

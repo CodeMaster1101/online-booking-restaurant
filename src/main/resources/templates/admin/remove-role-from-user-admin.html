@@ -12,16 +12,30 @@
 </head>
 
 <body>
-	<div class = "navbar">
-			<nav>
-				<ul>
-				<li><a th:href="@{/admin/home}">Home</a></li>
-				<li><a th:href="@{/admin/users}" >Users</a></li>
-				<li><a th:href="@{/admin/users/waiters}">Waiters</a> </li>
-				<li><a th:href="@{/admin/roles}"> Roles</a></li>
-				</ul>
-			</nav>		
-		</div> 
+		 <nav class="navbar">
+      <div class="navbar__container">
+        <a th:href="@{/public/home}" id="navbar__logo">Restoraunt</a>
+        <div class="navbar__toggle" id="mobile-menu">
+          <span class="bar"></span> <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <ul class="navbar__menu">
+          <li class="navbar__item">
+            <a th:href="@{/public/home}" class="navbar__links" >Home</a>
+          </li>
+          <li class="navbar__item">
+            <a th:href="@{/admin/users}" class="navbar__links">Users</a>
+          </li>
+          <li class="navbar__item">
+            <a th:href="@{/admin/users/waiters}" class="navbar__links">Waiters</a>
+
+          </li>
+          <li class="navbar__btn">
+            <a th:href="@{/logout}" class="button" id="signup">Log out</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
 <div class = "form">
 </br>
 </br>
@@ -38,6 +52,6 @@
 </div>
 
 </div  >
-  
+  <script src="/js/home.js"></script >
 </body>
 </html>

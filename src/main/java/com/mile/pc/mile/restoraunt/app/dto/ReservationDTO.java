@@ -24,7 +24,6 @@ public class ReservationDTO {
 
 	@AssertTrue(message = "Terms must be accepted.")
 	private boolean accepted;
-	private String username;
 	@NotNull(message = "Select a date")
 	@DateTimeFormat( iso = ISO.DATE)
 	private LocalDate date;

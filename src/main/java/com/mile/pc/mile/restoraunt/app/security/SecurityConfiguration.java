@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
     }
-	@Value("${spring.security.debug:true}")
+	@Value("${spring.security.debug:false}")
     boolean securityDebug;
 
     @Override

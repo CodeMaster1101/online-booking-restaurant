@@ -1,4 +1,5 @@
-<html xmlns="http://www.thymeleaf.org" lang="en">
+<html xmlns="http://www.thymeleaf.org">
+
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +16,7 @@
 </head>
 <body>
 	<div class="background">
-	 <nav class="navbar">
+	<nav class="navbar">
       <div class="navbar__container">
         <a th:href="@{/public/home}" id="navbar__logo">Restoraunt</a>
         <div class="navbar__toggle" id="mobile-menu">
@@ -27,10 +28,10 @@
             <a th:href="@{/public/home}" class="navbar__links" >Home</a>
           </li>
           <li class="navbar__item">
-            <a th:href="@{/admin/users}" class="navbar__links">Users</a>
+            <a th:href="@{/waiter/todayReservations}" class="navbar__links">Today reservations</a>
           </li>
           <li class="navbar__item">
-            <a th:href="@{/admin/users/waiters}" class="navbar__links">Waiters</a>
+            <a th:href="@{/waiter/deleteExpiredReservations}" class="navbar__links">Expired reservations</a>
 
           </li>
           <li class="navbar__btn">
@@ -39,9 +40,6 @@
         </ul>
       </div>
     </nav>
-    </br>
-		<div class ="welcome"> 
-		</div>
 		<br/>
 		<table class="table table-bordered table" id = "w_tables-table">
 			<thead>

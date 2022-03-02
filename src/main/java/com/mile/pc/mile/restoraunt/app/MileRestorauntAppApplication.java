@@ -46,6 +46,7 @@ public class MileRestorauntAppApplication {
 //			cs.AddRoleToUser("cpthermes", "ADMIN");
 //			cs.AddRoleToUser("cpthermes", "USER");
 //			cs.AddRoleToUser("user2", "USER");
+			//cs.AddRoleToUser("cpthermes", "WAITER");
 		};
 	}
 	

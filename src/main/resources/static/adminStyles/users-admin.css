@@ -1,24 +1,12 @@
 	body{
 		color: #ffffff;
+		  background: #c850c0;
+  background: -webkit-linear-gradient(45deg, #4158d0, #c850c0);
+  background: -o-linear-gradient(45deg, #4158d0, #c850c0);
+  background: -moz-linear-gradient(45deg, #4158d0, #c850c0);
+  background: linear-gradient(45deg, #4158d0, #c850c0);
 	}
-	#user-table {
-		color: black;
-	}
-	#user-table th {
-  	background-color: #04AA6D;
-  	color: rgb(0, 0, 0);
-}   #user-table tr{background-color: #f2f2f2;}
-	#user-table tr:hover {background-color: #ddd;}
-	.background{
-    height: 100vh;
-    width: 100%;
-    background-color: rgb(14, 14, 48);
-    background-position: center;
-    background-size: cover;
-    position: relative;
-    box-sizing: content-box;
-    }
-   .navbar {
+  .navbar {
   background: rgb(106, 26, 113);
   height: 80px;
   display: flex;

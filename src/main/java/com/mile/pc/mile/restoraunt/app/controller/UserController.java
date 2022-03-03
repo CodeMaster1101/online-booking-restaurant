@@ -13,8 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mile.pc.mile.restoraunt.app.dto.ReservationDTO;
-import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
+import com.mile.pc.mile.restoraunt.app.repo.TableRepository;
 import com.mile.pc.mile.restoraunt.app.service.CustomDTOservice;
 import com.mile.pc.mile.restoraunt.app.service.MainService;
 
@@ -24,7 +24,7 @@ import lombok.SneakyThrows;
 @RequestMapping("/public")
 public class UserController {
 
-	@Autowired CustomTableRepository tableRepo;
+	@Autowired TableRepository tableRepo;
 	@Autowired MainService main;
 	@Autowired ReservationRepository rRepo;
 	@Autowired CustomDTOservice des;

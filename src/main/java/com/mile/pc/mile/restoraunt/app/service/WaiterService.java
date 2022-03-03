@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 
 import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
 import com.mile.pc.mile.restoraunt.app.exceptions.AlreadyBusyException;
-import com.mile.pc.mile.restoraunt.app.model.CustomTable;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
+import com.mile.pc.mile.restoraunt.app.model.RestorauntTable;
 import com.mile.pc.mile.restoraunt.app.model.User;
-import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;
+import com.mile.pc.mile.restoraunt.app.repo.TableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 
 import lombok.SneakyThrows;
@@ -27,13 +27,13 @@ import lombok.SneakyThrows;
 public class WaiterService {
 
 	@Autowired RoleRepository roleRepo;
-	@Autowired CustomTableRepository tRepo;
+	@Autowired TableRepository tRepo;
 	@Autowired ReservationRepository reservations;
 	@Autowired UserRepository urepo;
 
 	@SneakyThrows @Transactional
 	public void setBusy(long tableid) {
-		CustomTable table = tRepo.findById(tableid).get();
+		RestorauntTable table = tRepo.findById(tableid).get();
 		if(table.getBusy()!=true) {
 			Reservation currentRes = findCurrentReservation(table);
 			reservationBusyLogic(currentRes);
@@ -45,7 +45,7 @@ public class WaiterService {
 
 	@Transactional
 	public void setCalm(long tableid) {
-		CustomTable table = tRepo.findById(tableid).get();
+		RestorauntTable table = tRepo.findById(tableid).get();
 		Reservation currentReservation = reservations.findAll().stream()
 				.filter(res -> res.getTable().equals(table) && res.isBusy()).findFirst().get();
 		emptyTableAndReservations(table, currentReservation);
@@ -90,7 +90,7 @@ public class WaiterService {
 		removeReservation(reservation.getId());
 	}
 
-	private Reservation findCurrentReservation(CustomTable table) {
+	private Reservation findCurrentReservation(RestorauntTable table) {
 		LocalTime now = LocalTime.now();
 		return table.getReservations().stream()
 				.filter(r -> 
@@ -100,7 +100,7 @@ public class WaiterService {
 	}
 
 	@Transactional
-	private void emptyTableAndReservations(CustomTable table, Reservation currentReservation) {
+	private void emptyTableAndReservations(RestorauntTable table, Reservation currentReservation) {
 		removeReservation(currentReservation.getId());		
 		table.setBusy(false);
 	}

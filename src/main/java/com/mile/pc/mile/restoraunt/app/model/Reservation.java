@@ -41,14 +41,14 @@ public class Reservation
     @ManyToOne
     @JoinColumn(name = "table_id")
     @JsonBackReference
-    private CustomTable table;
+    private RestorauntTable table;
     @DateTimeFormat(iso = ISO.DATE_TIME)
     private LocalDateTime time;
     private Long fee;
     private boolean busy;
     private int period;
     private String note;
-    public void setUTable(CustomTable table) {
+    public void setUTable(RestorauntTable table) {
     	this.table = table;
     	table.addReservation(this);
     }

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,12 +16,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import com.mile.pc.mile.restoraunt.app.exceptions.TimeOutForCancelingException;
-import com.mile.pc.mile.restoraunt.app.model.CustomTable;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
+import com.mile.pc.mile.restoraunt.app.model.RestorauntTable;
 import com.mile.pc.mile.restoraunt.app.model.User;
-import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
+import com.mile.pc.mile.restoraunt.app.repo.TableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 
 
@@ -29,13 +31,13 @@ import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 class MainServiceTest {
 
 	@InjectMocks MainService mainService;
-	@Mock CustomTableRepository customTableRepository;
+	@Mock TableRepository customTableRepository;
 	@Mock UserRepository userRepository;
 	@Mock ReservationRepository reservationRepository;
 	@Test
 	void testCancelReservationWhenUserLate() throws TimeOutForCancelingException {
 		try {
-			CustomTable table = new CustomTable(2l,false,new ArrayList<>());
+			RestorauntTable table = new RestorauntTable(2l,false,new ArrayList<>());
 			Reservation r = new Reservation(3l, true, null, null, LocalDateTime.now().plusDays(1), 400l, false, 3, "");
 			r.setUTable(table);
 			User user = new User(1l,"Mile", "username","123",800,r,new HashSet<>(),LocalDateTime.now().minusMinutes(12));
@@ -52,7 +54,7 @@ class MainServiceTest {
 	@Test 
 	void testCancelReservationWhenUserOnTime() throws TimeOutForCancelingException{
 	
-		CustomTable table = new CustomTable(2l,false,new ArrayList<>());
+		RestorauntTable table = new RestorauntTable(2l,false,new ArrayList<>());
 		Reservation r = new Reservation(3l, true, null, null, LocalDateTime.now().plusDays(1), 400l, false, 3, "");
 		r.setUTable(table);
 		User user = new User(1l,"Mile", "username","123",800,r,new HashSet<>(),LocalDateTime.now().minusMinutes(7));

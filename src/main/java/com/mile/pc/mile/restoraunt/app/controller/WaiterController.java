@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
+import com.mile.pc.mile.restoraunt.app.repo.TableRepository;
 import com.mile.pc.mile.restoraunt.app.service.CustomDTOservice;
 import com.mile.pc.mile.restoraunt.app.service.WaiterService;
 
@@ -16,12 +16,12 @@ import com.mile.pc.mile.restoraunt.app.service.WaiterService;
 public class WaiterController {
 
 	@Autowired WaiterService wS;
-	@Autowired CustomTableRepository customTableRepository;
+	@Autowired TableRepository tableRepo;
 	@Autowired CustomDTOservice dtoService;
 
 	@GetMapping(path = {"/tables", ""})
 	public ModelAndView allTables() {
-		return new ModelAndView("waiter/tables-waiter", "tables", customTableRepository.findAll());
+		return new ModelAndView("waiter/tables-waiter", "tables", tableRepo.findAll());
 	}
 	
 	@GetMapping(path = "/setBusy")

@@ -25,7 +25,7 @@ import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 @SpringBootTest
 
 @RunWith(MockitoJUnitRunner.class)
-class CrudServiceTest {
+class AdminServiceTest {
 
 	@InjectMocks AdminService adminService;
 	@Mock UserRepository userRepository;

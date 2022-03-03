@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class CustomTable {
+public class RestorauntTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

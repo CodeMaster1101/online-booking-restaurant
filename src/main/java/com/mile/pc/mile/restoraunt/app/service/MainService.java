@@ -17,11 +17,11 @@ import com.mile.pc.mile.restoraunt.app.exceptions.NoAvailableTablesTodayExceptio
 import com.mile.pc.mile.restoraunt.app.exceptions.NotMetReservingRequirementsException;
 import com.mile.pc.mile.restoraunt.app.exceptions.TimeOutForCancelingException;
 import com.mile.pc.mile.restoraunt.app.exceptions.invalidPeriodException;
-import com.mile.pc.mile.restoraunt.app.model.CustomTable;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
+import com.mile.pc.mile.restoraunt.app.model.RestorauntTable;
 import com.mile.pc.mile.restoraunt.app.model.User;
-import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
+import com.mile.pc.mile.restoraunt.app.repo.TableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 
 import lombok.SneakyThrows;
@@ -31,7 +31,7 @@ import lombok.SneakyThrows;
 public class MainService {
 
 	@Autowired ReservationRepository reservations;
-	@Autowired CustomTableRepository tRepo;
+	@Autowired TableRepository tRepo;
 	@Autowired UserRepository uRepo;
 	@Autowired ReservationRepository rRepo;
 	@Autowired WaiterService w_service;
@@ -132,8 +132,8 @@ public class MainService {
 	}
 
 	@SneakyThrows
-	private CustomTable findAvailableTable(ReservationDTO dto) {
-		for (CustomTable table : tRepo.findAll()) {
+	private RestorauntTable findAvailableTable(ReservationDTO dto) {
+		for (RestorauntTable table : tRepo.findAll()) {
 			Optional<Reservation> res = table.getReservations().stream().filter(r -> r.getPeriod() == dto.getPeriod() && (r.getTime().toLocalDate().isEqual(dto.getDate()))).findFirst();
 			if(!res.isPresent())
 				return table;

@@ -67,6 +67,7 @@ public class AdminService {
 	public void removeUser(long id) {
 		userRepo.deleteById(id);;
 	}
+	
 	/**
 	 * filters through all the users to fetch every waiter
 	 * @return every user that has a role "WAITER"

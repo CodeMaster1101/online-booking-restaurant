@@ -7,7 +7,7 @@ import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 @Configuration
 public class CustomConfig {
 	
-	 @Bean
+	   @Bean
 	    public SpringSecurityDialect springSecurityDialect(){
 	        return new SpringSecurityDialect();
 	    }

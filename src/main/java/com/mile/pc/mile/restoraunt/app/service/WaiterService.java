@@ -51,14 +51,11 @@ public class WaiterService {
 		emptyTableAndReservations(table, currentReservation);
 	}
 
-
-
 	public List<Reservation> todayReservations(){
 		return reservations.findAll().stream()
 				.filter(r -> r.getTime().getDayOfMonth() == LocalDate.now().getDayOfMonth())
 				.collect(Collectors.toList());
 	}
-
 
 	@Transactional
 	public void removeExpiredReservations() {
@@ -70,7 +67,6 @@ public class WaiterService {
 			}
 		}
 	}
-	//PRIVATE HELPING METHODS
 
 	@Transactional
 	private void removeReservation(long id) {
@@ -104,7 +100,6 @@ public class WaiterService {
 		removeReservation(currentReservation.getId());		
 		table.setBusy(false);
 	}
-
 
 	@Transactional
 	private void reservationBusyLogic(Reservation reservation) {

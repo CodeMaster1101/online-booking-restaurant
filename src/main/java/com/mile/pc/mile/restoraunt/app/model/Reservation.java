@@ -48,6 +48,7 @@ public class Reservation
     private boolean busy;
     private int period;
     private String note;
+    
     public void setUTable(RestorauntTable table) {
     	this.table = table;
     	table.addReservation(this);

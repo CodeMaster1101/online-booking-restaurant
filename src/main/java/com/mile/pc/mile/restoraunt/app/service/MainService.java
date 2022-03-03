@@ -86,7 +86,7 @@ public class MainService {
 	}
 
 	private boolean refund(User user) {
-		if(!(LocalDateTime.now().isBefore(user.getReservationMoment().plusMinutes(10))))
+		if(!(LocalDateTime.now().isBefore(user.getReservationMoment().plusHours(CONSTANTS.CANCEL_TIME))))
 			return false;
 		return true;
 	}
@@ -127,8 +127,7 @@ public class MainService {
 	private Reservation saveNewRes(ReservationDTO dto) {
 		User user = uRepo.getUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		if(user.getReservation() != null) throw new NotMetReservingRequirementsException();
-		return reservations.save(new Reservation(null, dto.isAccepted(), user
-				,findAvailableTable(dto), LocalDateTime.of(dto.getDate(), dto.getTime()), null, false, dto.getPeriod(), dto.getNote()));
+		return reservations.save(new Reservation(null, dto.isAccepted(), user,findAvailableTable(dto), LocalDateTime.of(dto.getDate(), dto.getTime()), null, false, dto.getPeriod(), dto.getNote()));
 	}
 
 	@SneakyThrows
@@ -140,4 +139,5 @@ public class MainService {
 		}
 		throw new NoAvailableTablesTodayException(dto.getDate());
 	}
+	
 }

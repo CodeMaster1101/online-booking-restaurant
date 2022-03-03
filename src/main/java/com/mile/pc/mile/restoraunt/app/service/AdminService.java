@@ -27,7 +27,7 @@ import lombok.SneakyThrows;
  *
  */
 @Service 
-public class CrudService {
+public class AdminService {
 	
 	@Autowired UserRepository userRepo;
 	@Autowired RoleRepository roleRepo;

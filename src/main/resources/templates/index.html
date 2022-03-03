@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+	  xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,7 +31,12 @@
           <li class="navbar__item">
             <a href="#about" class="navbar__links" id="about-page">About</a>
           </li>
-          </li>
+          <li class="navbar__item">
+			<a th:href="@{/admin/users}" class="navbar__links" sec:authorize="hasAuthority('ADMIN')">Admin</a>          
+		  </li>
+          <li class="navbar__item">
+			<a th:href="@{/waiter/}" class="navbar__links" sec:authorize="hasAuthority('WAITER')">Waiter</a>          
+		  </li>
           <li class="navbar__btn">
             <a th:href="@{/logout}" class="button" id="signup">Log out</a>
           </li>

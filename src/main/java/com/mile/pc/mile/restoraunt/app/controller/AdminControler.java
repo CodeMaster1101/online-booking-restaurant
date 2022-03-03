@@ -13,17 +13,17 @@ import com.mile.pc.mile.restoraunt.app.dto.RoleToUser;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
 import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
-import com.mile.pc.mile.restoraunt.app.service.CrudService;
+import com.mile.pc.mile.restoraunt.app.service.AdminService;
 import com.mile.pc.mile.restoraunt.app.service.CustomDTOservice;
 
 @Controller
 @RequestMapping("/admin")
-public class CrudController {
+public class AdminControler {
 
 	/*
 	 * ADMIN CONTROLLER
 	 */
-	@Autowired CrudService crudService;
+	@Autowired AdminService adminService;
 	@Autowired UserRepository uRepo;
 	@Autowired RoleRepository rRepo;
 	@Autowired CustomTableRepository tRepo;
@@ -51,7 +51,7 @@ public class CrudController {
 	
 	@GetMapping(path = "users/waiters")
 	public ModelAndView getWaiters(){
-		return new ModelAndView("admin/waiters-admin","waiters", dto_ser.usersDTO(crudService.getWaiters()));
+		return new ModelAndView("admin/waiters-admin","waiters", dto_ser.usersDTO(adminService.getWaiters()));
 	}
 	
 	@GetMapping(path = "/add-RTU-form")
@@ -77,19 +77,19 @@ public class CrudController {
 	
 	@PostMapping(path = "/add-RTU")
 	public String addRoleToUser(@ModelAttribute RoleToUser rtu) {
-		crudService.AddRoleToUser(rtu.getUsername(), rtu.getType());
+		adminService.AddRoleToUser(rtu.getUsername(), rtu.getType());
 		return "redirect:/admin/users";
 	}
 	
 	@GetMapping(path = "/remove-RFU")
 	public String removeRoleFromUser(@ModelAttribute RoleToUser rtu) {
-		crudService.removeRolefromUser(rtu.getUsername(), rtu.getType());
+		adminService.removeRolefromUser(rtu.getUsername(), rtu.getType());
 		return "redirect:/admin/users";
 	}
 	
 	@GetMapping(path = "/deleteUser")
 	public String deleteUser(@RequestParam long id) {
-		crudService.removeUser(id);
+		adminService.removeUser(id);
 		return "redirect:/admin/users";
 	}
 

@@ -34,10 +34,22 @@
     content: "Table ID";
   }
   table tbody tr td:nth-child(2):before {
-    content: "Occupied";
+    content: "Name";
   }
   table tbody tr td:nth-child(3):before {
-    content: "Actions";
-}
+    content: "Username";
+  }
+  table tbody tr td:nth-child(4):before {
+    content: "Period";
+  }
+  table tbody tr td:nth-child(5):before {
+    content: "Time";
+  }
+   table tbody tr td:nth-child(6):before {
+    content: "Note";
+  }
+   table tbody tr td:nth-child(7):before {
+    content: "Arrived";
+  }
 
 }

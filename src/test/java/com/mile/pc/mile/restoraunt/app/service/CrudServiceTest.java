@@ -27,7 +27,7 @@ import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 @RunWith(MockitoJUnitRunner.class)
 class CrudServiceTest {
 
-	@InjectMocks CrudService crudService;
+	@InjectMocks AdminService adminService;
 	@Mock UserRepository userRepository;
 	@Mock RoleRepository roleRepository;
 
@@ -37,7 +37,7 @@ class CrudServiceTest {
 		Role role =(new Role(2l, "WAITER"));
 		when(userRepository.getUserByUsername("testUser")).thenReturn(user);
 		when(roleRepository.findByType("WAITER")).thenReturn(role);
-		crudService.AddRoleToUser(user.getUsername(), role.getType());
+		adminService.AddRoleToUser(user.getUsername(), role.getType());
 		assertEquals(1, user.getRoles().size());
 	}
 
@@ -49,7 +49,7 @@ class CrudServiceTest {
 		User user = new User(3l, "Mile", "testUser", "x", 123, null, set , null);
 		when(userRepository.getUserByUsername("testUser")).thenReturn(user);
 		when(roleRepository.findByType("WAITER")).thenReturn(role);
-		crudService.removeRolefromUser(user.getUsername(), role.getType());
+		adminService.removeRolefromUser(user.getUsername(), role.getType());
 		verify(roleRepository, times(1)).findByType("WAITER");
 		assertEquals(0, user.getRoles().size());
 
@@ -58,7 +58,7 @@ class CrudServiceTest {
 	@Test
 	void testRemoveUser() {
 		User user = new User(3l, "Mile","testUser", "x", 123, null, new HashSet<>(), null);
-		crudService.removeUser(user.getId());
+		adminService.removeUser(user.getId());
 		verify(userRepository, times(1)).deleteById(user.getId());
 	}
 
@@ -73,7 +73,7 @@ class CrudServiceTest {
 		allUsers.add(new User(5l, "Mario","testUser3", "z", 123, null, new HashSet<>() , null));
 		when(userRepository.findAll()).thenReturn(allUsers);
 		when(roleRepository.findByType(role.getType())).thenReturn(role);
-		List<User> waitersOnly = crudService.getWaiters();
+		List<User> waitersOnly = adminService.getWaiters();
 		assertEquals(1, waitersOnly.size());
 	}
 

@@ -11,8 +11,6 @@
 <link th:href="@{/adminStyles/update-admin.css}" rel="stylesheet" />
 </head>
 <body>
-
-	<div class="background">
 		 <nav class="navbar">
       <div class="navbar__container">
         <a th:href="@{/public/home}" id="navbar__logo">Restoraunt</a>
@@ -42,7 +40,6 @@
 			<a th:href="@{/admin/add-RTU-form(id = ${user.id})}" class="btn btn-success mb-2">Assign role</a> 
 			<a th:href="@{/admin/remove-RFU-form(id = ${user.id})}" class="btn btn-danger mb-2">Remove role</a>
 		</div >
-	</div>
 	<script src="/js/home.js"></script >
 </body>
 </html>

@@ -4,18 +4,20 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Today reservations</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-	crossorigin="anonymous">
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.css" />
-<link th:href="@{/waiterStyles/today-waiter.css}" rel="stylesheet" />
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.ico}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<link th:href="@{/waiterStyles/waiter.css}" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/todayWaiter.css}">
 
 </head>
 <body>
- <div class="background">
-		 <nav class="navbar">
+	<nav class="navbar">
       <div class="navbar__container">
         <a th:href="@{/public/home}" id="navbar__logo">Restoraunt</a>
         <div class="navbar__toggle" id="mobile-menu">
@@ -26,11 +28,11 @@
           <li class="navbar__item">
             <a th:href="@{/public/home}" class="navbar__links" >Home</a>
           </li>
-          <li class="navbar__item">
-            <a th:href="@{/waiter/todayReservations}" class="navbar__links">Today reservations</a>
+           <li class="navbar__item">
+            <a th:href="@{/waiter/}" class="navbar__links" >Tables</a>
           </li>
           <li class="navbar__item">
-            <a th:href="@{/waiter/deleteExpiredReservations}" class="navbar__links">Expired reservations</a>
+            <a th:href="@{/waiter/deleteExpiredReservations}" class="navbar__links">Expired</a>
 
           </li>
           <li class="navbar__btn">
@@ -39,12 +41,11 @@
         </ul>
       </div>
     </nav>
-     </br>
-    </br>
-    </br>
-    </br>
-		<div class = "table">
-		<table class="table table-bordered table" id = "reservations">
+    <div class="limiter">
+		<div class="container-table100">
+			<div class="wrap-table100">
+				<div class="table100">
+					<table>
 			<thead>
 				<tr>
 					<th>Table ID</th>
@@ -68,14 +69,15 @@
 				</tr>
 			</tbody>
 		</table>
-		</div>
+	  </div>
 	</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.js"></script>
-<script>
-	$(document).ready(function(){
-		$("#reservations").DataTable();
-	})
-</script>
+  </div>
+</div>
+<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="/vendor/bootstrap/js/popper.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/vendor/select2/select2.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/home.js"></script >
 </body>
 </html>

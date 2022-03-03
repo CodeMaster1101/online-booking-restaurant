@@ -7,7 +7,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ErrorController {
 
-	
 	public ModelAndView errorDisplay(String message, HttpStatus status) {
 		ModelAndView m = new ModelAndView("error-page");
 		m.addObject("error", message);

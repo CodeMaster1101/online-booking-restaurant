@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mile.pc.mile.restoraunt.app.dto.ReservationDTO;
 import com.mile.pc.mile.restoraunt.app.repo.CustomTableRepository;
@@ -23,41 +24,30 @@ import lombok.SneakyThrows;
 @RequestMapping("/public")
 public class UserController {
 
-	/*
-	 * CLIENT CONTROLLER
-	 */
 	@Autowired CustomTableRepository tableRepo;
 	@Autowired MainService main;
 	@Autowired ReservationRepository rRepo;
 	@Autowired CustomDTOservice des;
 	
-	/*
-	 * Getting the model methods
-	 *
-	 */
-	@GetMapping(path = {"", "/home"})
-	public ModelAndView homePage() {
-		return new ModelAndView("index");
-	}
 	@GetMapping(path = "/reserve-form")
 	public ModelAndView reserveTableForm() {
 		return new ModelAndView("public/reserve-form-user", "reservation", new ReservationDTO());
 	}
 	
-	/*
-	 * Executing the action
-	 */
-	
 	@PostMapping(path = "/reserveTable")
-	public String reserveTable(@Valid @ModelAttribute ReservationDTO reservationDTO) {
+	public String reserveTable(@Valid @ModelAttribute ReservationDTO reservationDTO,RedirectAttributes redirAttrs) {
 			main.reserveTable(reservationDTO);
-			return "redirect:/public/home";
+			redirAttrs.addFlashAttribute("success", "Your reservation was successfull.");
+			return "redirect:/home/";
 	}
+	
 	@SneakyThrows
 	@GetMapping(path ="/cancelReservation")
-	public String cancelReservation() {
+	public String cancelReservation(RedirectAttributes redirAttrs) {
 		main.cancelReservation(SecurityContextHolder.getContext().getAuthentication().getName());
-		return "redirect:/public/home";
+		redirAttrs.addFlashAttribute("success", "Your have successfully canceled your reservation.");
+
+		return "redirect:/home/";
 	}
 
 }

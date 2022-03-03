@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
 
 @Component
-public class TimeOutForCancelingException extends Exception{
+public class TimeOutForCancelingException extends RuntimeException{
     
 	private static final long serialVersionUID = 6223439866695078278L;
 

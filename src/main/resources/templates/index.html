@@ -43,7 +43,8 @@
         </ul>
       </div>
     </nav>
-
+<div id="pop-up" class= "alert alert-primary" role="alert" th:text="${success}" 
+th:if="${success}" onclick="remove()" onmouseover="changeCursor()"></div>
     <!-- Hero Section -->
     <div class="hero" id="home">
       <div class="hero__container">
@@ -66,6 +67,7 @@
         </div>
       </div>
     </div>
-    <script src="/js/home.js"></script >
+ <script src="/js/home.js"></script >
+ <script src = "/js/remove_div.js"></script > 
   </body>
 </html>

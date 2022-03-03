@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservationWaiterDTO {
+	
 	private long tableid;
 	private String firstName;
 	private String username;

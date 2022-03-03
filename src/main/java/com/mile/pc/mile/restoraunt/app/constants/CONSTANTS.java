@@ -24,6 +24,5 @@ public class CONSTANTS {
     public static final LocalDateTime FIXED_DATE = LocalDateTime.now();
     public static final LocalTime MAX_TIME= LocalTime.of(23, 59);
 	public static final int CANCEL_TIME = 2;
-	public static final long RADIUS = 1; 
-    public static LocalDateTimeSerializer LOCAL_DATETIME_SERIALIZER = new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATETIME_FORMAT));
+	public static final long MINIMUM_DAY = 1; 
 }

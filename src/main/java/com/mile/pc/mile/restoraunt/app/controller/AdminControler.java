@@ -20,73 +20,53 @@ import com.mile.pc.mile.restoraunt.app.service.CustomDTOservice;
 @RequestMapping("/admin")
 public class AdminControler {
 
-	/*
-	 * ADMIN CONTROLLER
-	 */
 	@Autowired AdminService adminService;
 	@Autowired UserRepository uRepo;
-	@Autowired RoleRepository rRepo;
-	@Autowired CustomTableRepository tRepo;
 	@Autowired CustomDTOservice dto_ser;
-	/*
-	 * Home page the administrator(MENU)
-	 */
-	@GetMapping(path = {"","/home"})
-	public ModelAndView adminHome() {
-		return new ModelAndView("admin/home-admin");
-	}
 
-	/*
-	 * Getter methods for Models -> Methods that return Model based value
-	 */
-	@GetMapping(path = "/roles")
-	public ModelAndView getRoles(){
-		return new ModelAndView("admin/roles-admin", "roles", rRepo.roleDTO());
-	}
-	
 	@GetMapping(path = "/users")
 	public ModelAndView allUsers() {
 		return new ModelAndView("admin/users-admin","users", dto_ser.usersDTO(uRepo.findAll()));
 	}
-	
+
 	@GetMapping(path = "users/waiters")
-	public ModelAndView getWaiters(){
+	public ModelAndView getWaiters() {
 		return new ModelAndView("admin/waiters-admin","waiters", dto_ser.usersDTO(adminService.getWaiters()));
 	}
-	
+
 	@GetMapping(path = "/add-RTU-form")
 	public ModelAndView addRoleToUserForm(@RequestParam long id) {
 		return new ModelAndView("admin/add-role-to-user-admin", "rtu", 
 				new RoleToUser(null,  uRepo.findById(id).get().getUsername()));
 	}
-	
+
 	@GetMapping(path = "/remove-RFU-form")
 	public ModelAndView removeRoleFromUser(@RequestParam long id) {
 		return new ModelAndView("admin/remove-role-from-user-admin", "rfu", 
 				new RoleToUser(null,  uRepo.findById(id).get().getUsername()));
 	}
-	
+
 	@GetMapping(path = "/updateUser")
 	public ModelAndView getUpdateOptions(@RequestParam long id) {
 		return new ModelAndView("admin/update-admin","user", uRepo.findById(id).get());
 	}
-	
+
 	/*
 	 * Methods that change the DB
 	 */
-	
+
 	@PostMapping(path = "/add-RTU")
-	public String addRoleToUser(@ModelAttribute RoleToUser rtu) {
-		adminService.AddRoleToUser(rtu.getUsername(), rtu.getType());
+	public String addRoleToUser(@ModelAttribute RoleToUser dto) {
+		adminService.AddRoleToUser(dto.getUsername(), dto.getType());
 		return "redirect:/admin/users";
 	}
-	
+
 	@GetMapping(path = "/remove-RFU")
-	public String removeRoleFromUser(@ModelAttribute RoleToUser rtu) {
-		adminService.removeRolefromUser(rtu.getUsername(), rtu.getType());
+	public String removeRoleFromUser(@ModelAttribute RoleToUser dto) {
+		adminService.removeRolefromUser(dto.getUsername(), dto.getType());
 		return "redirect:/admin/users";
 	}
-	
+
 	@GetMapping(path = "/deleteUser")
 	public String deleteUser(@RequestParam long id) {
 		adminService.removeUser(id);

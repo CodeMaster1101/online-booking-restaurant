@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class AlreadyBusyException extends Exception {
+public class AlreadyBusyException extends RuntimeException {
 
 	private static final long serialVersionUID = -8812306212592169302L;
 	

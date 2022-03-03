@@ -20,17 +20,17 @@ import com.mile.pc.mile.restoraunt.app.exceptions.NoAvailableTablesTodayExceptio
 import com.mile.pc.mile.restoraunt.app.exceptions.NotMetReservingRequirementsException;
 import com.mile.pc.mile.restoraunt.app.exceptions.PasswordException;
 import com.mile.pc.mile.restoraunt.app.exceptions.TimeOutForCancelingException;
-import com.mile.pc.mile.restoraunt.app.exceptions.invalidFeeException;
+import com.mile.pc.mile.restoraunt.app.exceptions.invalidPeriodException;
 
 @ControllerAdvice
 public class CustomControllerAdvice {
 
 	@Autowired ErrorController controller;
-	
+
 	@ExceptionHandler(BindException.class)
-	public ModelAndView handleExceptions(BindException e){
+	public ModelAndView handleExceptions(BindException e) {
 		Map<String, String> errors = new HashMap<>();
-		
+
 		int i = 1;
 		for (FieldError error : e.getFieldErrors()) {
 			errors.put("Error " + i + ": ", error.getDefaultMessage());
@@ -38,58 +38,64 @@ public class CustomControllerAdvice {
 		}
 		return controller.errorDisplay(mapToString(errors), HttpStatus.BAD_REQUEST);
 	}
-	
+
 	private String mapToString(Map<String,String> errors) {
 		String[] keys = errors.keySet().toArray(new String[errors.size()]);
 		String[] values = errors.values().toArray(new String[errors.size()]);
 		String result = "";
 		for (int i = 0; i < keys.length; i++) {
 			result += keys[i] + values[i] + ", "; 
-			}
-		return result;
 		}
-	
+		return result;
+	}
+
 	@ExceptionHandler(NoSuchElementException.class)
 	public ModelAndView handleExceptions(NoSuchElementException e) {
 		return controller.errorDisplay(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
 	}
+	
 	@ExceptionHandler(AlreadyBusyException.class)
 	public ModelAndView handleExceptions(AlreadyBusyException e) {
 		return controller.errorDisplay(e.error(e.getId()), HttpStatus.BAD_REQUEST);
-		
+
 	}
+	
 	@ExceptionHandler(BadReservationRadiusException.class)
 	public ModelAndView handleExceptions(BadReservationRadiusException e) {
 		return controller.errorDisplay(e.error(e.getTime()), HttpStatus.BAD_REQUEST);
-		
+
 	}
-	@ExceptionHandler(invalidFeeException.class)
-	public ModelAndView handleExceptions(invalidFeeException e) {
+	@ExceptionHandler(invalidPeriodException.class)
+	public ModelAndView handleExceptions(invalidPeriodException e) {
 		return controller.errorDisplay(e.error(), HttpStatus.BAD_REQUEST);
-		
+
 	}
+	
 	@ExceptionHandler(InvalidSpecificTimeException.class)
 	public ModelAndView handleExceptions(InvalidSpecificTimeException e) {
 		return controller.errorDisplay(e.error(e.getTime(),e.getP()), HttpStatus.BAD_REQUEST);
-
-		
 	}
+	
 	@ExceptionHandler(NoAvailableTablesTodayException.class)
 	public ModelAndView handleExceptions(NoAvailableTablesTodayException e) {
 		return controller.errorDisplay(e.error(e.getDate()), HttpStatus.CONFLICT);
-		
+
 	}
+	
 	@ExceptionHandler(NotMetReservingRequirementsException.class)
 	public ModelAndView handleExceptions(NotMetReservingRequirementsException e) {
 		return controller.errorDisplay(e.error(), HttpStatus.BAD_REQUEST);
 	}
+	
 	@ExceptionHandler(PasswordException.class)
 	public ModelAndView handleExceptions(PasswordException e) {
 		return controller.errorDisplay(e.error(), HttpStatus.CONFLICT);
-		
+
 	}
+	
 	@ExceptionHandler(TimeOutForCancelingException.class)
 	public ModelAndView handleExceptions(TimeOutForCancelingException e) {
 		return controller.errorDisplay(e.error(), HttpStatus.REQUEST_TIMEOUT);
 	}
+	
 }

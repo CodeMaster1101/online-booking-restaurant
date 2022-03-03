@@ -31,7 +31,6 @@ public class WaiterService {
 	@Autowired ReservationRepository reservations;
 	@Autowired UserRepository urepo;
 
-
 	@SneakyThrows @Transactional
 	public void setBusy(long tableid) {
 		CustomTable table = tRepo.findById(tableid).get();
@@ -73,7 +72,6 @@ public class WaiterService {
 	}
 	//PRIVATE HELPING METHODS
 
-
 	@Transactional
 	private void removeReservation(long id) {
 		Reservation reservation = reservations.findById(id).get();
@@ -81,8 +79,6 @@ public class WaiterService {
 		reservation.getUser().setReservationMoment(null);
 		reservation.getTable().removeReservation(reservation);
 	}
-
-
 
 	@Transactional
 	private void sendMoneyToAdmin(Reservation reservation) {
@@ -93,7 +89,6 @@ public class WaiterService {
 		}
 		removeReservation(reservation.getId());
 	}
-
 
 	private Reservation findCurrentReservation(CustomTable table) {
 		LocalTime now = LocalTime.now();

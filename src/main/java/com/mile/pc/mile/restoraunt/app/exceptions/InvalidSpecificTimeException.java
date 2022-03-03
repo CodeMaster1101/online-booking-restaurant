@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
-public class InvalidSpecificTimeException extends Exception {
+public class InvalidSpecificTimeException extends RuntimeException {
 
 	private LocalTime time;
 	private int p;

@@ -16,7 +16,7 @@ import com.mile.pc.mile.restoraunt.app.exceptions.InvalidSpecificTimeException;
 import com.mile.pc.mile.restoraunt.app.exceptions.NoAvailableTablesTodayException;
 import com.mile.pc.mile.restoraunt.app.exceptions.NotMetReservingRequirementsException;
 import com.mile.pc.mile.restoraunt.app.exceptions.TimeOutForCancelingException;
-import com.mile.pc.mile.restoraunt.app.exceptions.invalidFeeException;
+import com.mile.pc.mile.restoraunt.app.exceptions.invalidPeriodException;
 import com.mile.pc.mile.restoraunt.app.model.CustomTable;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.model.User;
@@ -40,7 +40,7 @@ public class MainService {
 	public void reserveTable(ReservationDTO dto) {		
 		Reservation reservation = saveNewRes(dto);
 		reservationRequirements(reservation, dto);
-		reservation.setFee(incrementFee(reservation.getPeriod()));
+		reservation.setFee(getPeriodInFee(reservation.getPeriod()));
 		User user = reservation.getUser();
 		basicReservingProcedure(user, reservation);
 	}
@@ -61,7 +61,7 @@ public class MainService {
 	 */
 	@SneakyThrows
 	private void reservationRequirements(Reservation reservation, ReservationDTO dto) {
-		if(reservation.getUser().getBalance() < incrementFee(reservation.getPeriod()))
+		if(reservation.getUser().getBalance() < getPeriodInFee(reservation.getPeriod()))
 			throw new NotMetReservingRequirementsException();
 		if(!OneDayBefore(reservation))
 			throw new BadReservationRadiusException(reservation.getTime());
@@ -114,12 +114,12 @@ public class MainService {
 	}
 
 	@SneakyThrows
-	private long incrementFee(int period) {
+	private long getPeriodInFee(int period) {
 		switch (period) {
 		case 1: return CONSTANTS.BREAKFAST_FEE;
 		case 2: return CONSTANTS.LUNCH_FEE;
 		case 3: return CONSTANTS.DINNER_FEE;
-		default: throw new invalidFeeException(); 
+		default: throw new invalidPeriodException(); 
 		}
 	}
 

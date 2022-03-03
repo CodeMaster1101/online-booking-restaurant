@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Component
-public class NoAvailableTablesTodayException extends Exception {
+public class NoAvailableTablesTodayException extends RuntimeException {
 	
 	private LocalDate date;
 	private static final long serialVersionUID = 2475694739398696095L;

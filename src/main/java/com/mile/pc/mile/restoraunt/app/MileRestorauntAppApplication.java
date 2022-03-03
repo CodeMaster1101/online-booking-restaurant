@@ -20,6 +20,7 @@ public class MileRestorauntAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MileRestorauntAppApplication.class, args);
 	}
+	
 	@Autowired CustomTableRepository tr;
 	@Autowired UserRepository ur;
 	@Autowired ReservationRepository reser;

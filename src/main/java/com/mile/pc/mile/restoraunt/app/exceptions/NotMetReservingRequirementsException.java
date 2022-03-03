@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 
-public class NotMetReservingRequirementsException extends Exception {
+public class NotMetReservingRequirementsException extends RuntimeException {
 
 	private static final long serialVersionUID = 7407325878833614802L;
 	

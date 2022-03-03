@@ -11,14 +11,14 @@
 	<div class="background">
 		 <nav class="navbar">
       <div class="navbar__container">
-        <a th:href="@{/public/home}" id="navbar__logo">Restoraunt</a>
+        <a th:href="@{/home}" id="navbar__logo">Restoraunt</a>
         <div class="navbar__toggle" id="mobile-menu">
           <span class="bar"></span> <span class="bar"></span>
           <span class="bar"></span>
         </div>
         <ul class="navbar__menu">
           <li class="navbar__item">
-            <a th:href="@{/public/home}" class="navbar__links" >Home</a>
+            <a th:href="@{/home}" class="navbar__links" >Home</a>
           </li>
           <li class="navbar__item">
           <a th:href="@{/public/reserve-form/}" class="navbar__links">Reserve</a>
@@ -35,28 +35,28 @@
 <div class = "form">
 <div class = "h4"><h4>Reserve</h4></div>
 	<div class = "content">
-		<form th:action="@{/public/reserveTable}" th:object="${reservation}" th:method="post">
+		<form name="reserve" th:action="@{/public/reserveTable}" th:object="${reservation}" th:method="post" onsubmit="return validateForm()">
 				</br>
-				<input type="checkbox" th:field ="*{accepted}" value="true"/> Accept
+				<input name="accepted" type="checkbox" th:field ="*{accepted}" value="true"/> Accept
 				</br>
 				</br>
    				<label>Reservation date</label>
    				</br>
    				</br>				
-   				<input type = "date" th:field ="*{date}">
+   				<input name="date" type = "date" th:field ="*{date}">
    				</br>
    				</br>
    				</br>
    				<label>Period of the day</label>
    				</br>
    				</br>
-   				<input type="radio" th:field ="*{period}" value="1" /> Breakfast  07:00 AM - 12:00 PM
+   				<input name="p1" type="radio" th:field ="*{period}" value="1" /> Breakfast  07:00 AM - 12:00 PM
    				</br>
    				</br>
-   				<input type="radio" th:field ="*{period}" value="2" /> Lunch 01:00 PM - 07:00 PM
+   				<input name="p2" type="radio" th:field ="*{period}" value="2" /> Lunch 01:00 PM - 07:00 PM
    				</br>
    				</br>
-   				<input type="radio" th:field ="*{period}" value="3" /> Dinner 08:00 PM - 10:00 PM
+   				<input name="p3" type="radio" th:field ="*{period}" value="3" /> Dinner 08:00 PM - 10:00 PM
    				</br>
    				</br>
    				</br>
@@ -64,7 +64,7 @@
    				<label>Specific time</label>
    				</br>
    				</br>
-   				<input type="time" th:field ="*{time}">
+   				<input name="time" type="time" th:field ="*{time}">
    				</br>
    				</br>
    				</br>

@@ -1,0 +1,7 @@
+#pop-up {
+font-size: x-large; text-align: center;
+ background-color: rgb(0, 244, 0); 
+ opacity: 0.85; 
+ height: 50px;
+ padding-bottom: 25px;
+}

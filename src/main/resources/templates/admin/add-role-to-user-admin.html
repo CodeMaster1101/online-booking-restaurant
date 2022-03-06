@@ -36,10 +36,10 @@
 </br>
 <div class = "h4"><h3>Assign role</h3></div>
 	<div class = "roles">
-		<form name="roleForm" th:action="@{/admin/add-RTU}" th:object="${rtu}" th:method="POST" onsubmit="return formValidationAdmin()">
-   				<input name="p1" type="radio" th:field="*{type}" value="USER" />User
-        	 	<input name="p2" type="radio" th:field="*{type}" value="WAITER" />Waiter
-        	 	<input name="p3" type="radio" th:field="*{type}" value="ADMIN" />Admin<br/>
+		<form th:action="@{/admin/add-RTU}" th:object="${rtu}" th:method="POST" onsubmit="return formValidationAdmin()">
+   				<input name="role" type="radio" th:field="*{type}" value="USER" />User
+        	 	<input name="role" type="radio" th:field="*{type}" value="WAITER" />Waiter
+        	 	<input name="role" type="radio" th:field="*{type}" value="ADMIN" />Admin<br/>
 			 	<input type="hidden"th:field ="*{username}" > 
    				<input type="submit" value="Submit">
   </form>
@@ -47,5 +47,6 @@
 
 </div  >
   <script src="/js/home.js"></script >
+   <script src="/js/validateRoleOperation.js"></script >
 </body>
 </html>

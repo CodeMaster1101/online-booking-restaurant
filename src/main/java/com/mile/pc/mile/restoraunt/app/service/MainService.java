@@ -1,6 +1,7 @@
 package com.mile.pc.mile.restoraunt.app.service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -45,20 +46,15 @@ public class MainService {
 		basicReservingProcedure(user, reservation);
 	}
 
-	@Transactional 
 	public void cancelReservation(String username) throws TimeOutForCancelingException {
 		User localUser = uRepo.getUserByUsername(username);
 		if(refund(localUser)) {
 			localUser.setBalance(localUser.getBalance() + localUser.getReservation().getFee());
 			basicUserReservationCancelLogic(localUser);
-		}else {
+		} else
 			throw new TimeOutForCancelingException();
-		}
 	}
 
-	/*
-	 * PRIVATE HELPING METHODS
-	 */
 	@SneakyThrows
 	private void reservationRequirements(Reservation reservation, ReservationDTO dto) {
 		if(reservation.getUser().getBalance() < getPeriodInFee(reservation.getPeriod()))
@@ -70,17 +66,18 @@ public class MainService {
 	}
 
 	private boolean specificTimeBasedOnPeriod(ReservationDTO dto) {
+		LocalTime time = dto.getTime();		
 		if(dto.getPeriod() == 1) {
-			if(dto.getTime().isAfter(CONSTANTS.START.minusMinutes(1)) && 
-					dto.getTime().isBefore(CONSTANTS.NOON.plusMinutes(30)))return true;
+			if(time.isAfter(CONSTANTS.START.minusMinutes(1)) && 
+					time.isBefore(CONSTANTS.NOON.plusMinutes(1)))return true;
 		}
 		else if(dto.getPeriod() == 2) {
-			if(dto.getTime().isAfter(CONSTANTS.NOON.plusMinutes(59)) && 
-					dto.getTime().isBefore(CONSTANTS.EVENING.minusHours(1)))return true;
+			if(time.isAfter(CONSTANTS.NOON) && 
+					time.isBefore(CONSTANTS.EVENING))return true;
 		}
 		else if(dto.getPeriod() == 3) {
-			if(dto.getTime().isAfter(CONSTANTS.EVENING.minusMinutes(1)) && 
-					dto.getTime().isBefore(CONSTANTS.END.plusMinutes(1)))return true;
+			if(time.isAfter(CONSTANTS.EVENING.minusMinutes(1)) && 
+					time.isBefore(CONSTANTS.END.plusMinutes(1)))return true;
 		}
 		return false;
 	}
@@ -91,7 +88,6 @@ public class MainService {
 		return true;
 	}
 
-	@Transactional
 	private void basicUserReservationCancelLogic(User localUser) {
 		Reservation res = localUser.getReservation();
 		localUser.setReservation(null);
@@ -99,7 +95,6 @@ public class MainService {
 		localUser.setReservationMoment(null);
 	}
 
-	@Transactional
 	private void basicReservingProcedure(User user, Reservation reservation) throws Exception {
 		reservation.getTable().addReservation(reservation);
 		user.setReservation(reservation);
@@ -139,5 +134,5 @@ public class MainService {
 		}
 		throw new NoAvailableTablesTodayException(dto.getDate());
 	}
-	
+
 }

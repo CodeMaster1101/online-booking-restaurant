@@ -46,9 +46,8 @@ public class WaiterService {
 	@Transactional
 	public void setCalm(long tableid) {
 		RestorauntTable table = tRepo.findById(tableid).get();
-		Reservation currentReservation = reservations.findAll().stream()
-				.filter(res -> res.getTable().equals(table) && res.isBusy()).findFirst().get();
-		emptyTableAndReservations(table, currentReservation);
+		emptyTableAndReservations(table, reservations.findAll().stream()
+				.filter(res -> res.getTable().equals(table) && res.isBusy()).findFirst().get());
 	}
 
 	public List<Reservation> todayReservations(){
@@ -58,17 +57,18 @@ public class WaiterService {
 	}
 
 	@Transactional
-	public void removeExpiredReservations() {
+	public int removeExpiredReservations() {
+		int i = 0;
 		List<Reservation> expiredReservations = reservations.findAll().stream()
 				.filter(r ->  r.isBusy() == false && r.getTime().plusMinutes(CONSTANTS.AFTER_RESERVATION_TIME).isBefore(LocalDateTime.now())).collect(Collectors.toList());
 		if(expiredReservations.isEmpty() == false) {
 			for (Reservation reservation : expiredReservations) {
 				sendMoneyToAdmin(reservation);
+				i++;
 			}
-		}
+		}return i;
 	}
 
-	@Transactional
 	private void removeReservation(long id) {
 		Reservation reservation = reservations.findById(id).get();
 		reservation.getUser().setReservation(null);
@@ -76,7 +76,6 @@ public class WaiterService {
 		reservation.getTable().removeReservation(reservation);
 	}
 
-	@Transactional
 	private void sendMoneyToAdmin(Reservation reservation) {
 		if(reservation.getFee() != null) {
 			User admin = urepo.findAll().stream().filter(u -> u.getRoles().contains(
@@ -95,13 +94,11 @@ public class WaiterService {
 				&&  now.isBefore(r.getTime().toLocalTime().plusMinutes((CONSTANTS.AFTER_RESERVATION_TIME)))).findFirst().get();
 	}
 
-	@Transactional
 	private void emptyTableAndReservations(RestorauntTable table, Reservation currentReservation) {
 		removeReservation(currentReservation.getId());		
 		table.setBusy(false);
 	}
 
-	@Transactional
 	private void reservationBusyLogic(Reservation reservation) {
 		//keeps the reservation as a "busy reservation" in a map to ease the complexity, later implemented in the setCalm(long id) method
 		reservation.getUser().setBalance(reservation.getUser().getBalance() + reservation.getFee());

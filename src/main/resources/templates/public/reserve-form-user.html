@@ -35,9 +35,9 @@
 <div class = "form">
 <div class = "h4"><h4>Reserve</h4></div>
 	<div class = "content">
-		<form name="reserve" th:action="@{/public/reserveTable}" th:object="${reservation}" th:method="post" onsubmit="return validateForm()">
+		<form th:action="@{/public/reserveTable}" th:object="${reservation}" th:method="post" onsubmit="return formValidation()">
 				</br>
-				<input name="accepted" type="checkbox" th:field ="*{accepted}" value="true"/> Accept
+				<input id="accept" type="checkbox" th:field ="*{accepted}" value="true"/> Accept
 				</br>
 				</br>
    				<label>Reservation date</label>
@@ -50,13 +50,13 @@
    				<label>Period of the day</label>
    				</br>
    				</br>
-   				<input name="p1" type="radio" th:field ="*{period}" value="1" /> Breakfast  07:00 AM - 12:00 PM
+   				<input name="period" type="radio" th:field ="*{period}" value="1" /> Breakfast  07:00 AM - 12:00 PM
    				</br>
    				</br>
-   				<input name="p2" type="radio" th:field ="*{period}" value="2" /> Lunch 01:00 PM - 07:00 PM
+   				<input name="period" type="radio" th:field ="*{period}" value="2" /> Lunch 01:00 PM - 07:00 PM
    				</br>
    				</br>
-   				<input name="p3" type="radio" th:field ="*{period}" value="3" /> Dinner 08:00 PM - 10:00 PM
+   				<input name="period" type="radio" th:field ="*{period}" value="3" /> Dinner 08:00 PM - 10:00 PM
    				</br>
    				</br>
    				</br>
@@ -64,7 +64,7 @@
    				<label>Specific time</label>
    				</br>
    				</br>
-   				<input name="time" type="time" th:field ="*{time}">
+   				<input id="specTime" name="time" type="time" th:field ="*{time}">
    				</br>
    				</br>
    				</br>
@@ -75,8 +75,9 @@
  </div>
 </div >
 </div>
+ <script src="/js/home.js"></script >
+ <script src="/js/validateReservation.js"></script >
 <script type="text/javascript">
- 
  function proceed(){
 	 if (confirm('Are you sure you want to cancel the reservation?'))
           return true;
@@ -84,6 +85,5 @@
            return false;
 }
  </script > 
- <script src="/js/home.js"></script >
 </body>
 </html>

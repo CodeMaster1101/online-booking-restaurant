@@ -39,6 +39,7 @@ public class RestorauntTable {
     	this.reservations.add(r);
     	r.setTable(this);
     }
+   
     public void removeReservation(Reservation r) {
     	r.setTable(null);
     	reservations.remove(r);

@@ -3,8 +3,18 @@ const setError = (element, message) => {
     const errorDisplay = inputControl.querySelector('.error');
 
     errorDisplay.innerText = message;
+    inputControl.classList.remove('success');
     inputControl.classList.add('error');
-}
+ }
+ const setSuccess = element => {
+    const inputControl = element.parentElement;
+    const errorDisplay = inputControl.querySelector('.error');
+
+    errorDisplay.innerText = '';
+    inputControl.classList.add('success');
+    inputControl.classList.remove('error');
+};
+
 
 function calcDate(date1){
 
@@ -40,6 +50,7 @@ function formValidation() {
 		setError(checkbox, "Terms and conditions must be accepted!")
 		return false;
 	}
+	setSuccess(checkbox);
 	//date validation
 	
 	let date = document.querySelector('input[type="date"]');
@@ -51,6 +62,8 @@ function formValidation() {
 		setError(date, "the minimal time for reserving must be a day from now. Try again.");
 		return false;
 	}
+	setSuccess(date);
+
 	//period of day validation
 	let radios = document.getElementsByName("period");
     let formValid = false;
@@ -64,6 +77,7 @@ function formValidation() {
 	setError(document.getElementById('periodError'), "Please select a period!")
 	return false;
 	}
+	setSuccess(document.getElementById('periodError'));
 	//time validation
 	i = i - 1;
 	let fetchedTime = document.getElementById('specTime');

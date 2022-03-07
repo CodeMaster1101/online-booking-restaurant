@@ -1,0 +1,12 @@
+.input-control .error {
+    color: #ff3860;
+   	margin-top: 8px;
+    font-size: 17px;
+    height: 13px;
+}
+.input-control.error input {
+    border-color: #ff3860;
+}
+.input-control {
+	margin-bottom:15px;
+}

@@ -12,9 +12,9 @@ import com.mile.pc.mile.restoraunt.app.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 	@Query(
-			  value = "SELECT * FROM USERS u WHERE u.reservationMoment = null ", 
-			  nativeQuery = true)
-			Collection<User> findAllUsersWithoutReservation();
+			value = "SELECT * FROM USERS u WHERE u.reservationMoment = null ", 
+			nativeQuery = true)
+	Collection<User> findAllUsersWithoutReservation();
 	@Query("SELECT u FROM User u WHERE u.username = :username")
-    public User getUserByUsername(@Param("username") String username);	
+	public User getUserByUsername(@Param("username") String username);	
 }

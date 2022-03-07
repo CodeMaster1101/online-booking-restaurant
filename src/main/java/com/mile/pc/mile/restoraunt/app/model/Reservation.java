@@ -27,31 +27,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Reservation
-{
-	
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-    private Boolean accepted;
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    @JsonManagedReference
-    private User user;
-    @ManyToOne
-    @JoinColumn(name = "table_id")
-    @JsonBackReference
-    private RestorauntTable table;
-    @DateTimeFormat(iso = ISO.DATE_TIME)
-    private LocalDateTime time;
-    private Long fee;
-    private boolean busy;
-    private int period;
-    private String note;
-    
-    public void setUTable(RestorauntTable table) {
-    	this.table = table;
-    	table.addReservation(this);
-    }
-  
+public class Reservation {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Long id;
+	private Boolean accepted;
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	@JsonManagedReference
+	private User user;
+	@ManyToOne
+	@JoinColumn(name = "table_id")
+	@JsonBackReference
+	private RestorauntTable table;
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	private LocalDateTime time;
+	private Long fee;
+	private boolean busy;
+	private int period;
+	private String note;
+
+	public void setUTable(RestorauntTable table) {
+		this.table = table;
+		table.addReservation(this);
+	}
+
 }

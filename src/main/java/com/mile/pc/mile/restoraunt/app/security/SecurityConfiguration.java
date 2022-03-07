@@ -19,37 +19,38 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserService userService;
-	
-	@Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-	
-	@Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(userService);
-        auth.setPasswordEncoder(passwordEncoder());
-        return auth;
-    }
-	@Value("${spring.security.debug:false}")
-    boolean securityDebug;
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.debug(securityDebug);
-    }
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+		auth.setUserDetailsService(userService);
+		auth.setPasswordEncoder(passwordEncoder());
+		return auth;
+	}
 	
+	@Value("${spring.security.debug:false}")
+	boolean securityDebug;
+
 	@Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
-    }
-	
+	public void configure(WebSecurity web) throws Exception {
+		web.debug(securityDebug);
+	}
+
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(authenticationProvider());
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers(
-				 "/security/**",
-				 "/**/*.js", "/**/*.css").permitAll()
+				"/security/**",
+				"/**/*.js", "/**/*.css").permitAll()
 		.antMatchers("/admin/**").hasAuthority("ADMIN")
 		.antMatchers("/public/**").hasAnyAuthority("USER")
 		.antMatchers("/waiter/**").hasAnyAuthority("WAITER")
@@ -68,5 +69,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.logoutSuccessUrl("/security/login")
 		.permitAll();
 	}
-
 }

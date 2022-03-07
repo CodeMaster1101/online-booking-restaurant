@@ -11,7 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
-import com.mile.pc.mile.restoraunt.app.dto.ReservationDTO;
+import com.mile.pc.mile.restoraunt.app.dto_dao.ReservationDTO;
 import com.mile.pc.mile.restoraunt.app.exceptions.BadReservationRadiusException;
 import com.mile.pc.mile.restoraunt.app.exceptions.InvalidSpecificTimeException;
 import com.mile.pc.mile.restoraunt.app.exceptions.NoAvailableTablesTodayException;

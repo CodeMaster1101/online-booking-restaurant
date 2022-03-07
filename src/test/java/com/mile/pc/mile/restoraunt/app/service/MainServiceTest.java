@@ -34,6 +34,7 @@ class MainServiceTest {
 	@Mock TableRepository customTableRepository;
 	@Mock UserRepository userRepository;
 	@Mock ReservationRepository reservationRepository;
+	
 	@Test
 	void testCancelReservationWhenUserLate() throws TimeOutForCancelingException {
 		try {
@@ -66,6 +67,4 @@ class MainServiceTest {
 				() -> assertEquals(0, table.getReservations().size()));
 
 	}
-
-
 }

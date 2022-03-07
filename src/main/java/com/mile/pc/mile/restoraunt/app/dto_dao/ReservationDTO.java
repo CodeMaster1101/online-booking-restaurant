@@ -1,4 +1,4 @@
-package com.mile.pc.mile.restoraunt.app.dto;
+package com.mile.pc.mile.restoraunt.app.dto_dao;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

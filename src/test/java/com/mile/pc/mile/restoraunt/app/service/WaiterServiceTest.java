@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
@@ -38,6 +39,8 @@ class WaiterServiceTest {
 
 	@Test
 	void testSetBusy() {
+		if(LocalTime.now().isAfter(LocalTime.of(21, 0)))
+			return;
 		User user = new User(2l,"Mile", "username", "123", 600l, null, new HashSet<>(), LocalDateTime.now().minusDays(1));
 		RestorauntTable table = new RestorauntTable(3l, false, new ArrayList<Reservation>());
 		Reservation r = new Reservation(1l, true, user, table, LocalDateTime.now().plusMinutes(15), 300l, false, 2, null);

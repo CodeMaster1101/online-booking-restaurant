@@ -15,23 +15,24 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.mile.pc.mile.restoraunt.app.dto.SignUpDTO;
+import com.mile.pc.mile.restoraunt.app.dto_dao.SignUpDTO;
 import com.mile.pc.mile.restoraunt.app.model.Role;
 import com.mile.pc.mile.restoraunt.app.model.User;
 import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
 	@Autowired UserRepository userRepository;
 	@Autowired RoleRepository roleRepository;
 	@Autowired BCryptPasswordEncoder passwordEncoder;
-	
+
 	public UserServiceImpl(UserRepository userRepository) {
 		super();
 		this.userRepository = userRepository;
 	}
+	
 	@Override @Transactional
 	public User save(SignUpDTO registrationDto) {
 		Set<Role> roles = new HashSet<>();
@@ -44,13 +45,14 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	
+
 		User user = userRepository.getUserByUsername(username);
 		if(user == null) {
 			throw new UsernameNotFoundException("Invalid username");
 		}
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));		
 	}
+	
 	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getType())).collect(Collectors.toList());
 	}

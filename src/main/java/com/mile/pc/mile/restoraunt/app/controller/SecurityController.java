@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mile.pc.mile.restoraunt.app.dto.SignUpDTO;
+import com.mile.pc.mile.restoraunt.app.dto_dao.SignUpDTO;
 import com.mile.pc.mile.restoraunt.app.security.UserService;
 
 import lombok.AllArgsConstructor;

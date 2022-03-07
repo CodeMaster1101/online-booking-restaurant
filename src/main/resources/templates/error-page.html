@@ -5,16 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Error</title>
 <link th:href="@{/error-page.css}" rel="stylesheet" />
+<style>
+ 	.error-div {
+		margin-top: auto;
+	}
+</style>
 </head>
 <body>
-</br>
-</br>
-</br>
-</br>
-</br>
-		<p style="color: red;">Error </p >
+<div class="error-div"><p style="color: red;">Error </p >
    		<p th:text="${error}">
    		<br>
-   		<p th:text = "${status}">
+   		<p th:text = "${status}"></div >
+
+<script src="/js/main.js"></script>
+<script src="/js/home.js"></script >
 </body>
 </html>

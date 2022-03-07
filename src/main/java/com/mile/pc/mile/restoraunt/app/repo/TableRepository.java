@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.mile.pc.mile.restoraunt.app.model.RestorauntTable;
 
 @Repository
-public interface TableRepository extends JpaRepository<RestorauntTable, Long>{
+public interface TableRepository extends JpaRepository<RestorauntTable, Long> {
 	
 }

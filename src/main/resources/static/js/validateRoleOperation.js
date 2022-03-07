@@ -1,5 +1,5 @@
 function formValidationAdmin(){
-	let radios = document.getElementsByName("role");
+	let radios = document.getElementsByName("type");
     let formValid = false;
 
     let i = 0;
@@ -8,8 +8,15 @@ function formValidationAdmin(){
         i++;        
     }
     if (!formValid) {
-	alert("Please select a role!");
+	setError(document.getElementById('roleError'), "Please select a role!");
 	return false;
 	}
 	return true;
+}
+const setError = (element, message) => {
+    const inputControl = element.parentElement;
+    const errorDisplay = inputControl.querySelector('.error');
+
+    errorDisplay.innerText = message;
+    inputControl.classList.add('error');
 }

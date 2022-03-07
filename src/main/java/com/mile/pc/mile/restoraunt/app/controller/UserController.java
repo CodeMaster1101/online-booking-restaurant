@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.mile.pc.mile.restoraunt.app.dto.ReservationDTO;
+import com.mile.pc.mile.restoraunt.app.dto_dao.ReservationDTO;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.repo.TableRepository;
 import com.mile.pc.mile.restoraunt.app.service.CustomDTOservice;

@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Assign role</title>
 <link th:href="@{/adminStyles/add-role-to-user-admin.css}" rel="stylesheet" />
+<link th:href="@{/css/js_errors.css}" rel="stylesheet" />
+<link th:href="@{/css/navbar.css}" rel="stylesheet" />
 
 <body>
 	 <nav class="navbar">
@@ -37,9 +39,13 @@
 <div class = "h4"><h3>Assign role</h3></div>
 	<div class = "roles">
 		<form th:action="@{/admin/add-RTU}" th:object="${rtu}" th:method="POST" onsubmit="return formValidationAdmin()">
+				<div class="input-control">	
    				<input name="role" type="radio" th:field="*{type}" value="USER" />User
         	 	<input name="role" type="radio" th:field="*{type}" value="WAITER" />Waiter
         	 	<input name="role" type="radio" th:field="*{type}" value="ADMIN" />Admin<br/>
+			 	<div id="roleError"></div>
+				<div class="error"></div>
+				</div>
 			 	<input type="hidden"th:field ="*{username}" > 
    				<input type="submit" value="Submit">
   </form>

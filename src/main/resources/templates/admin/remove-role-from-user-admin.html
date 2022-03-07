@@ -4,11 +4,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Remove role</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-	crossorigin="anonymous">
-	<link th:href="@{/adminStyles/remove-role-from-user-admin.css}" rel="stylesheet" />
+<link th:href="@{/adminStyles/remove-role-from-user-admin.css}" rel="stylesheet" />
+<link th:href="@{/css/js_errors.css}" rel="stylesheet" />
+<link th:href="@{/css/navbar.css}" rel="stylesheet" />
 </head>
 
 <body>
@@ -28,7 +26,6 @@
           </li>
           <li class="navbar__item">
             <a th:href="@{/admin/users/waiters}" class="navbar__links">Waiters</a>
-
           </li>
           <li class="navbar__btn">
             <a th:href="@{/logout}" class="button" id="signup">Log out</a>
@@ -43,12 +40,16 @@
 <div class = "h4"><h4>Remove role</h4></div>
 	<div class = "roles">
 		<form th:action="@{/admin/remove-RFU}" th:object="${rfu}" method="GET" onsubmit="return formValidationAdmin()">
+				<div class="input-control">	
    				<input name="role" type="radio" th:field="*{type}" value="USER" />User
         	 	<input name="role" type="radio" th:field="*{type}" value="WAITER" />Waiter
         	 	<input name="role" type="radio" th:field="*{type}" value="ADMIN" />Admin<br/>
+				<div id="roleError"></div>
+				<div class="error"></div>
+				</div>
 			 	<input type="hidden"th:field ="*{username}" > 
    				<input type="submit" value="Submit">
-  </form>
+ </form>
 </div>
 
 </div  >

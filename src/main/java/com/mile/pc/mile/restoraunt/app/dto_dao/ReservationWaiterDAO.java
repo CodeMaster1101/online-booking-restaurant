@@ -1,4 +1,4 @@
-package com.mile.pc.mile.restoraunt.app.dto;
+package com.mile.pc.mile.restoraunt.app.dto_dao;
 
 import java.time.LocalTime;
 
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationWaiterDTO {
+public class ReservationWaiterDAO {
 	
 	private long tableid;
 	private String firstName;

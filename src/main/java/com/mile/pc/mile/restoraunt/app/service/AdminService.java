@@ -28,7 +28,7 @@ import lombok.SneakyThrows;
  */
 @Service 
 public class AdminService {
-	
+
 	@Autowired UserRepository userRepo;
 	@Autowired RoleRepository roleRepo;
 	@Autowired CustomDTOservice dto_Ser;
@@ -46,7 +46,7 @@ public class AdminService {
 		Role role = roleRepo.findByType(roleType);
 		user.getRoles().add(role);
 	}
-	
+
 	/**
 	 * removes a role from the user
 	 * @param username
@@ -58,7 +58,7 @@ public class AdminService {
 		Role role = roleRepo.findByType(roleType);
 		user.getRoles().remove(role);
 	}
-	
+
 	/**
 	 * removes the user found by the given id
 	 * @param id
@@ -67,7 +67,7 @@ public class AdminService {
 	public void removeUser(long id) {
 		userRepo.deleteById(id);;
 	}
-	
+
 	/**
 	 * filters through all the users to fetch every waiter
 	 * @return every user that has a role "WAITER"

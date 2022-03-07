@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reserve</title>
 <link th:href="@{/publicStyles/reserve-form-user.css}" rel="stylesheet" />
-
+<link th:href="@{/css/js_errors.css}" rel="stylesheet" />
+<link th:href="@{/css/navbar.css}" rel="stylesheet" />
 </head>
 <body>
 	<div class="background">
@@ -36,20 +37,21 @@
 <div class = "h4"><h4>Reserve</h4></div>
 	<div class = "content">
 		<form th:action="@{/public/reserveTable}" th:object="${reservation}" th:method="post" onsubmit="return formValidation()">
-				</br>
-				<input id="accept" type="checkbox" th:field ="*{accepted}" value="true"/> Accept
-				</br>
-				</br>
+            	<div class="input-control">				
+            	<input id="accept" type="checkbox" th:field ="*{accepted}" value="true"/> Accept
+				<div class="error"></div>
+            	</div>
    				<label>Reservation date</label>
    				</br>
-   				</br>				
+   				</br>
+             	<div class="input-control">		
    				<input name="date" type = "date" th:field ="*{date}">
-   				</br>
-   				</br>
-   				</br>
+   				<div class="error"></div>
+             	</div>
    				<label>Period of the day</label>
    				</br>
    				</br>
+   				<div class="input-control">
    				<input name="period" type="radio" th:field ="*{period}" value="1" /> Breakfast  07:00 AM - 12:00 PM
    				</br>
    				</br>
@@ -57,20 +59,19 @@
    				</br>
    				</br>
    				<input name="period" type="radio" th:field ="*{period}" value="3" /> Dinner 08:00 PM - 10:00 PM
-   				</br>
-   				</br>
-   				</br>
-   				</br>
+   				<div id="periodError"></div>
+   				<div class="error"></div>
+   				</div>
    				<label>Specific time</label>
    				</br>
    				</br>
+   				<div class="input-control">
    				<input id="specTime" name="time" type="time" th:field ="*{time}">
-   				</br>
-   				</br>
-   				</br>
+   				<div class="error"></div>
+   				</div>
    				<label>Notes</label>
    				<input type="text" th:field ="*{note}">
-   				<input type="submit" value="Submit">
+   				<input type="submit" value="Reserve">
   </form>
  </div>
 </div >

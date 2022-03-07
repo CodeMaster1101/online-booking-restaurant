@@ -7,7 +7,7 @@ import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.model.User;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, Long>{
+public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 	Reservation findByUser(User user);
-	
+
 }

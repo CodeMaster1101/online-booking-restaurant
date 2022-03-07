@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @Component
 public class NoAvailableTablesTodayException extends RuntimeException {
-	
+
 	private LocalDate date;
 	private static final long serialVersionUID = 2475694739398696095L;
 	public String error(LocalDate date) {

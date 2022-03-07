@@ -1,4 +1,4 @@
-package com.mile.pc.mile.restoraunt.app.dto;
+package com.mile.pc.mile.restoraunt.app.dto_dao;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

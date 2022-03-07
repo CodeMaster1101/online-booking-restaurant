@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mile.pc.mile.restoraunt.app.dto.ReservationWaiterDTO;
-import com.mile.pc.mile.restoraunt.app.dto.UserDTO;
+import com.mile.pc.mile.restoraunt.app.dto_dao.ReservationWaiterDAO;
+import com.mile.pc.mile.restoraunt.app.dto_dao.UserDAO;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
 import com.mile.pc.mile.restoraunt.app.model.User;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
@@ -25,15 +25,15 @@ public class CustomDTOservice {
 	private Set<String> roles(User user){
 		return user.getRoles().stream().map(r -> r.getType()).collect(Collectors.toSet());
 	}
-	
-	public Set<UserDTO> usersDTO(List<User> repoUsers){
-		return repoUsers.stream().map(u-> new UserDTO(u.getId(), u.getFirstName(), u.getUsername(), u.getBalance(), roles(u))).collect(Collectors.toSet());
-	}
-	
-	public Set<ReservationWaiterDTO> reservationDTOconv(List<Reservation> todayReservations) {
 
-		return todayReservations.stream().map(r-> new ReservationWaiterDTO(r.getTable().getId(),
-			r.getUser().getFirstName(), r.getUser().getUsername(), fetchPeriodAsString(r), r.getTime().toLocalTime(), r.isBusy(), r.getNote())).collect(Collectors.toSet());
+	public Set<UserDAO> usersDTO(List<User> repoUsers){
+		return repoUsers.stream().map(u-> new UserDAO(u.getId(), u.getFirstName(), u.getUsername(), u.getBalance(), roles(u))).collect(Collectors.toSet());
+	}
+
+	public Set<ReservationWaiterDAO> reservationDTOconv(List<Reservation> todayReservations) {
+
+		return todayReservations.stream().map(r-> new ReservationWaiterDAO(r.getTable().getId(),
+				r.getUser().getFirstName(), r.getUser().getUsername(), fetchPeriodAsString(r), r.getTime().toLocalTime(), r.isBusy(), r.getNote())).collect(Collectors.toSet());
 	}
 
 	private String fetchPeriodAsString(Reservation reservation) {

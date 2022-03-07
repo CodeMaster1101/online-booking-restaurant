@@ -1,4 +1,4 @@
-package com.mile.pc.mile.restoraunt.app.dto;
+package com.mile.pc.mile.restoraunt.app.dto_dao;
 
 import java.util.Set;
 
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserDAO {
 	
 	private long id;
 	private String firstName;
@@ -20,9 +20,4 @@ public class UserDTO {
 	private long balance;
 	private Set<String> roles;
 	
-	public UserDTO(long id, String username, long balance) {
-		this.id = id;
-		this.username = username;
-		this.balance = balance;
-	}
 }

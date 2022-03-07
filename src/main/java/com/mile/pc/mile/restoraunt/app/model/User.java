@@ -32,6 +32,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name =  "user", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 public class User {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
@@ -52,9 +53,5 @@ public class User {
 					name = "role_id", referencedColumnName = "id"))
 	private Set<Role> roles;
 	private LocalDateTime reservationMoment;
-	@Transactional
-	public void setUReservation(Reservation reservation) {
-		this.reservation = reservation;
-		reservation.setUser(this);
-	}
+	
 }

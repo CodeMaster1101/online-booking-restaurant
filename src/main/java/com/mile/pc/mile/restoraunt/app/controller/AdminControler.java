@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mile.pc.mile.restoraunt.app.dto.RoleToUser;
+import com.mile.pc.mile.restoraunt.app.dto_dao.RoleToUser;
 import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 import com.mile.pc.mile.restoraunt.app.service.AdminService;
 import com.mile.pc.mile.restoraunt.app.service.CustomDTOservice;

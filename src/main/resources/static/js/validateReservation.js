@@ -116,8 +116,8 @@ function timeVal(i){
 					"EVENING": new Date("January 01 1970 21:00"), 
 					"END": new Date("January 01 1970 23:00")};
 	if(i === 0) {
-			if(time > CONSTANTS.START && 
-					time <= CONSTANTS.NOON) return true;
+			if(time >=  CONSTANTS.START && 
+					time < CONSTANTS.NOON) return true;
 		}
 		else if(i === 1) {
 			if(time >= CONSTANTS.NOON && 

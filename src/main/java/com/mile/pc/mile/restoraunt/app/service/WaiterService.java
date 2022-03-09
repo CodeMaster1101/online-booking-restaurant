@@ -23,6 +23,19 @@ import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 
 import lombok.SneakyThrows;
 
+/**
+ This section follows the actions of the "waiter" - the person responsible for the reservations in the local place(restaurant).
+ The waiter keeps track of who arrives and whether they have a reservation or not. Which table they sit on, etc...
+ Functionalities: 
+ - View of all the tables in the restaurant (ID, Occupied/Not, Actions). 
+ - View of today reservations.
+ - Removing all "expired reservations" -> Each reservation that hasn't been attended to is marked as an expired reservation, which the waiter can remove. While doing so
+   the fee from every reservation is being transfered to the admin's wallet and the user on that reservation does not get the money.
+ - Actions -> busy/calm
+
+ * @author Mile Stanislavov
+ *
+ */
 @Service  
 public class WaiterService {
 
@@ -31,6 +44,15 @@ public class WaiterService {
 	@Autowired ReservationRepository reservations;
 	@Autowired UserRepository urepo;
 
+	/**
+	 * Informs the service that a user with a reservation has just arrived. The service looks for the current reservation
+	   and sets that table to occupied with the current user that has just arrived. 
+	   If the service does not return a reservation, the user is either late
+	   (the user has arrived after 50 minutes from his original reservation time), or the user is too early 
+	   (50 minutes before his reservation time).
+	   sets the table to busy, as well as the reservation
+	 * @param tableid - the id used to find the specific table from the repository
+	 */
 	@SneakyThrows @Transactional
 	public void setBusy(long tableid) {
 		RestorauntTable table = tRepo.findById(tableid).get();
@@ -43,6 +65,11 @@ public class WaiterService {
 		throw new AlreadyBusyException(tableid);
 	}
 
+	/**
+	 * Informs the service that the current client has called for check or has gotten up from the table. This is crucial as one 
+	   table must be empty in order for another client to sit on that table.
+	 * @param tableid
+	 */
 	@Transactional
 	public void setCalm(long tableid) {
 		RestorauntTable table = tRepo.findById(tableid).get();

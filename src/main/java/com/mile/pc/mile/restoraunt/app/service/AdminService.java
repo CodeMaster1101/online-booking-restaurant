@@ -18,13 +18,14 @@ import com.mile.pc.mile.restoraunt.app.repo.UserRepository;
 import lombok.SneakyThrows;
 
 /**
- * This Service class is targeting the restoraunt's admin's functionalities
- * It gives the administrator functionalities such as: adding a new user, deleting the user,
- * adding a promotion to the user, removing the promotion from that user, viewing certain collections, etc...
- * In general, the administrator can access almost every, if not, every end-point in the application.
- * 
- * @author Mile Stanislavov
- *
+ * 	The Administrative section corresponds to the manager/CEO functionalities of the app.
+	The manager for one has the following abilities/functionalities:
+
+	- Manage all users -> (promote a certain user to a waiter/admin, demote a user to an ordinary client)
+	- View all roles. The roles of a user determine whether they are authorized or not for a certain url.
+	- Remove a user.
+
+	@author Mile Stanislavov
  */
 @Service 
 public class AdminService {

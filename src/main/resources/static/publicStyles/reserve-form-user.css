@@ -18,10 +18,6 @@ input[type=text], radio {
 	margin: 0;
 	padding: 30px;
 }
-.form .h4{
-	text-align: center;
-	height: 10vh;
-}
 .form .content{
 	display: flex;
 	justify-content: center;

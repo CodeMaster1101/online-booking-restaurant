@@ -33,8 +33,8 @@
         </ul>
       </div>
     </nav>
+    </br>
 <div class = "form">
-<div class = "h4"><h4>Reserve</h4></div>
 	<div class = "content">
 		<form th:action="@{/public/reserveTable}" th:object="${reservation}" th:method="post" onsubmit="return formValidation()">
             	<div class="input-control">				
@@ -52,13 +52,13 @@
    				</br>
    				</br>
    				<div class="input-control">
-   				<input name="period" type="radio" th:field ="*{period}" value="1" /> Breakfast  07:00 AM - 12:00 PM
+   				<input name="period" type="radio" th:field ="*{period}" value="1" onclick="setBreakfastFee()"/> Breakfast  07:00 AM - 12:00 PM
    				</br>
    				</br>
-   				<input name="period" type="radio" th:field ="*{period}" value="2" /> Lunch 01:00 PM - 07:00 PM
+   				<input name="period" type="radio" th:field ="*{period}" value="2" onclick="setLaunchFee()"/> Lunch 01:00 PM - 07:00 PM
    				</br>
    				</br>
-   				<input name="period" type="radio" th:field ="*{period}" value="3" /> Dinner 08:00 PM - 10:00 PM
+   				<input name="period" type="radio" th:field ="*{period}" value="3" onclick="setDinnerFee()"/> Dinner 08:00 PM - 10:00 PM
    				<div id="periodError"></div>
    				<div class="error"></div>
    				</div>
@@ -71,7 +71,7 @@
    				</div>
    				<label>Notes</label>
    				<input type="text" th:field ="*{note}">
-   				<input type="submit" value="Reserve">
+   				<input id="sub" type="submit" value="Reserve">
   </form>
  </div>
 </div >

@@ -43,7 +43,7 @@ The Public section is based on the client's functionalities. Every client has th
 
 - View of the home page for the restoraunt.
 - Reserving a table at a certain time and day.
-- Canceling the same reservation -> input username and password.
+- Canceling the same reservation
 
 ### RULES:
 

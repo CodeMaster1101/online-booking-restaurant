@@ -10,3 +10,6 @@
 .input-control {
 	margin-bottom:15px;
 }
+.input-control.success input {
+    border-color: #09c372;
+}

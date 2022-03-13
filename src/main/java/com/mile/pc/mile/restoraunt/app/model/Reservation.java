@@ -38,7 +38,6 @@ public class Reservation {
 	@JsonManagedReference
 	private User user;
 	@ManyToOne
-	@JoinColumn(name = "table_id")
 	@JsonBackReference
 	private RestorauntTable table;
 	@DateTimeFormat(iso = ISO.DATE_TIME)

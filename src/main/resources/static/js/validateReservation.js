@@ -112,16 +112,18 @@ function timeVal(i){
 	let time = new Date();
 	time.setTime(fetchedTime.valueAsNumber)
 	let CONSTANTS = {"START": new Date("January 01 1970 08:00"), 
-					"NOON": new Date("January 01 1970 13:00"),
-					"EVENING": new Date("January 01 1970 21:00"), 
-					"END": new Date("January 01 1970 23:00")};
+					 "NOON": new Date("January 01 1970 13:00"),
+					 "VOID1": new Date("January 01 1970 14:00"),
+					 "VOID2": new Date("January 01 1970 20:00"),
+					 "EVENING": new Date("January 01 1970 21:00"), 
+					 "END": new Date("January 01 1970 23:00")};
 	if(i === 0) {
 			if(time >=  CONSTANTS.START && 
-					time < CONSTANTS.NOON) return true;
+					time <= CONSTANTS.NOON) return true;
 		}
 		else if(i === 1) {
-			if(time >= CONSTANTS.NOON && 
-					time < CONSTANTS.EVENING) return true;
+			if(time >= CONSTANTS.VOID1 && 
+					time <= CONSTANTS.VOID2) return true;
 		}
 		else if(i === 2) {
 			if(time >= CONSTANTS.EVENING && 

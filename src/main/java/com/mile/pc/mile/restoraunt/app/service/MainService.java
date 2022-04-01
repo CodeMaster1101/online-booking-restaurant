@@ -102,8 +102,8 @@ public class MainService {
 					time.isBefore(CONSTANTS.NOON.plusMinutes(1)))return true;
 		}
 		else if(dto.getPeriod() == 2) {
-			if(time.isAfter(CONSTANTS.NOON) && 
-					time.isBefore(CONSTANTS.EVENING))return true;
+			if(time.isAfter(CONSTANTS.NOON.plusMinutes(59)) && 
+					time.isBefore(CONSTANTS.EVENING.minusMinutes(59)))return true;
 		}
 		else if(dto.getPeriod() == 3) {
 			if(time.isAfter(CONSTANTS.EVENING.minusMinutes(1)) && 

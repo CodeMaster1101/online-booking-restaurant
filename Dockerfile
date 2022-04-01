@@ -1,4 +1,4 @@
 FROM openjdk:8
-LABEL key="Mile Stanislavov"
-ADD target/mile-restoraunt-app-0.0.1-SNAPSHOT.jar restaurant_app.jar
-ENTRYPOINT [ "java", "-jar", "restaurant_app.jar" ]
+ADD target/mile-restoraunt-app-0.0.1-SNAPSHOT.jar mile-restoraunt-app-0.0.1-SNAPSHOT.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar" , "mile-restoraunt-app-0.0.1-SNAPSHOT.jar"]

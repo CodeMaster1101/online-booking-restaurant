@@ -65,6 +65,7 @@ public class CustomControllerAdvice {
 		return controller.errorDisplay(e.error(e.getTime()), HttpStatus.BAD_REQUEST);
 
 	}
+	
 	@ExceptionHandler(invalidPeriodException.class)
 	public ModelAndView handleExceptions(invalidPeriodException e) {
 		return controller.errorDisplay(e.error(), HttpStatus.BAD_REQUEST);

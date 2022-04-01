@@ -73,6 +73,7 @@ public class MainService {
 	  @param username - the logged in user
 	  @throws TimeOutForCancelingException - custom exception
 	 */
+	@Transactional
 	public void cancelReservation(String username) throws TimeOutForCancelingException {
 		User localUser = uRepo.getUserByUsername(username);
 		if(refund(localUser)) {

@@ -2,8 +2,7 @@
 
 ## Why
 
-There has always been a problem with reserving a table in a restoraunt, because every reservation includes making a phone call, hopefully that someone will pick up the phone
-and answer. Most of the time it's not a problem, but what if it's a popular/busy restoraunt? The waiter will need to keep track of all the reservations and hopefully not make a mistake by overlapping two reservations on the same table. The purpose of this app is to allow users, instead of calling the restoraunt, to reserve a table digitally ahead of time, while the waiter/s has easy access and flexible maintenance over the reservations that the users make from their smart phones/PC's.
+There has always been a problem with reserving a table in a restoraunt, because every reservation includes making a phone call, hopefully that someone will pick up the phone and answer. Most of the time it's not a problem, but what if it's a popular/busy restoraunt? The waiter will need to keep track of all the reservations and hopefully not make a mistake by overlapping two reservations on the same table. The purpose of this app is to allow users, instead of calling the restoraunt, to reserve a table digitally ahead of time, while the service insures that the person reserving will acually appear in the restaurant and not suffer penalties. Also, the waiter has easy access and flexible maintenance over the reservations that the users make from their smart phones/PC's. 
 
 ## Description
 

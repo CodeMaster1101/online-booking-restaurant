@@ -1,5 +1,6 @@
 package com.mile.pc.mile.restoraunt.app.advice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -48,7 +49,12 @@ public class CustomControllerAdvice {
 		}
 		return result;
 	}
-
+	@ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+	public ModelAndView handleExceptions(SQLIntegrityConstraintViolationException e) {
+		return controller.errorDisplay("username already taken", HttpStatus.BAD_REQUEST);
+	}
+	
+	
 	@ExceptionHandler(NoSuchElementException.class)
 	public ModelAndView handleExceptions(NoSuchElementException e) {
 		return controller.errorDisplay(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);

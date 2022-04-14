@@ -1,5 +1,6 @@
 package com.mile.pc.mile.restoraunt.app.service;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,6 +50,7 @@ class MainServiceTest {
 		catch (TimeOutForCancelingException e) {
 			assertTrue(e.error().contains("hours have passed since the moment of your reservation"));
 		}
+		assertFalse(false);
 
 	}
 

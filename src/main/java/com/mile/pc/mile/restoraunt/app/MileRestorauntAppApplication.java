@@ -28,27 +28,28 @@ public class MileRestorauntAppApplication {
 	}
 	@Autowired TableRepository tr;
 	@Autowired UserRepository ur;
-	@Autowired ReservationRepository reser;
 	@Autowired RoleRepository rr;
 	@Autowired AdminService cs;
 	@Bean
 	@Transactional
 	CommandLineRunner runner() {
 		return args -> {
-			if(tr.findAll().size() == 0) {
-				tr.save(new RestorauntTable(null, false, null));
-				tr.save(new RestorauntTable(null, false, null));
-				tr.save(new RestorauntTable(null, false, null));
-				tr.save(new RestorauntTable(null, false, null));
-				tr.save(new RestorauntTable(null, false, null));
-				rr.save(new Role(null, "WAITER"));
-				rr.save(new Role(null, "ADMIN"));
-				rr.save(new Role(null, "USER"));		
-				BCryptPasswordEncoder passwordEncoder1 = new BCryptPasswordEncoder();
-				ur.save(new User(9l,"Mile", "cpthermes", passwordEncoder1.encode("madafaka"), 1500, null, new HashSet<>(), null));
-				cs.AddRoleToUser("cpthermes", "ADMIN");
-				cs.AddRoleToUser("cpthermes", "USER");
-			}	
+		
+//			if(tr.findAll().size() == 0) {
+//				tr.save(new RestorauntTable(null, false, null));
+//				tr.save(new RestorauntTable(null, false, null));
+//				tr.save(new RestorauntTable(null, false, null));
+//				tr.save(new RestorauntTable(null, false, null));
+//				tr.save(new RestorauntTable(null, false, null));
+//				rr.save(new Role(null, "WAITER"));
+//				rr.save(new Role(null, "ADMIN"));
+//				rr.save(new Role(null, "USER"));		
+//				BCryptPasswordEncoder passwordEncoder1 = new BCryptPasswordEncoder();
+//				ur.save(new User(9l,"Mile", "cpthermes", passwordEncoder1.encode("madafaka"), 1500, null, new HashSet<>(), null));
+//				cs.AddRoleToUser("cpthermes", "ADMIN");
+//				cs.AddRoleToUser("cpthermes", "USER");
+				
+	//		}	
 		};
 		
 	}

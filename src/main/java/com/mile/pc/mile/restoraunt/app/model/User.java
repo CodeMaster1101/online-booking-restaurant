@@ -19,30 +19,34 @@ import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@EqualsAndHashCode
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Table(name =  "user", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
-public class User {
+public final class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
+
 	private String firstName;
+
 	@Column(unique = true, name = "username")
 	private String username;
+
 	private String password;
+
 	private long balance;
+
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonBackReference
 	private Reservation reservation;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "users_roles",
@@ -51,6 +55,7 @@ public class User {
 			inverseJoinColumns = @JoinColumn(
 					name = "role_id", referencedColumnName = "id"))
 	private Set<Role> roles;
+
 	private LocalDateTime reservationMoment;
 	
 }

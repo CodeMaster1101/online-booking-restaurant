@@ -1,14 +1,11 @@
 package com.mile.pc.mile.restoraunt.app.exceptions;
 
-import org.springframework.stereotype.Component;
+public final class PasswordException extends RuntimeException{
 
+	public static final String INCORRECT_PASSWORD_TRY_AGAIN = "Incorrect password. Try again";
 
-@Component
-public class PasswordException extends RuntimeException{
-
-	private static final long serialVersionUID = -5213902381068675725L;
-	
 	public String error() {
-		return "Incorrect password. Try again";
+		return INCORRECT_PASSWORD_TRY_AGAIN;
 	}
+
 }

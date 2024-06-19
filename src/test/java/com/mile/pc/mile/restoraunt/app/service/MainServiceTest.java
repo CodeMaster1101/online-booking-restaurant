@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.mile.pc.mile.restoraunt.app.exceptions.TimeOutForCancelingException;
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
-import com.mile.pc.mile.restoraunt.app.model.RestorauntTable;
+import com.mile.pc.mile.restoraunt.app.model.RestaurantTable;
 import com.mile.pc.mile.restoraunt.app.model.User;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.repo.TableRepository;
@@ -39,7 +39,7 @@ class MainServiceTest {
 	@Test
 	void testCancelReservationWhenUserLate() throws TimeOutForCancelingException {
 		try {
-			RestorauntTable table = new RestorauntTable(2l,false,new ArrayList<>());
+			RestaurantTable table = new RestaurantTable(2l,false,new ArrayList<>());
 			Reservation r = new Reservation(3l, true, null, null, LocalDateTime.now().plusDays(1), 400l, false, 3, "");
 			r.setUTable(table);
 			User user = new User(1l,"Mile", "username","123",800,r,new HashSet<>(),LocalDateTime.now().minusMinutes(12));
@@ -57,7 +57,7 @@ class MainServiceTest {
 	@Test 
 	void testCancelReservationWhenUserOnTime() throws TimeOutForCancelingException{
 	
-		RestorauntTable table = new RestorauntTable(2l,false,new ArrayList<>());
+		RestaurantTable table = new RestaurantTable(2l,false,new ArrayList<>());
 		Reservation r = new Reservation(3l, true, null, null, LocalDateTime.now().plusDays(1), 400l, false, 3, "");
 		r.setUTable(table);
 		User user = new User(1l,"Mile", "username","123",800,r,new HashSet<>(),LocalDateTime.now().minusMinutes(7));

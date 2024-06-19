@@ -1,26 +1,20 @@
 package com.mile.pc.mile.restoraunt.app.exceptions;
 
-import java.time.LocalDateTime;
-
-import org.springframework.stereotype.Component;
-
 import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Component
-public class BadReservationRadiusException extends RuntimeException {
+import java.time.LocalDateTime;
 
-	private LocalDateTime time;
-	private static final long serialVersionUID = -7303926283853494424L;
-	public String error(LocalDateTime rTime) {
+public final class BadReservationRadiusException extends RuntimeException {
+
+	private final LocalDateTime time;
+
+  public BadReservationRadiusException(LocalDateTime time) {
+    this.time = time;
+  }
+
+  public String error() {
 		return "Invalid date. The minimum time for the reservation must be a day from now. For the time of your reservation, which is: "
-				+ rTime.toString() + " The minimal time would be " + rTime.plusDays(CONSTANTS.MINIMUM_DAY);
+				+ time.toString() + " The minimal time would be " + time.plusDays(CONSTANTS.MINIMUM_DAYS);
 	}
+
 }

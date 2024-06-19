@@ -1,29 +1,33 @@
 package com.mile.pc.mile.restoraunt.app.dto_dao;
 
-import java.time.LocalTime;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.stereotype.Component;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.LocalTime;
 
-@Component
-@Builder
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationWaiterDAO {
+public final class ReservationWaiterDAO {
 	
-	private long tableid;
+	private long tableId;
+
 	private String firstName;
+
 	private String username;
+
 	private String period;
+
 	@DateTimeFormat(iso = ISO.TIME)
 	private LocalTime time;
+
 	private boolean arrived;
+
 	private String note;
+
 }

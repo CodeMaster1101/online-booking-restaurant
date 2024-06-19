@@ -35,9 +35,9 @@ class AdminServiceTest {
 	void testAddRoleToUser() {
 		User user = new User(3l,"Mile", "testUser", "x", 123, null, new HashSet<>(), null);
 		Role role =(new Role(2l, "WAITER"));
-		when(userRepository.getUserByUsername("testUser")).thenReturn(user);
+		when(userRepository.findByUsername("testUser")).thenReturn(user);
 		when(roleRepository.findByType("WAITER")).thenReturn(role);
-		adminService.AddRoleToUser(user.getUsername(), role.getType());
+		adminService.addRoleToUser(user.getUsername(), role.getType());
 		assertEquals(1, user.getRoles().size());
 	}
 
@@ -47,9 +47,9 @@ class AdminServiceTest {
 		Role role =(new Role(2l, "WAITER"));
 		set.add(role);
 		User user = new User(3l, "Mile", "testUser", "x", 123, null, set , null);
-		when(userRepository.getUserByUsername("testUser")).thenReturn(user);
+		when(userRepository.findByUsername("testUser")).thenReturn(user);
 		when(roleRepository.findByType("WAITER")).thenReturn(role);
-		adminService.removeRolefromUser(user.getUsername(), role.getType());
+		adminService.removeRoleFromUser(user.getUsername(), role.getType());
 		verify(roleRepository, times(1)).findByType("WAITER");
 		assertEquals(0, user.getRoles().size());
 

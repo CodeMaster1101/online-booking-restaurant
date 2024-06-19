@@ -1,16 +1,14 @@
 package com.mile.pc.mile.restoraunt.app.exceptions;
 
-import org.springframework.stereotype.Component;
 
 import com.mile.pc.mile.restoraunt.app.constants.CONSTANTS;
 
-@Component
-public class TimeOutForCancelingException extends RuntimeException{
-    
-	private static final long serialVersionUID = 6223439866695078278L;
+public final class TimeOutForCancelingException extends RuntimeException{
+
+	private static final String TIMEOUT_FOR_CANCELING = CONSTANTS.CANCEL_TIME + " hours have passed since the moment of your reservation. You can not cancel it, but you can still attend to it.";
 
 	public String error() {
-		int afterMoment = CONSTANTS.CANCEL_TIME;
-		return "" + afterMoment + " hours have passed since the moment of your reservation. You can not cancel it, but you can still attend to it.";
+		return TIMEOUT_FOR_CANCELING;
 	}
+
 }

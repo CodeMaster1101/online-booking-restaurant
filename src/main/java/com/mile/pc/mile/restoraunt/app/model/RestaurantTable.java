@@ -13,23 +13,22 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 
 @Entity
-@Data
+@EqualsAndHashCode
+@Getter
+@Setter
 @NoArgsConstructor
-@Builder
 @AllArgsConstructor
-public class RestorauntTable {
+public final class RestaurantTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
     private Boolean busy;
+
     @JsonIgnore
     @OneToMany(mappedBy = "table", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -44,5 +43,6 @@ public class RestorauntTable {
     	r.setTable(null);
     	reservations.remove(r);
     }
+
 }
 

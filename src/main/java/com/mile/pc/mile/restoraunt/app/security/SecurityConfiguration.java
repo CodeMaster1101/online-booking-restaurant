@@ -1,6 +1,5 @@
 package com.mile.pc.mile.restoraunt.app.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +16,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
 
-	@Bean
+  public SecurityConfiguration(UserService userService) {
+    this.userService = userService;
+  }
+
+  @Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
@@ -37,12 +39,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	boolean securityDebug;
 
 	@Override
-	public void configure(WebSecurity web) throws Exception {
+	public void configure(WebSecurity web) {
 		web.debug(securityDebug);
 	}
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+	protected void configure(AuthenticationManagerBuilder auth) {
 		auth.authenticationProvider(authenticationProvider());
 	}
 

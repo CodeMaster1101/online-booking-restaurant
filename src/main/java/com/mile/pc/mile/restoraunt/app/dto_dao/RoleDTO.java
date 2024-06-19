@@ -1,16 +1,17 @@
 package com.mile.pc.mile.restoraunt.app.dto_dao;
 
-import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Component
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoleDTO {
 	
 	private String type;
+
 }

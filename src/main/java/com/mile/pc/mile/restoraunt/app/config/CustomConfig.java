@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
 @Configuration
-public class CustomConfig {
+class CustomConfig {
 	
 	   @Bean
-	    public SpringSecurityDialect springSecurityDialect(){
+		 public SpringSecurityDialect springSecurityDialect(){
 	        return new SpringSecurityDialect();
 	    }
 }

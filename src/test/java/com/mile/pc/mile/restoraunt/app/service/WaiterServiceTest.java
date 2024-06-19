@@ -18,7 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.mile.pc.mile.restoraunt.app.model.Reservation;
-import com.mile.pc.mile.restoraunt.app.model.RestorauntTable;
+import com.mile.pc.mile.restoraunt.app.model.RestaurantTable;
 import com.mile.pc.mile.restoraunt.app.model.User;
 import com.mile.pc.mile.restoraunt.app.repo.ReservationRepository;
 import com.mile.pc.mile.restoraunt.app.repo.RoleRepository;
@@ -42,7 +42,7 @@ class WaiterServiceTest {
 		if(LocalTime.now().isAfter(LocalTime.of(21, 0)))
 			return;
 		User user = new User(2l,"Mile", "username", "123", 600l, null, new HashSet<>(), LocalDateTime.now().minusDays(1));
-		RestorauntTable table = new RestorauntTable(3l, false, new ArrayList<Reservation>());
+		RestaurantTable table = new RestaurantTable(3l, false, new ArrayList<Reservation>());
 		Reservation r = new Reservation(1l, true, user, table, LocalDateTime.now().plusMinutes(15), 300l, false, 2, null);
 		r.setUTable(table);
 		user.setReservation(r);
@@ -57,7 +57,7 @@ class WaiterServiceTest {
 	@Test
 	void testSetCalm() {
 		User user = new User(2l,"Mile", "username", "123", 600l, null, new HashSet<>(), LocalDateTime.now().minusDays(1));
-		RestorauntTable table = new RestorauntTable(3l, true, new ArrayList<Reservation>());
+		RestaurantTable table = new RestaurantTable(3l, true, new ArrayList<Reservation>());
 		Reservation r = new Reservation(1l, true, user, table, LocalDateTime.now().plusMinutes(15), 300l, true, 2, null);
 		r.setUTable(table);
 		user.setReservation(r);		

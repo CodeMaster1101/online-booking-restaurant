@@ -1,27 +1,28 @@
 package com.mile.pc.mile.restoraunt.app.dto_dao;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.stereotype.Component;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Component
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpDTO {
 	
 	@NotNull
-    @NotEmpty
+	@NotEmpty
 	private String firstName;
+
 	@NotNull
-    @NotEmpty
+	@NotEmpty
 	private String username;
+
 	@NotNull
-    @NotEmpty		
+	@NotEmpty
 	private String password;
 }

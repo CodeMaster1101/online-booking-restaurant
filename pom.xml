@@ -12,10 +12,9 @@
 	</parent>
 
 	<groupId>com.mile.pc</groupId>
-	<artifactId>mile-restoraunt-app</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>mile-restoraunt-app</name>
-	<description>final project</description>
+	<artifactId>mile-restaurant-app</artifactId>
+	<version>0.0.2-SNAPSHOT</version>
+	<name>mile-restaurant-app</name>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -27,20 +26,23 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5 -->
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
-			</dependency>
+		</dependency>
 			
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
@@ -51,10 +53,12 @@
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.5.2</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/de.codecentric/spring-boot-admin-starter-client -->
 		<dependency>
 			<groupId>de.codecentric</groupId>
@@ -66,6 +70,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -85,6 +90,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
